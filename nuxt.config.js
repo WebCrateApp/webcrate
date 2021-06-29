@@ -2,10 +2,10 @@ export default {
   components: true,
 
   target: 'server',
-  
+
   server: {
     port: 3000,
-    host: `0.0.0.0`,
+    host: '0.0.0.0'
   },
 
   buildModules: [
@@ -34,5 +34,5 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
-  },
+  }
 }
