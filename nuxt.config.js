@@ -1,7 +1,9 @@
 export default {
   components: true,
 
-  target: 'server',
+  target: 'static',
+
+  ssr: false,
 
   server: {
     port: 3000,
@@ -34,5 +36,7 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
-  }
+  },
+
+  telemetry: false
 }
