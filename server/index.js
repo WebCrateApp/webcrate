@@ -1,13 +1,21 @@
 const runningAt = require('running-at')
-const app = require('../index')
+const { build, loadNuxt } = require('nuxt')
+const app = require('./server')
 
 const PORT = process.env.PORT || 3000
+const isDev = process.env.NODE_ENVIRONMENT !== 'prod'
 
 /**
  * Connect to database and listen to given port
  */
-function startServer () {
+async function startServer () {
   try {
+    const nuxt = await loadNuxt(isDev ? 'dev' : 'start')
+
+    if (isDev) {
+      build(nuxt)
+    }
+
     app.listen(PORT, () => runningAt.print(PORT))
   } catch (err) {
     // eslint-disable-next-line no-console

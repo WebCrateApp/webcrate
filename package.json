@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node server/run.js",
+    "dev": "nodemon server/index.js",
     "build": "nuxt build",
-    "start": "NODE_ENV=production node server/run.js",
+    "start": "NODE_ENV=production server/index.js",
     "generate": "nuxt generate",
     "deploy": "npm run generate && deta deploy",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
