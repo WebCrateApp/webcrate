@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon server/index.js",
-    "build": "nuxt build",
+    "dev": "tsc-watch -p ./server/tsconfig.json --onSuccess \"node ./build/index.js\"",
+    "build:nuxt": "nuxt generate",
+    "build:server": "tsc -p ./server/tsconfig.json",
+    "build": "npm run build:nuxt && npm run build:server",
     "start": "NODE_ENV=production server/index.js",
-    "generate": "nuxt generate",
-    "deploy": "npm run generate && deta deploy",
-    "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
+    "deploy": "deta deploy",
+    "lint:nuxt": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
+    "lint:server": "eslint ./server/ --ext .ts",
     "lint": "npm run lint:js"
   },
   "repository": {
@@ -24,20 +26,35 @@
   "homepage": "https://github.com/betahuhn/webcrate#README",
   "dependencies": {
     "@nuxtjs/axios": "^5.13.1",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "core-js": "^3.9.1",
+    "cors": "^2.8.5",
+    "deta": "0.0.8",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "metadata-scraper": "^0.1.1",
     "nuxt": "^2.15.3",
-    "running-at": "^0.3.20"
+    "running-at": "^0.3.20",
+    "signale": "^1.4.0"
   },
   "devDependencies": {
     "@betahuhn/config": "^1.1.0",
-    "@nuxt/types": "^2.15.3",
+    "@nuxt/types": "^2.15.7",
     "@nuxt/typescript-build": "^2.1.0",
     "@nuxtjs/eslint-config-typescript": "^6.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
+    "@types/body-parser": "^1.19.0",
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.12",
+    "@types/node": "^15.12.5",
+    "@types/signale": "^1.4.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.22.0",
     "eslint-plugin-nuxt": "^2.0.0",
-    "eslint-plugin-vue": "^7.7.0"
+    "eslint-plugin-vue": "^7.7.0",
+    "ts-node": "^10.0.0",
+    "tsc-watch": "^4.4.0",
+    "typescript": "^4.3.4"
   }
 }
