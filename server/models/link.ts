@@ -60,9 +60,7 @@ export class Link {
 
 		const newLink = await Links.insert(toBeCreated)
 
-		const link = new Link(newLink)
-
-		return link
+		return new Link(newLink)
 	}
 
 	static async getAll(): Promise<Array<Link>> {
@@ -86,15 +84,14 @@ export class Link {
 
 		if (!data) return null
 
-		const link = new Link(data)
-
-		return link
+		return new Link(data)
 	}
 
 	static async getByShortCode(code: string): Promise<Link | null> {
 		const { value } = await Links.fetch({ 'redirect.shortCode': code }).next()
 
-		const link = new Link(value[0])
-		return link
+		if (!value) return null
+
+		return new Link(value[0])
 	}
 }
