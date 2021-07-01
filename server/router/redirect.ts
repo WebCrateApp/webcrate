@@ -1,6 +1,6 @@
 import express from 'express'
 
-import * as Link from '../models/link'
+import { Link } from '../models/link'
 import log from '../utils/log'
 
 export const router = express.Router()
@@ -11,9 +11,9 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
 		return res.redirect('/')
 	}
 
-	let link = await Link.getLink(id)
+	let link = await Link.getById(id)
 	if (!link) {
-		link = await Link.getLinkFromShortCode(id)
+		link = await Link.getByShortCode(id)
 		if (!link) {
 			return res.fail(404, 'link not found')
 		}

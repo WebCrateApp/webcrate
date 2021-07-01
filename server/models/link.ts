@@ -2,68 +2,99 @@ import getMetaData from 'metadata-scraper'
 
 import db from '../service/db'
 
-export interface Link {
+const Links = db.Base('links')
+
+export class Link {
+
 	key: string
-	url: string,
+	url: string
+	crate?: string
 	meta?: {
 		title?: string,
 		description?: string,
 		image?: string
-	},
+	}
+
 	redirect: {
 		enabled: boolean,
 		shortCode?: string
-	},
-	addedWith: string,
-	addedAt: Date
-}
-
-const Links = db.Base('links')
-
-export const addLink = async (url: string) => {
-	const meta = await getMetaData(url)
-
-	const data = {
-		url,
-		meta: {
-			title: meta.title,
-			description: meta.description,
-			image: meta.image
-		},
-		redirect: {
-			enabled: false
-		},
-		addedWith: 'web',
-		addedAt: new Date()
 	}
 
-	const res = await Links.insert(data)
+	addedWith: string
+	addedAt: Date
 
-	return res as Link
-}
+	constructor(data: Link) {
+		this.key = data.key
+		this.url = data.url
+		this.meta = data.meta
+		this.redirect = data.redirect
+		this.addedWith = data.addedWith
+		this.addedAt = data.addedAt
+	}
 
-export const getLink = async (id: string) => {
-	const link = await Links.get(id)
+	async update(changes: any) {
+		await Links.update(changes, this.key)
+	}
 
-	return link as Link
-}
+	async delete() {
+		await Links.delete(this.key)
+	}
 
-export const getLinkFromShortCode = async (code: string) => {
-	const { value } = await Links.fetch({ 'redirect.shortCode': code }).next()
+	static async create(url: string, crate?: string): Promise<Link> {
+		const meta = await getMetaData(url)
 
-	return value[0] as Link
-}
+		const toBeCreated = {
+			url,
+			crate,
+			meta: {
+				title: meta.title,
+				description: meta.description,
+				image: meta.image
+			},
+			redirect: {
+				enabled: false
+			},
+			addedWith: 'web',
+			addedAt: new Date()
+		}
 
-export const getAllLinks = async () => {
-	const { value: links } = await Links.fetch().next()
+		const newLink = await Links.insert(toBeCreated)
 
-	return links as Array<Link>
-}
+		const link = new Link(newLink)
 
-export const updateLink = async (id: string, changes: any) => {
-	await Links.update(changes, id)
-}
+		return link
+	}
 
-export const deleteLink = async (id: string) => {
-	await Links.delete(id)
+	static async getAll(): Promise<Array<Link>> {
+		const { value: links } = await Links.fetch().next()
+
+		if (!links) return []
+
+		return links.map((link: Link) => new Link(link))
+	}
+
+	static async getAllByCrate(crate: string): Promise<Array<Link>> {
+		const { value: links } = await Links.fetch({ crate }).next()
+
+		if (!links) return []
+
+		return links.map((link: Link) => new Link(link))
+	}
+
+	static async getById(id: string): Promise<Link | null> {
+		const data: Link = await Links.get(id)
+
+		if (!data) return null
+
+		const link = new Link(data)
+
+		return link
+	}
+
+	static async getByShortCode(code: string): Promise<Link | null> {
+		const { value } = await Links.fetch({ 'redirect.shortCode': code }).next()
+
+		const link = new Link(value[0])
+		return link
+	}
 }

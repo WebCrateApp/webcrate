@@ -1,6 +1,6 @@
 import express from 'express'
 
-import * as Link from '../../models/link'
+import { Link } from '../../models/link'
 import log from '../../utils/log'
 
 export const router = express.Router()
@@ -13,7 +13,7 @@ router.post('/', async (req: express.Request, res: express.Response) => {
 
 	log.debug(url)
 
-	const link = await Link.addLink(url)
+	const link = await Link.create(url)
 
 	log.debug(link)
 	log.info('Link added')
@@ -23,12 +23,12 @@ router.post('/', async (req: express.Request, res: express.Response) => {
 router.get('/', async (req: express.Request, res: express.Response) => {
 	const id = req.query.id as string
 	if (!id) {
-		const links = await Link.getAllLinks()
+		const links = await Link.getAll()
 
 		return res.ok(links)
 	}
 
-	const link = await Link.getLink(id)
+	const link = await Link.getById(id)
 	if (!link) {
 		return res.fail(404, 'link not found')
 	}
@@ -43,7 +43,7 @@ router.put('/', async (req: express.Request, res: express.Response) => {
 		return res.fail(400, 'no id provided')
 	}
 
-	const link = await Link.getLink(id)
+	const link = await Link.getById(id)
 	if (!link) {
 		return res.fail(404, 'link not found')
 	}
@@ -51,7 +51,7 @@ router.put('/', async (req: express.Request, res: express.Response) => {
 	log.debug(link)
 
 	const { redirect, meta } = req.body
-	await Link.updateLink(id, {
+	await link.update({
 		...(redirect && {
 			...(redirect.enabled && { 'redirect.enabled': redirect.enabled }),
 			...(redirect.shortCode && { 'redirect.shortCode': redirect.shortCode })
@@ -63,7 +63,7 @@ router.put('/', async (req: express.Request, res: express.Response) => {
 		})
 	})
 
-	const updated = await Link.getLink(id)
+	const updated = await Link.getById(id)
 
 	log.info('Link updated')
 	res.ok(updated)
@@ -75,12 +75,12 @@ router.delete('/', async (req: express.Request, res: express.Response) => {
 		return res.fail(400, 'no id provided')
 	}
 
-	const link = await Link.getLink(id)
+	const link = await Link.getById(id)
 	if (!link) {
 		return res.fail(404, 'link not found')
 	}
 
-	await Link.deleteLink(id)
+	await link.delete()
 
 	log.info('Link deleted')
 	res.ok()
