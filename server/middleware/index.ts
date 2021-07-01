@@ -20,6 +20,14 @@ export function routeLog(req: express.Request, _res: express.Response, next: exp
 	next()
 }
 
+export function disableCaching(req: express.Request, res: express.Response, next: express.NextFunction) {
+	if (req.originalUrl === '/') {
+		res.set('Cache-contro', 'no-store')
+	}
+
+	next()
+}
+
 export function sendResponse(_req: express.Request, res: express.Response, next: express.NextFunction) {
 	res.ok = (data?: any) => {
 		res.json({

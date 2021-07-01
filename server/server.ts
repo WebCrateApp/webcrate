@@ -5,7 +5,7 @@ import compression from 'compression'
 import cors from 'cors'
 
 import routes from './router'
-import { routeLog, sendResponse } from './middleware'
+import { routeLog, sendResponse, disableCaching } from './middleware'
 import log from './utils/log'
 
 const app = express()
@@ -19,6 +19,9 @@ app.use(sendResponse)
 app.use(bodyParser.json())
 app.use(compression())
 app.use(cors())
+
+// Disable caching for /, reference: https://www.notion.so/Turning-off-Caching-on-the-Root-9879ed9411a4486dbeaf4cc57697d610
+app.use(disableCaching)
 
 // Use router
 app.use(routes)
