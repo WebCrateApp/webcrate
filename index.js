@@ -1,3 +1,3 @@
-const app = require('./server/server')
+const app = require('./build/server')
 
-module.exports = app
+module.exports = app.default
