@@ -1,5 +1,6 @@
 import express from 'express'
 import log from '../utils/log'
+import { messages } from '../utils/status'
 
 const ignoreRequestStrings: Array<string> = [ 'js/', 'css/', 'img/', 'static/', '_nuxt', 'manifest.json' ] // Don't log request if one of the strings are in URL
 
@@ -19,7 +20,7 @@ export function routeLog(req: express.Request, _res: express.Response, next: exp
 	next()
 }
 
-export function sendResponse(_req: express.Request, res: express.Response) {
+export function sendResponse(_req: express.Request, res: express.Response, next: express.NextFunction) {
 	res.ok = (data: any) => {
 		res.json({
 			status: 200,
@@ -28,13 +29,16 @@ export function sendResponse(_req: express.Request, res: express.Response) {
 		})
 	}
 
-	res.fail = (data: any, statusCode?: number, message?: string) => {
+	res.fail = (statusCode: number, error?: any, statusMessage?: string) => {
 		const status = statusCode || 500
+		const message = statusMessage || messages[statusCode] || 'Unkown error ocurred'
 
 		res.status(status).json({
 			status,
-			message: message || 'Error ocurred',
-			data
+			message,
+			error
 		})
 	}
+
+	next()
 }
