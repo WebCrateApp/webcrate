@@ -20,8 +20,8 @@ app.use(bodyParser.json())
 app.use(compression())
 app.use(cors())
 
-// API routes
-app.use('/api', routes)
+// Use router
+app.use(routes)
 
 // Redirect to Nuxt SPA
 app.get('/*', (_req, res) => {
@@ -44,7 +44,7 @@ app.use((err: any, _req: express.Request, res: express.Response, next: express.N
 
 	const message = err.message || 'An unkown error ocurred, please try again.'
 
-	res.fail(undefined, returnStatus, message)
+	res.fail(returnStatus, message)
 })
 
 export default app

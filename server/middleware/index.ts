@@ -21,7 +21,7 @@ export function routeLog(req: express.Request, _res: express.Response, next: exp
 }
 
 export function sendResponse(_req: express.Request, res: express.Response, next: express.NextFunction) {
-	res.ok = (data: any) => {
+	res.ok = (data?: any) => {
 		res.json({
 			status: 200,
 			message: 'ok',
