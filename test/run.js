@@ -1,6 +1,6 @@
 require('dotenv').config()
 const runningAt = require('running-at')
-const app = require('./build/server')
+const app = require('../build/server')
 
 const PORT = process.env.PORT || 3000
 
