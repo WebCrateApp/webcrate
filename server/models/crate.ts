@@ -24,10 +24,10 @@ export class Crate {
 		await Crates.delete(this.key)
 	}
 
-	static async create(name: string, isPublic?: boolean): Promise<Crate> {
+	static async create(name: string): Promise<Crate> {
 		const toBeCreated = {
 			name,
-			public: isPublic || false,
+			public: false,
 			addedAt: new Date()
 		}
 
@@ -40,6 +40,14 @@ export class Crate {
 
 	static async getAll(): Promise<Array<Crate>> {
 		const { value: crates } = await Crates.fetch().next()
+
+		if (!crates) return []
+
+		return crates.map((crate: Crate) => new Crate(crate))
+	}
+
+	static async query(query: any): Promise<Array<Crate>> {
+		const { value: crates } = await Crates.fetch(query).next()
 
 		if (!crates) return []
 
