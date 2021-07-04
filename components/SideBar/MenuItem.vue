@@ -2,7 +2,7 @@
   <div class="menu-item" :class="{ 'selected': selected }">
     <div class="icon-wrapper">
       <div v-if="emoji" class="emoji">
-        {{ emoji }}
+        {{ emojiIcon }}
       </div>
       <Icon v-else-if="icon" :name="icon" class="icon" />
     </div>
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import emojis from '../../server/utils/emojis'
+
 export default {
 	props: {
 		name: {
@@ -35,6 +37,11 @@ export default {
 		icon: {
 			type: String,
 			default: undefined
+		}
+	},
+	computed: {
+		emojiIcon() {
+			return emojis[this.emoji]
 		}
 	}
 }

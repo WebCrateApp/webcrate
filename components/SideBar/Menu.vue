@@ -12,9 +12,14 @@
       <h4>My Crates</h4>
     </div>
     <div class="menus">
-      <SideBarMenuItem name="Read Later" emoji="📕" :selected="currentCrate === 'readLater'" @click.native="currentCrate = 'readLater'" />
-      <SideBarMenuItem name="Design Resources" emoji="👩‍💻" :selected="currentCrate === 'design'" @click.native="currentCrate = 'design'" />
-      <SideBarMenuItem name="Web Dev" emoji="💻" :selected="currentCrate === 'webDev'" @click.native="currentCrate = 'webDev'" />
+      <SideBarMenuItem
+        v-for="crate in crates"
+        :key="crate.key"
+        :name="crate.name"
+        :emoji="crate.icon"
+        :selected="currentCrate === crate.key"
+        @click.native="currentCrate = crate.key"
+      />
     </div>
   </div>
 </template>
@@ -24,7 +29,42 @@ export default {
 	data() {
 		return {
 			currentCrate: 'home'
+			/* crates: [
+				{
+					key: '1',
+					name: 'Read Later',
+					icon: 'closed_book'
+				},
+				{
+					key: '2',
+					name: 'Design Resources',
+					icon: 'crystal_ball'
+				},
+				{
+					key: '3',
+					name: 'Web Dev',
+					icon: 'computer'
+				},
+				{
+					key: '4',
+					name: 'Road Trip',
+					icon: 'car'
+				},
+				{
+					key: '5',
+					name: 'Archive',
+					icon: 'file_folder'
+				}
+			] */
 		}
+	},
+	computed: {
+		crates() {
+			return this.$store.state.crates
+		}
+	},
+	created() {
+		this.$store.dispatch('GET_CRATES')
 	}
 }
 </script>
