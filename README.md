@@ -1,5 +1,9 @@
 # webcrate
 
+Nuxt frontend with Express backend.
+
+During development Nuxt serves the Express app, in production the nuxt generated static files are served in Express.
+
 ## Build Setup
 
 ```bash
