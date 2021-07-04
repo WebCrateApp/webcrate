@@ -27,7 +27,12 @@ app.use(disableCaching)
 app.use(routes)
 
 // Redirect to Nuxt SPA
-app.get('/*', (_req, res) => {
+app.get('/*', (_req, res, next) => {
+	if (process.env.NODE_ENV === 'development') {
+		next()
+		return
+	}
+
 	res.sendFile(path.join(__dirname, '../dist', 'index.html'))
 })
 

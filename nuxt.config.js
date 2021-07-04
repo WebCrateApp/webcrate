@@ -1,46 +1,57 @@
 export default {
-  components: true,
+	components: true,
 
-  target: 'static',
+	target: 'static',
 
-  ssr: false,
+	ssr: false,
 
-  server: {
-    port: 3000,
-    host: '0.0.0.0'
-  },
+	server: {
+		port: 3000,
+		host: '0.0.0.0'
+	},
 
-  serverMiddleware: [
-    { path: '/', handler: '~/server/server.ts' }
-  ],
+	serverMiddleware: [{
+		path: '/',
+		handler: '~/server/server.ts'
+	}],
 
-  buildModules: [
-    '@nuxt/typescript-build'
-  ],
+	buildModules: [
+		'@nuxt/typescript-build'
+	],
 
-  modules: [
-    '@nuxtjs/axios'
-  ],
+	modules: [
+		'@nuxtjs/axios',
+		'@blokwise/dynamic'
+	],
 
-  axios: {},
+	axios: {},
 
-  build: {
-  },
+	build: {},
 
-  head: {
-    title: 'webcrate',
-    htmlAttrs: {
-      lang: 'en'
-    },
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' }
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
-  },
+	head: {
+		title: 'webcrate',
+		htmlAttrs: {
+			lang: 'en'
+		},
+		meta: [{
+			charset: 'utf-8'
+		},
+		{
+			name: 'viewport',
+			content: 'width=device-width, initial-scale=1'
+		},
+		{
+			hid: 'description',
+			name: 'description',
+			content: ''
+		}
+		],
+		link: [{
+			rel: 'icon',
+			type: 'image/x-icon',
+			href: '/favicon.ico'
+		}]
+	},
 
-  telemetry: false
+	telemetry: false
 }
