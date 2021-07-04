@@ -1,7 +1,7 @@
 import { Signale } from 'signale'
 
 export default new Signale({
-	scope: 'qrgen',
+	scope: 'WebCrate',
 	logLevel: process.env.LOG_LEVEL || 'info',
 	types: {
 		success: {
