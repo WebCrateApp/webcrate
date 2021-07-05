@@ -26,6 +26,7 @@ export class Link {
 	constructor(data: Link) {
 		this.key = data.key
 		this.url = data.url
+		this.crate = data.crate
 		this.meta = data.meta
 		this.redirect = data.redirect
 		this.addedWith = data.addedWith

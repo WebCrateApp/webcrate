@@ -1,6 +1,7 @@
 import express from 'express'
 
 import { Crate } from '../../models/crate'
+import { Link } from '../../models/link'
 import log from '../../utils/log'
 
 export const router = express.Router()
@@ -50,6 +51,23 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
 
 	log.debug(crate)
 	res.ok(crate)
+})
+
+router.get('/:id/links', async (req: express.Request, res: express.Response) => {
+	const id = req.params.id as string
+	if (!id) {
+		return res.fail(400, 'no id provided')
+	}
+
+	const crate = await Crate.getById(id)
+	if (!crate) {
+		return res.fail(404, 'crate not found')
+	}
+
+	const links = await Link.getAllByCrate(crate.key)
+
+	log.debug(links)
+	res.ok(links)
 })
 
 router.get('/public', async (req: express.Request, res: express.Response) => {

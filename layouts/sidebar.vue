@@ -11,101 +11,13 @@
   </div>
 </template>
 
-<style lang="scss">
-  :root {
-		/* Colors */
-		--background: #fff;
-		--background-2nd: #F7F6F4;
-		--grey: #E8E8E8;
-        --grey-light: #EEEEEE;
-
-        --text: #474440;
-		--text-light: #7B7B7B;
-		--text-dark:#242221;
-
-		--accent: #89b3e2;
-		--red: rgb(187 61 61);
-
-		/* Values */
-		--border-radius: 8px;
-		--click-scale-factor: 0.98;
+<script>
+export default {
+	created() {
+		this.loadingCrates = true
+		this.$store.dispatch('GET_CRATES').then(() => {
+			this.loadingCrates = false
+		})
 	}
-
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		min-height: 100%;
-		font-family: Inter UI, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-		color: var(--text);
-		background: var(--background);
-	}
-
-	.no-button {
-		appearance: none;
-		background: none;
-		border: 0;
-		outline: 0;
-		padding: 0;
-		cursor: pointer;
-		color: var(--text);
-
-		&:active {
-			transform: scale(var(--click-scale-factor));
-		}
-	}
-
-	.button {
-		@extend .no-button;
-
-		background: var(--background);
-		padding: 0.8rem 1rem;
-		border-radius: var(--border-radius);
-	}
-
-	.primary-button {
-		@extend .button;
-
-		color: var(--background);
-		background: var(--accent);
-	}
-
-	.no-input {
-		appearance: none;
-		background: none;
-		border: 0;
-		outline: 0;
-		padding: 0;
-		color: var(--text);
-	}
-
-	.input {
-		@extend .no-input;
-
-		padding: 0.5rem;
-		background: var(--background-2nd);
-		border-radius: var(--border-radius);
-		border: 2px solid var(--grey);
-		width: 100%;
-		transition: all .2s ease;
-		box-sizing: border-box;
-		font-size: 0.9rem;
-
-		&:focus {
-			border: 2px solid var(--text-dark);
-			transition: none;
-		}
-	}
-
-	::placeholder {
-		color: var(--text-dark);
-	}
-
-	hr {
-		width: 100%;
-		border: 0;
-		background: var(--grey);
-		height: 2px;
-		margin: 0;
-	}
-</style>
+}
+</script>

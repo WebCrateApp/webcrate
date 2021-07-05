@@ -3,6 +3,7 @@ const isDev = process.env.NODE_ENV !== 'production'
 const defaultState = () => {
 	return {
 		username: 'Maxi',
+		loadingCrates: false,
 		currentCrate: {
 			key: 'home',
 			name: 'Home',
@@ -23,6 +24,9 @@ export default {
 		},
 		SET_CURRENT_CRATE(state, value) {
 			state.currentCrate = value
+		},
+		SET_LOADING_CRATES(state, value) {
+			state.loadingCrates = value
 		}
 	},
 	actions: {

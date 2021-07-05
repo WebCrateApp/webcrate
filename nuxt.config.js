@@ -46,6 +46,10 @@ export default {
 		browserBaseURL: '/'
 	},
 
+	css: [
+		'@/assets/main.scss'
+	],
+
 	build: {},
 
 	head: {

@@ -1,6 +1,6 @@
 <template>
   <transition name="fade" mode="in-out">
-    <div v-if="!loading" key="loaded" class="sidemenu">
+    <div v-if="!loadingCrates" key="loaded" class="sidemenu">
       <div class="headline">
         <h1>
           {{ username }}'s WebCrate
@@ -68,8 +68,7 @@ export default {
 					name: 'Today',
 					icon: 'calendar'
 				}
-			],
-			loading: true
+			]
 		}
 	},
 	computed: {
@@ -86,13 +85,20 @@ export default {
 			get() {
 				return this.$store.state.currentCrate
 			}
+		},
+		loadingCrates: {
+			set(value) {
+				this.$store.commit('SET_LOADING_CRATES', value)
+			},
+			get() {
+				return this.$store.state.loadingCrates
+			}
 		}
 	},
-	created() {
-		this.loading = true
-		this.$store.dispatch('GET_CRATES').then(() => {
-			this.loading = false
-		})
+	watch: {
+		loadingCrates(newVal) {
+			console.log(newVal)
+		}
 	},
 	methods: {
 		changeCrate(crate) {

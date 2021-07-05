@@ -1,6 +1,30 @@
 <template>
-  <div class="container">
-    <h1>{{ emojiIcon }} {{ crate.name }}</h1>
+  <div class="crate-wrapper">
+    <div class="top-section">
+      <div class="title">
+        <h2>{{ emojiIcon }} {{ crate.name }}</h2>
+        <p v-if="crate.description">
+          {{ crate.description }}
+        </p>
+        <p v-else>
+          Click to add a description for this Crate.
+        </p>
+      </div>
+      <div class="actions">
+        <button class="button add-btn">
+          <Icon name="add" />Add Link
+        </button>
+        <button class="button">
+          <Icon name="dotsV" />
+        </button>
+      </div>
+    </div>
+    <hr>
+    <div class="links">
+      <LinkGrid>
+        <LinkGridItem v-for="link in links" :key="link.key" :link="link" />
+      </LinkGrid>
+    </div>
   </div>
 </template>
 
@@ -12,16 +36,19 @@ export default {
 	async asyncData({ params, $axios, redirect, store }) {
 		const crateId = params.id
 
-		const { data: res } = await $axios.get(`/api/crate?id=${ crateId }`)
+		const { data: res } = await $axios.get(`/api/crate/${ crateId }`)
+		const { data: res2 } = await $axios.get(`/api/crate/${ crateId }/links`)
 
-		const data = res.data
-		if (!data) {
+		const crate = res.data
+		if (!crate) {
 			return redirect('/home')
 		}
 
-		store.commit('SET_CURRENT_CRATE', data)
+		store.commit('SET_CURRENT_CRATE', crate)
 
-		return { crate: data }
+		const links = res2.data
+
+		return { crate, links }
 	},
 	computed: {
 		emojiIcon() {
@@ -33,5 +60,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	.crate-wrapper {
+		padding: 2rem;
 
+		& hr {
+			margin-top: 0.5rem;
+		}
+	}
+
+	.top-section {
+		display: flex;
+		align-items: center;
+		width: 100%;
+	}
+
+	.title {
+		& p {
+			margin-top: 0.3rem;
+			color: var(--text-light);
+		}
+	}
+
+	.actions {
+		margin-left: auto;
+		display: flex;
+		align-items: center;
+
+		& button {
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	.add-btn {
+		margin-right: 1rem;
+
+		& div {
+			margin-right: 0.5rem;
+		}
+	}
+
+	.links {
+		margin-top: 1rem;
+	}
 </style>

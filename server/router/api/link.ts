@@ -6,14 +6,14 @@ import log from '../../utils/log'
 export const router = express.Router()
 
 router.post('/', async (req: express.Request, res: express.Response) => {
-	const url = req.body.url as string
+	const { url, crate } = req.body
 	if (!url) {
 		return res.fail(400, 'no url provided')
 	}
 
 	log.debug(url)
 
-	const link = await Link.create(url)
+	const link = await Link.create(url, crate)
 
 	log.debug(link)
 	log.info('Link added')
