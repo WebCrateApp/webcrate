@@ -7,13 +7,14 @@ export const router = express.Router()
 
 router.post('/', async (req: express.Request, res: express.Response) => {
 	const name = req.body.name as string
+	const icon = req.body.icon as string
 	if (!name) {
 		return res.fail(400, 'no name provided')
 	}
 
 	log.debug(name)
 
-	const crate = await Crate.create(name)
+	const crate = await Crate.create(name, icon)
 
 	log.debug(crate)
 	log.info('Crate added')
@@ -66,9 +67,10 @@ router.put('/', async (req: express.Request, res: express.Response) => {
 
 	log.debug(crate)
 
-	const { public: isPublic, name } = req.body
+	const { public: isPublic, name, icon } = req.body
 	await crate.update({
 		...(name && { name }),
+		...(icon && { icon }),
 		...(isPublic && { public: isPublic })
 	})
 

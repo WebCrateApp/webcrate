@@ -6,12 +6,14 @@ export class Crate {
 
 	key: string
 	name: string
+	icon: string
     public: boolean
 	addedAt: Date
 
 	constructor(data: Crate) {
 		this.key = data.key
 		this.name = data.name
+		this.icon = data.icon
 		this.public = data.public
 		this.addedAt = data.addedAt
 	}
@@ -24,9 +26,10 @@ export class Crate {
 		await Crates.delete(this.key)
 	}
 
-	static async create(name: string): Promise<Crate> {
+	static async create(name: string, icon?: string): Promise<Crate> {
 		const toBeCreated = {
 			name,
+			icon: icon || 'scroll',
 			public: false,
 			addedAt: new Date()
 		}
