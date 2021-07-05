@@ -2,6 +2,7 @@ const isDev = process.env.NODE_ENV !== 'production'
 
 const defaultState = () => {
 	return {
+		username: 'Maxi',
 		currentCrate: {
 			key: 'home',
 			name: 'Home',

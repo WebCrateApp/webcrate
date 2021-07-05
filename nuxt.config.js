@@ -15,15 +15,10 @@ export default {
 	],
 
 	router: {
-		extendRoutes(routes, resolve) {
+		extendRoutes(routes) {
 			routes.push({
 				path: '/',
 				redirect: '/home'
-			})
-			routes.push({
-				name: 'Today',
-				path: '/today',
-				component: resolve(__dirname, 'pages/home.vue')
 			})
 		}
 	},

@@ -1,7 +1,7 @@
 <template>
   <div class="sidemenu">
     <div class="headline">
-      <h1>Maxi's WebCrate</h1>
+      <h1>{{ username }}'s WebCrate</h1>
     </div>
     <hr>
     <div class="menus">
@@ -51,6 +51,9 @@ export default {
 	computed: {
 		crates() {
 			return this.$store.state.crates
+		},
+		username() {
+			return this.$store.state.username
 		},
 		currentCrate: {
 			set(value) {
