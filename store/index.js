@@ -25,7 +25,7 @@ export default {
 					}
 				})
 
-				const { data } = await raw.json()
+				const { data } = raw
 				if (!data) {
 					throw new Error('invalid server')
 				}
@@ -47,9 +47,13 @@ export default {
 		},
 		async GET_CRATES({ commit }) {
 			try {
-				const raw = await this.$axios.get(`/api/crate`)
+				const { data: res } = await this.$axios.get(`/api/crate`)
 
-				const { data } = await raw.json()
+				const data = res.data
+
+				console.log(data)
+
+				// const { data } = await raw.json()
 				if (!data) {
 					throw new Error('invalid response')
 				}
@@ -61,7 +65,7 @@ export default {
 				}
 
 				console.log(err)
-				throw new Error('invalid server')
+				throw new Error('invalid response')
 			}
 		}
 	},

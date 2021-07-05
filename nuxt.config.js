@@ -10,10 +10,9 @@ export default {
 		host: '0.0.0.0'
 	},
 
-	serverMiddleware: [{
-		path: '/',
-		handler: '~/server/server.ts'
-	}],
+	serverMiddleware: [
+		'~/server/server.ts'
+	],
 
 	buildModules: [
 		'@nuxt/typescript-build'
@@ -24,7 +23,9 @@ export default {
 		'@blokwise/dynamic'
 	],
 
-	axios: {},
+	axios: {
+		browserBaseURL: '/'
+	},
 
 	build: {},
 
