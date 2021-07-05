@@ -1,10 +1,10 @@
 <template>
   <div class="menu-item" :class="{ 'selected': selected }">
-    <div class="icon-wrapper">
+    <div class="item-icon-wrapper">
       <div v-if="emoji" class="emoji">
         {{ emojiIcon }}
       </div>
-      <Icon v-else-if="icon" :name="icon" class="icon" />
+      <Icon v-else-if="icon" :name="icon" class="icon" size="20px" />
     </div>
     <span>{{ name }}</span>
     <div v-if="count" class="count">
@@ -73,7 +73,7 @@ export default {
 		background: var(--grey);
 	}
 
-	.icon-wrapper {
+	.item-icon-wrapper {
 		margin-right: 0.3rem;
 		width: 25px;
 	}
