@@ -37,6 +37,21 @@ router.get('/', async (req: express.Request, res: express.Response) => {
 	res.ok(link)
 })
 
+router.get('/:id', async (req: express.Request, res: express.Response) => {
+	const id = req.params.id as string
+	if (!id) {
+		return res.fail(400, 'no id provided')
+	}
+
+	const link = await Link.getById(id)
+	if (!link) {
+		return res.fail(404, 'link not found')
+	}
+
+	log.debug(link)
+	res.ok(link)
+})
+
 router.put('/', async (req: express.Request, res: express.Response) => {
 	const id = req.query.id as string
 	if (!id) {

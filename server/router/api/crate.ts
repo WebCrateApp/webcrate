@@ -37,6 +37,21 @@ router.get('/', async (req: express.Request, res: express.Response) => {
 	res.ok(crate)
 })
 
+router.get('/:id', async (req: express.Request, res: express.Response) => {
+	const id = req.params.id as string
+	if (!id) {
+		return res.fail(400, 'no id provided')
+	}
+
+	const crate = await Crate.getById(id)
+	if (!crate) {
+		return res.fail(404, 'crate not found')
+	}
+
+	log.debug(crate)
+	res.ok(crate)
+})
+
 router.get('/public', async (req: express.Request, res: express.Response) => {
 	const id = req.query.id as string
 	if (!id) {
