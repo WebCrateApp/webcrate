@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev:server": "tsc-watch -p ./server/tsconfig.json --onSuccess \"node ./build/index.js\"",
+    "dev:server": "tsc-watch -p ./server/tsconfig.json --onSuccess \"node ./build/run.js\"",
     "build:nuxt": "nuxt generate",
     "build:server": "tsc -p ./server/tsconfig.json",
     "build:deploy": "npm run build && npm run deploy",
@@ -13,7 +13,7 @@
     "dev": "nuxt",
     "build": "npm run build:nuxt && npm run build:server",
     "lint": "npm run lint:js",
-    "start": "NODE_ENV=production server/index.js",
+    "start": "NODE_ENV=production build/run.js",
     "deploy": "deta deploy"
   },
   "repository": {

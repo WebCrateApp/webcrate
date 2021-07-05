@@ -11,7 +11,7 @@ export default {
 	},
 
 	serverMiddleware: [
-		'~/server/server.ts'
+		'~/server/index.ts'
 	],
 
 	router: {
@@ -49,7 +49,7 @@ export default {
 	build: {},
 
 	head: {
-		title: 'webcrate',
+		title: 'WebCrate',
 		htmlAttrs: {
 			lang: 'en'
 		},
