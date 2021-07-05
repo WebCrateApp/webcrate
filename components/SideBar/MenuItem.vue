@@ -57,8 +57,16 @@ export default {
 		padding: 0.5rem 0.8rem;
 		margin-top: 0.2rem;
 		background: var(--background-2nd);
+		border: 2px solid var(--background-2nd);
 		border-radius: var(--border-radius);
+		box-sizing: border-box;
+		transition: border .2s ease;
 		cursor: pointer;
+
+		&:hover {
+			border: 2px solid var(--grey);
+			transition: none;
+		}
 	}
 
 	.selected {
