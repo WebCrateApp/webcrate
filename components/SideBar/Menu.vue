@@ -5,8 +5,14 @@
     </div>
     <hr>
     <div class="menus">
-      <SideBarMenuItem name="Home" icon="home" :selected="currentCrate === 'home'" @click.native="currentCrate = 'home'" />
-      <SideBarMenuItem name="Today" :count="20" icon="calendar" :selected="currentCrate === 'today'" @click.native="currentCrate = 'today'" />
+      <SideBarMenuItem
+        v-for="crate in mainMenuItems"
+        :key="crate.key"
+        :name="crate.name"
+        :icon="crate.icon"
+        :selected="currentCrate.key === crate.key"
+        @click.native="changePage(crate)"
+      />
     </div>
     <div class="section-title">
       <h4>My Crates</h4>
@@ -17,8 +23,8 @@
         :key="crate.key"
         :name="crate.name"
         :emoji="crate.icon"
-        :selected="currentCrate === crate.key"
-        @click.native="currentCrate = crate.key"
+        :selected="currentCrate.key === crate.key"
+        @click.native="changeCrate(crate)"
       />
     </div>
   </div>
@@ -28,43 +34,45 @@
 export default {
 	data() {
 		return {
-			currentCrate: 'home'
-			/* crates: [
+			mainMenuItems: [
 				{
-					key: '1',
-					name: 'Read Later',
-					icon: 'closed_book'
+					key: 'home',
+					name: 'Home',
+					icon: 'home'
 				},
 				{
-					key: '2',
-					name: 'Design Resources',
-					icon: 'crystal_ball'
-				},
-				{
-					key: '3',
-					name: 'Web Dev',
-					icon: 'computer'
-				},
-				{
-					key: '4',
-					name: 'Road Trip',
-					icon: 'car'
-				},
-				{
-					key: '5',
-					name: 'Archive',
-					icon: 'file_folder'
+					key: 'today',
+					name: 'Today',
+					icon: 'calendar'
 				}
-			] */
+			]
 		}
 	},
 	computed: {
 		crates() {
 			return this.$store.state.crates
+		},
+		currentCrate: {
+			set(value) {
+				this.$store.commit('SET_CURRENT_CRATE', value)
+			},
+			get() {
+				return this.$store.state.currentCrate
+			}
 		}
 	},
 	created() {
 		this.$store.dispatch('GET_CRATES')
+	},
+	methods: {
+		changeCrate(crate) {
+			this.currentCrate = crate
+			this.$router.push(`/crate/${ crate.key }`)
+		},
+		changePage(crate) {
+			this.currentCrate = crate
+			this.$router.push(`/${ crate.key }`)
+		}
 	}
 }
 </script>

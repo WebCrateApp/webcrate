@@ -14,6 +14,20 @@ export default {
 		'~/server/server.ts'
 	],
 
+	router: {
+		extendRoutes(routes, resolve) {
+			routes.push({
+				path: '/',
+				redirect: '/home'
+			})
+			routes.push({
+				name: 'Today',
+				path: '/today',
+				component: resolve(__dirname, 'pages/home.vue')
+			})
+		}
+	},
+
 	buildModules: [
 		'@nuxt/typescript-build'
 	],

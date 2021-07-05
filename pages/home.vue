@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Test</h1>
+    <h1>Home Page</h1>
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 export default {
 	layout: 'sidebar'
 }
+
 </script>
 
 <style lang="scss" scoped>

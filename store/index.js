@@ -2,6 +2,11 @@ const isDev = process.env.NODE_ENV !== 'production'
 
 const defaultState = () => {
 	return {
+		currentCrate: {
+			key: 'home',
+			name: 'Home',
+			icon: 'home'
+		},
 		crates: []
 	}
 }
@@ -14,6 +19,9 @@ export default {
 		},
 		STORE_CRATES(state, data) {
 			state.crates = data
+		},
+		SET_CURRENT_CRATE(state, value) {
+			state.currentCrate = value
 		}
 	},
 	actions: {
@@ -50,8 +58,6 @@ export default {
 				const { data: res } = await this.$axios.get(`/api/crate`)
 
 				const data = res.data
-
-				console.log(data)
 
 				// const { data } = await raw.json()
 				if (!data) {
