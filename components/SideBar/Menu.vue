@@ -1,33 +1,56 @@
 <template>
-  <div class="sidemenu">
-    <div class="headline">
-      <h1>{{ username }}'s WebCrate</h1>
+  <transition name="fade" mode="in-out">
+    <div v-if="!loading" key="loaded" class="sidemenu">
+      <div class="headline">
+        <h1>
+          {{ username }}'s WebCrate
+        </h1>
+      </div>
+      <hr>
+      <div class="menus">
+        <SideBarMenuItem
+          v-for="crate in mainMenuItems"
+          :key="crate.key"
+          :name="crate.name"
+          :icon="crate.icon"
+          :selected="currentCrate.key === crate.key"
+          @click.native="changePage(crate)"
+        />
+      </div>
+      <div class="section-title">
+        <h4>
+          My Crates
+        </h4>
+      </div>
+      <div class="menus">
+        <SideBarMenuItem
+          v-for="crate in crates"
+          :key="crate.key"
+          :name="crate.name"
+          :emoji="crate.icon"
+          :selected="currentCrate.key === crate.key"
+          @click.native="changeCrate(crate)"
+        />
+      </div>
     </div>
-    <hr>
-    <div class="menus">
-      <SideBarMenuItem
-        v-for="crate in mainMenuItems"
-        :key="crate.key"
-        :name="crate.name"
-        :icon="crate.icon"
-        :selected="currentCrate.key === crate.key"
-        @click.native="changePage(crate)"
-      />
+
+    <!-- Loading state -->
+    <div v-else key="loading" class="sidemenu abs">
+      <div class="headline">
+        <SideBarLoadingItem height="25px" />
+      </div>
+      <hr>
+      <div class="menus">
+        <SideBarLoadingItem v-for="i in 2" :key="i" />
+      </div>
+      <div class="section-title">
+        <SideBarLoadingItem height="28px" style="margin-top: -2px; margin-bottom: -5px;" />
+      </div>
+      <div class="menus">
+        <SideBarLoadingItem v-for="i in 5" :key="i" />
+      </div>
     </div>
-    <div class="section-title">
-      <h4>My Crates</h4>
-    </div>
-    <div class="menus">
-      <SideBarMenuItem
-        v-for="crate in crates"
-        :key="crate.key"
-        :name="crate.name"
-        :emoji="crate.icon"
-        :selected="currentCrate.key === crate.key"
-        @click.native="changeCrate(crate)"
-      />
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -45,7 +68,8 @@ export default {
 					name: 'Today',
 					icon: 'calendar'
 				}
-			]
+			],
+			loading: true
 		}
 	},
 	computed: {
@@ -65,7 +89,10 @@ export default {
 		}
 	},
 	created() {
-		this.$store.dispatch('GET_CRATES')
+		this.loading = true
+		this.$store.dispatch('GET_CRATES').then(() => {
+			this.loading = false
+		})
 	},
 	methods: {
 		changeCrate(crate) {
@@ -86,10 +113,20 @@ export default {
 		flex-direction: column;
 		align-items: center;
 		padding: 1rem 1rem;
+
+		&.abs {
+			position: absolute;
+			z-index: 1;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
 	}
 
 	.headline {
 		text-align: center;
+		width: 100%;
+		height: 26px;
 
 		& h1 {
 			font-size: 1.2rem;
@@ -109,5 +146,12 @@ export default {
 		width: 100%;
 		margin-top: 1rem;
 		margin-bottom: 0.5rem;
+	}
+
+	.fade-enter-active, .fade-leave-active {
+		transition: opacity .1s;
+	}
+	.fade-enter, .fade-leave-to {
+		opacity: 0;
 	}
 </style>

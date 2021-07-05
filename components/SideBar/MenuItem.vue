@@ -50,10 +50,12 @@ export default {
 <style lang="scss" scoped>
 	.menu-item {
 		width: 100%;
+		height: 40px;
 		display: flex;
 		align-items: center;
 		justify-content: flex-start;
 		padding: 0.5rem 0.8rem;
+		margin-top: 0.2rem;
 		background: var(--background-2nd);
 		border-radius: var(--border-radius);
 		cursor: pointer;
