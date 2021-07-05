@@ -23,6 +23,16 @@ export default {
 		}
 	},
 
+	loading: {
+		color: 'var(--text)'
+	},
+
+	loadingIndicator: {
+		name: 'pulse',
+		color: 'var(--text)',
+		background: 'var(--background-2nd)'
+	},
+
 	buildModules: [
 		'@nuxt/typescript-build'
 	],
