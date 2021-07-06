@@ -37,6 +37,11 @@ export default {
 		'@nuxt/typescript-build'
 	],
 
+	plugins: [{
+		src: '~/plugins/confirm/index.js',
+		mode: 'client'
+	}],
+
 	modules: [
 		'@nuxtjs/axios',
 		'@blokwise/dynamic'
