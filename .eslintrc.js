@@ -9,6 +9,7 @@ module.exports = {
 		'plugin:nuxt/recommended'
 	],
 	rules: {
+		'curly': 0,
 		'no-cond-assign': [ 2, 'always' ],
 		'no-constant-condition': 2,
 		'no-dupe-args': 2,

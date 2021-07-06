@@ -30,32 +30,28 @@ export default {
 		}
 	},
 	actions: {
-		async ADD_SERVER({ commit }, server) {
+		async ADD_LINK(_context, { url, crate }) {
 			try {
-				const raw = await this.$http.get(`${ server.endpoint }/server`, {
-					headers: {
-						Authorization: `Bearer ${ server.accessKey }`
-					}
+				const { data: res } = await this.$axios.post(`/api/link`, {
+					url,
+					...(![ 'home', 'today' ].includes(crate) && { crate })
 				})
 
-				const { data } = raw
+				const data = res.data
+
+				// const { data } = await raw.json()
 				if (!data) {
-					throw new Error('invalid server')
+					throw new Error('invalid response')
 				}
 
-				const newServer = {
-					...data,
-					...server
-				}
-
-				commit('ADD_SERVER', newServer)
+				return data
 			} catch (err) {
 				if (err.name === 'HTTPERROR') {
 					throw new Error(err)
 				}
 
-				console.log(err)
-				throw new Error('invalid server')
+				const data = err.response.data
+				throw new Error(data.message || err.message)
 			}
 		},
 		async GET_CRATES({ commit }) {

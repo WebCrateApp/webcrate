@@ -1,5 +1,15 @@
 <template>
   <div class="crate-wrapper">
+    <Modal v-if="showAddModal" class="add-modal" @close="showAddModal = false">
+      <h1>Add a new Link</h1>
+      <input v-model="newLink" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
+      <button class="primary-button" @click="addLink">
+        <Icon name="add" />Add Link
+      </button>
+      <p v-if="invalidLinkErr" class="error">
+        Error: {{ invalidLinkErr }}
+      </p>
+    </Modal>
     <div class="top-section">
       <div class="title">
         <h2>{{ emojiIcon }} {{ crate.name }}</h2>
@@ -11,7 +21,7 @@
         </p>
       </div>
       <div class="actions">
-        <button class="button add-btn">
+        <button class="button add-btn" @click.stop="showAddModal = true">
           <Icon name="add" />Add Link
         </button>
         <button class="button">
@@ -50,9 +60,31 @@ export default {
 
 		return { crate, links }
 	},
+	data() {
+		return {
+			showAddModal: false,
+			newLink: undefined,
+			invalidLinkErr: undefined
+		}
+	},
 	computed: {
 		emojiIcon() {
 			return emojis[this.crate.icon]
+		}
+	},
+	methods: {
+		addLink() {
+			const value = this.newLink
+			if (!value) return
+
+			this.$store.dispatch('ADD_LINK', { url: value, crate: this.crate.key }).then((link) => {
+				this.links.push(link)
+				this.newLink = undefined
+				this.showAddModal = false
+			}).catch((err) => {
+				this.invalidLinkErr = err.message
+				console.log(err)
+			})
 		}
 	}
 }
@@ -102,5 +134,31 @@ export default {
 
 	.links {
 		margin-top: 1rem;
+	}
+
+	.add-modal {
+		& h1 {
+			font-size: 1.2rem;
+			margin-bottom: 1rem;
+		}
+
+		& input {
+			margin-bottom: 1rem;
+		}
+
+		& button {
+			display: flex;
+			align-items: center;
+
+			& div {
+				margin-right: 0.3rem;
+				margin-left: -3px;
+			}
+		}
+
+		& .error {
+			margin-top: 0.5rem;
+			color: var(--text-light);
+		}
 	}
 </style>

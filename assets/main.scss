@@ -10,7 +10,7 @@
     --text-dark:#242221;
 
     --accent: #89b3e2;
-    --red: rgb(187 61 61);
+    --red: rgb(197, 63, 63);
 
     /* Values */
     --border-radius: 8px;
@@ -44,7 +44,7 @@ body {
 .button {
     @extend .no-button;
 
-    background: var(--grey);
+    background: var(--background-2nd);
     padding: 0.5rem 0.8rem;
     border-radius: var(--border-radius);
 }
@@ -53,7 +53,7 @@ body {
     @extend .button;
 
     color: var(--background);
-    background: var(--grey);
+    background: var(--text);
 }
 
 .no-input {
@@ -71,16 +71,21 @@ body {
     padding: 0.5rem;
     background: var(--background-2nd);
     border-radius: var(--border-radius);
-    border: 2px solid var(--grey);
+    border: 2px solid var(--background-2nd);
     width: 100%;
     transition: all .2s ease;
     box-sizing: border-box;
     font-size: 0.9rem;
 
     &:focus {
-        border: 2px solid var(--text-dark);
+        border: 2px solid var(--grey);
         transition: none;
     }
+}
+
+.input-invalid {
+    border: 2px solid var(--red);
+    transition: none;
 }
 
 ::placeholder {
