@@ -42,17 +42,17 @@ app.use((err: any, _req: express.Request, res: express.Response, next: express.N
 	}
 
 	let returnStatus
+	let message = err.message || 'An unkown error ocurred, please try again.'
 	if (err.name === 'HTTPError') {
 		log.warn('Metdata parsing failed: ' + err.message)
-		returnStatus = err.response.statusCode
+		returnStatus = 500
+		message = 'Could not get metadata for url'
 	} else {
 		log.fatal(err)
 		returnStatus = typeof err === 'number' ? err : 400
 	}
 
-	const message = err.message || 'An unkown error ocurred, please try again.'
-
-	res.fail(returnStatus, message)
+	res.fail(returnStatus, err.message, message)
 })
 
 export default app
