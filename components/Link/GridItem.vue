@@ -1,5 +1,11 @@
 <template>
-  <a :href="link.url" target="_blank" rel="noopener">
+  <a
+    :href="link.url"
+    target="_blank"
+    rel="noopener"
+    draggable
+    @dragstart.stop="startDrag($event)"
+  >
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
       <h4>{{ link.meta && link.meta.title }}</h4>
       <p>{{ domain }}</p>
@@ -15,7 +21,8 @@ export default {
 	props: [ 'link' ],
 	data() {
 		return {
-			hover: false
+			hover: false,
+			drag: false
 		}
 	},
 	computed: {
@@ -31,8 +38,14 @@ export default {
 			})
 
 			if (confirm) {
-				this.$store.dispatch('DELETE_LINK', this.link)
+				this.$store.dispatch('DELETE_LINK', this.link.key)
 			}
+		},
+		startDrag(e) {
+			this.drag = true
+			e.dataTransfer.dropEffect = 'move'
+			e.dataTransfer.effectAllowed = 'move'
+			e.dataTransfer.setData('linkId', this.link.key)
 		}
 	}
 }

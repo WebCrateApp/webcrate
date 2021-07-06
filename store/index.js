@@ -48,7 +48,7 @@ export default {
 			state.loadingCrates = value
 		},
 		REMOVE_CURRENT_CRATE_LINK(state, value) {
-			state.currentCrateLinks = state.currentCrateLinks.filter((item) => item.key !== value.key)
+			state.currentCrateLinks = state.currentCrateLinks.filter((item) => item.key !== value)
 		}
 	},
 	actions: {
@@ -92,11 +92,34 @@ export default {
 				throw new Error(data.message || err.message)
 			}
 		},
-		async DELETE_LINK({ commit }, link) {
+		async DELETE_LINK({ commit }, linkId) {
 			try {
-				await this.$axios.delete(`/api/link?id=${ link.key }`)
+				await this.$axios.delete(`/api/link?id=${ linkId }`)
 
-				commit('REMOVE_CURRENT_CRATE_LINK', link)
+				commit('REMOVE_CURRENT_CRATE_LINK', linkId)
+			} catch (err) {
+				if (err.name === 'HTTPERROR') {
+					throw new Error(err)
+				}
+
+				const data = err.response.data
+				throw new Error(data.message || err.message)
+			}
+		},
+		async MOVE_LINK({ commit }, { linkId, crate }) {
+			try {
+				const { data: res } = await this.$axios.put(`/api/link?id=${ linkId }`, {
+					crate
+				})
+
+				const data = res.data
+
+				// const { data } = await raw.json()
+				if (!data) {
+					throw new Error('invalid response')
+				}
+
+				commit('REMOVE_CURRENT_CRATE_LINK', linkId)
 			} catch (err) {
 				if (err.name === 'HTTPERROR') {
 					throw new Error(err)

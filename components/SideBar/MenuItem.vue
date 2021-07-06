@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-item" :class="{ 'selected': selected }">
+  <div class="menu-item" :class="{ 'selected': selected }" @[dropEvent].prevent="onDrop($event)" @[dragoverEvent].prevent @[dragenterEvent].prevent>
     <div class="item-icon-wrapper">
       <div v-if="emoji" class="emoji">
         {{ emojiIcon }}
@@ -37,11 +37,31 @@ export default {
 		icon: {
 			type: String,
 			default: undefined
+		},
+		crateId: {
+			type: String,
+			default: undefined
 		}
 	},
 	computed: {
 		emojiIcon() {
 			return emojis[this.emoji]
+		},
+		dropEvent() {
+			return this.crateId ? 'drop' : null
+		},
+		dragoverEvent() {
+			return this.crateId ? 'dragover' : null
+		},
+		dragenterEvent() {
+			return this.crateId ? 'dragenter' : null
+		}
+	},
+	methods: {
+		onDrop(e) {
+			if (!this.crateId) return
+			const linkId = e.dataTransfer.getData('linkId')
+			this.$store.dispatch('MOVE_LINK', { linkId, crate: this.crateId })
 		}
 	}
 }

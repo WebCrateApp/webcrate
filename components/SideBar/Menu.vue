@@ -23,6 +23,7 @@
           :key="crate.key"
           :name="crate.name"
           :emoji="crate.icon"
+          :crate-id="crate.key"
           :selected="currentCrate && currentCrate.key === crate.key"
           @click.native="changeCrate(crate)"
         />

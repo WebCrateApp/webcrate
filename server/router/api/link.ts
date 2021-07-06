@@ -78,8 +78,9 @@ router.put('/', async (req: express.Request, res: express.Response, next: expres
 
 		log.debug(link)
 
-		const { redirect, meta } = req.body
+		const { redirect, meta, crate } = req.body
 		await link.update({
+			...(crate && { crate }),
 			...(redirect && {
 				...(redirect.enabled && { 'redirect.enabled': redirect.enabled }),
 				...(redirect.shortCode && { 'redirect.shortCode': redirect.shortCode })
