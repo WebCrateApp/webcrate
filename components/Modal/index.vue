@@ -30,7 +30,7 @@ export default {
         width: 100%;
         min-height: 100vh;
         background: rgba(0, 0, 0, 0.548);
-        z-index: 100;
+        z-index: 1000;
     }
 
     .modal-content {

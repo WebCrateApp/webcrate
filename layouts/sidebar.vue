@@ -1,5 +1,7 @@
 <template>
   <div>
+    <ModalSearch v-if="showSearchModal" />
+    <ModalAddLink v-if="showAddLinkModal" />
     <SideBar>
       <template #content>
         <Nuxt />
@@ -13,6 +15,14 @@
 
 <script>
 export default {
+	computed: {
+		showSearchModal() {
+			return this.$store.state.showSearchModal
+		},
+		showAddLinkModal() {
+			return this.$store.state.showAddLinkModal
+		}
+	},
 	created() {
 		this.loadingCrates = true
 		this.$store.dispatch('GET_CRATES').then(() => {

@@ -1,15 +1,5 @@
 <template>
   <div class="crate-wrapper">
-    <Modal v-if="showAddModal" class="add-modal" @close="showAddModal = false">
-      <h1>Add a new Link</h1>
-      <input v-model="newLink" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
-      <button class="primary-button" @click="addLink">
-        <Icon name="add" />Add Link
-      </button>
-      <p v-if="invalidLinkErr" class="error">
-        Error: {{ invalidLinkErr }}
-      </p>
-    </Modal>
     <div class="top-section">
       <div class="title">
         <h2>{{ emojiIcon }} {{ crate.name }}</h2>
@@ -21,7 +11,7 @@
         </p>
       </div>
       <div class="actions">
-        <button class="button add-btn" @click.stop="showAddModal = true">
+        <button class="button add-btn" @click.stop="showAddLinkModal">
           <Icon name="add" />Add Link
         </button>
         <button class="button">
@@ -54,18 +44,12 @@ export default {
 			return redirect('/home')
 		}
 
-		store.commit('SET_CURRENT_CRATE', crate)
-
 		const links = res2.data
 
+		store.commit('SET_CURRENT_CRATE', crate)
+		store.commit('SET_CURRENT_CRATE_LINKS', links)
+
 		return { crate, links }
-	},
-	data() {
-		return {
-			showAddModal: false,
-			newLink: undefined,
-			invalidLinkErr: undefined
-		}
 	},
 	computed: {
 		emojiIcon() {
@@ -73,18 +57,8 @@ export default {
 		}
 	},
 	methods: {
-		addLink() {
-			const value = this.newLink
-			if (!value) return
-
-			this.$store.dispatch('ADD_LINK', { url: value, crate: this.crate.key }).then((link) => {
-				this.links.push(link)
-				this.newLink = undefined
-				this.showAddModal = false
-			}).catch((err) => {
-				this.invalidLinkErr = err.message
-				console.log(err)
-			})
+		showAddLinkModal() {
+			this.$store.commit('SET_SHOW_ADD_LINK_MODAL', true)
 		}
 	}
 }

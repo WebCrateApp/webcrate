@@ -4,12 +4,11 @@ const defaultState = () => {
 	return {
 		username: 'Maxi',
 		loadingCrates: false,
-		currentCrate: {
-			key: 'home',
-			name: 'Home',
-			icon: 'home'
-		},
-		crates: []
+		currentCrate: undefined,
+		showSearchModal: false,
+		showAddLinkModal: false,
+		crates: [],
+		currentCrateLinks: []
 	}
 }
 
@@ -25,12 +24,24 @@ export default {
 		SET_CURRENT_CRATE(state, value) {
 			state.currentCrate = value
 		},
+		SET_CURRENT_CRATE_LINKS(state, value) {
+			state.currentCrateLinks = value
+		},
+		ADD_CURRENT_CRATE_LINK(state, value) {
+			state.currentCrateLinks.push(value)
+		},
+		SET_SHOW_SEARCH_MODAL(state, value) {
+			state.showSearchModal = value
+		},
+		SET_SHOW_ADD_LINK_MODAL(state, value) {
+			state.showAddLinkModal = value
+		},
 		SET_LOADING_CRATES(state, value) {
 			state.loadingCrates = value
 		}
 	},
 	actions: {
-		async ADD_LINK(_context, { url, crate }) {
+		async ADD_LINK({ commit }, { url, crate }) {
 			try {
 				const { data: res } = await this.$axios.post(`/api/link`, {
 					url,
@@ -43,6 +54,8 @@ export default {
 				if (!data) {
 					throw new Error('invalid response')
 				}
+
+				commit('ADD_CURRENT_CRATE_LINK', data)
 
 				return data
 			} catch (err) {
