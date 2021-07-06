@@ -47,13 +47,26 @@ body {
     background: var(--background-2nd);
     padding: 0.5rem 0.8rem;
     border-radius: var(--border-radius);
+    border: 2px solid var(--background-2nd);
+    box-sizing: border-box;
+    transition: border .2s ease;
+
+    &:hover {
+        border: 2px solid var(--grey);
+        transition: none;
+    }
 }
 
 .primary-button {
     @extend .button;
 
     color: var(--background);
+    border: 2px solid var(--text);
     background: var(--text);
+
+    &:hover {
+        border: 2px solid var(--text-light);
+    }
 }
 
 .no-input {

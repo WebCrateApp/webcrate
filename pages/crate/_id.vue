@@ -37,23 +37,24 @@ export default {
 		const crateId = params.id
 
 		const { data: res } = await $axios.get(`/api/crate/${ crateId }`)
-		const { data: res2 } = await $axios.get(`/api/crate/${ crateId }/links`)
 
 		const crate = res.data
 		if (!crate) {
 			return redirect('/home')
 		}
 
-		const links = res2.data
-
 		store.commit('SET_CURRENT_CRATE', crate)
-		store.commit('SET_CURRENT_CRATE_LINKS', links)
 
-		return { crate, links }
+		store.dispatch('GET_LINKS_FOR_CRATE', crate.key)
+
+		return { crate }
 	},
 	computed: {
 		emojiIcon() {
 			return emojis[this.crate.icon]
+		},
+		links() {
+			return this.$store.state.currentCrateLinks
 		}
 	},
 	methods: {

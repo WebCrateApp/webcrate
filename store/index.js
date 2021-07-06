@@ -7,6 +7,11 @@ const defaultState = () => {
 		currentCrate: undefined,
 		showSearchModal: false,
 		showAddLinkModal: false,
+		confirmActionModal: {
+			show: false,
+			actionText: undefined,
+			confirmText: undefined
+		},
 		crates: [],
 		currentCrateLinks: []
 	}
@@ -36,11 +41,31 @@ export default {
 		SET_SHOW_ADD_LINK_MODAL(state, value) {
 			state.showAddLinkModal = value
 		},
+		SET_SHOW_CONFIRM_ACTION_MODAL(state, value) {
+			state.confirmActionModal = value
+		},
 		SET_LOADING_CRATES(state, value) {
 			state.loadingCrates = value
+		},
+		REMOVE_CURRENT_CRATE_LINK(state, value) {
+			state.currentCrateLinks = state.currentCrateLinks.filter((item) => item.key !== value.key)
 		}
 	},
 	actions: {
+		SHOW_CONFIRM_ACTION({ commit }, { confirmText, actionText }) {
+			commit('SET_SHOW_CONFIRM_ACTION_MODAL', {
+				show: true,
+				confirmText,
+				actionText
+			})
+		},
+		HIDE_CONFIRM_ACTION({ commit }) {
+			commit('SET_SHOW_CONFIRM_ACTION_MODAL', {
+				show: false,
+				confirmText: undefined,
+				actionText: undefined
+			})
+		},
 		async ADD_LINK({ commit }, { url, crate }) {
 			try {
 				const { data: res } = await this.$axios.post(`/api/link`, {
@@ -65,6 +90,43 @@ export default {
 
 				const data = err.response.data
 				throw new Error(data.message || err.message)
+			}
+		},
+		async DELETE_LINK({ commit }, link) {
+			try {
+				await this.$axios.delete(`/api/link?id=${ link.key }`)
+
+				commit('REMOVE_CURRENT_CRATE_LINK', link)
+			} catch (err) {
+				if (err.name === 'HTTPERROR') {
+					throw new Error(err)
+				}
+
+				const data = err.response.data
+				throw new Error(data.message || err.message)
+			}
+		},
+		async GET_LINKS_FOR_CRATE({ commit }, crate) {
+			try {
+				const { data: res } = await this.$axios.get(`/api/crate/${ crate }/links`)
+
+				const links = res.data
+
+				// const { data } = await raw.json()
+				if (!links) {
+					throw new Error('invalid response')
+				}
+
+				commit('SET_CURRENT_CRATE_LINKS', links)
+
+				return links
+			} catch (err) {
+				if (err.name === 'HTTPERROR') {
+					throw new Error(err)
+				}
+
+				console.log(err)
+				throw new Error('invalid response')
 			}
 		},
 		async GET_CRATES({ commit }) {

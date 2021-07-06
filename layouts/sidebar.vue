@@ -2,6 +2,7 @@
   <div>
     <ModalSearch v-if="showSearchModal" />
     <ModalAddLink v-if="showAddLinkModal" />
+    <ConfirmModal />
     <SideBar>
       <template #content>
         <Nuxt />
