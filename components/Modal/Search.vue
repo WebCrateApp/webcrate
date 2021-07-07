@@ -1,5 +1,5 @@
 <template>
-  <Modal class="search-modal" @close="showSearchModal = false">
+  <Modal class="search-modal" @close="showModal = false">
     <h1>Quick Search</h1>
     <input v-model="searchValue" class="input" :placeholder="`Search ${ currentCrate ? currentCrate.name : 'everything' }`">
   </Modal>
@@ -13,12 +13,12 @@ export default {
 		}
 	},
 	computed: {
-		showSearchModal: {
+		showModal: {
 			set(value) {
-				this.$store.commit('SET_SHOW_SEARCH_MODAL', value)
+				this.$store.commit('SET_SHOW_MODAL', { modal: 'search', value })
 			},
 			get() {
-				return this.$store.state.showSearchModal
+				return this.$store.state.modals.search
 			}
 		},
 		currentCrate() {

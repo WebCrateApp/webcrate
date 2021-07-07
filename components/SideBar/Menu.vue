@@ -16,6 +16,7 @@
         <h4>
           My Crates
         </h4>
+        <Icon name="add" @click.native.stop="showAddNewCrateModal = true" />
       </div>
       <div class="menus">
         <SideBarMenuItem
@@ -76,10 +77,18 @@ export default {
 		},
 		showSearchModal: {
 			set(value) {
-				this.$store.commit('SET_SHOW_SEARCH_MODAL', value)
+				this.$store.commit('SET_SHOW_MODAL', { modal: 'search', value })
 			},
 			get() {
-				return this.$store.state.showSearchModal
+				return this.$store.state.modals.search
+			}
+		},
+		showAddNewCrateModal: {
+			set(value) {
+				this.$store.commit('SET_SHOW_MODAL', { modal: 'addCrate', value })
+			},
+			get() {
+				return this.$store.state.modals.addCrate
 			}
 		}
 	},
@@ -138,10 +147,25 @@ export default {
 	}
 
 	.section-title {
-		text-align: left;
 		width: 100%;
 		margin-top: 1rem;
 		margin-bottom: 0.5rem;
+		display: flex;
+		align-items: center;
+
+		& div {
+			color: var(--text-light);
+			margin-left: auto;
+			transition: border .2s ease;
+			border-radius: var(--border-radius);
+			border: 2px solid var(--background-2nd);
+			cursor: pointer;
+
+			&:hover {
+				border: 2px solid var(--grey);
+				transition: none;
+			}
+		}
 	}
 
 	.fade-enter-active, .fade-leave-active {

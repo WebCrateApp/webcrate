@@ -1,9 +1,9 @@
 <template>
   <Modal class="add-modal" @close="showModal = false">
-    <h1>Add a new Link</h1>
-    <input v-model="newLink" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
+    <h1>Add a new Crate</h1>
+    <input v-model="name" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="Name">
     <button class="primary-button" @click="add">
-      <Icon name="add" />Add Link
+      <Icon name="add" />Add Crate
     </button>
     <p v-if="invalidLinkErr" class="error">
       Error: {{ invalidLinkErr }}
@@ -15,17 +15,17 @@
 export default {
 	data() {
 		return {
-			newLink: undefined,
+			name: undefined,
 			invalidLinkErr: undefined
 		}
 	},
 	computed: {
 		showModal: {
 			set(value) {
-				this.$store.commit('SET_SHOW_MODAL', { modal: 'addLink', value })
+				this.$store.commit('SET_SHOW_MODAL', { modal: 'addCrate', value })
 			},
 			get() {
-				return this.$store.state.modals.addLink
+				return this.$store.state.modals.addCrate
 			}
 		},
 		currentCrate() {
@@ -34,11 +34,11 @@ export default {
 	},
 	methods: {
 		add() {
-			const value = this.newLink
+			const value = this.name
 			if (!value) return
 
-			this.$store.dispatch('ADD_LINK', { url: value, crate: this.currentCrate }).then(() => {
-				this.newLink = undefined
+			this.$store.dispatch('ADD_CRATE', { name: value }).then(() => {
+				this.name = undefined
 				this.invalidLinkErr = undefined
 				this.showModal = false
 			}).catch((err) => {

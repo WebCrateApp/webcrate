@@ -10,8 +10,11 @@ const defaultState = () => {
 		username: 'Maxi',
 		loadingCrates: false,
 		currentCrate: undefined,
-		showSearchModal: false,
-		showAddLinkModal: false,
+		modals: {
+			search: false,
+			addLink: false,
+			addCrate: false
+		},
 		confirmActionModal: {
 			show: false,
 			actionText: undefined,
@@ -40,17 +43,17 @@ export default {
 
 			Vue.set(state.crates, idx, crate)
 		},
+		ADD_CRATE(state, crate) {
+			state.crates.push(crate)
+		},
 		SET_CURRENT_CRATE_LINKS(state, value) {
 			state.currentCrateLinks = value
 		},
 		ADD_CURRENT_CRATE_LINK(state, value) {
 			state.currentCrateLinks.push(value)
 		},
-		SET_SHOW_SEARCH_MODAL(state, value) {
-			state.showSearchModal = value
-		},
-		SET_SHOW_ADD_LINK_MODAL(state, value) {
-			state.showAddLinkModal = value
+		SET_SHOW_MODAL(state, { modal, value }) {
+			state.modals[modal] = value
 		},
 		SET_SHOW_CONFIRM_ACTION_MODAL(state, value) {
 			state.confirmActionModal = value
@@ -100,6 +103,13 @@ export default {
 			commit('SET_CURRENT_CRATE_LINKS', links)
 
 			return links
+		},
+		async ADD_CRATE({ commit }, { name }) {
+			const crate = await this.$api.addCrate(name)
+
+			commit('ADD_CRATE', crate)
+
+			return crate
 		},
 		async GET_CRATES({ commit }) {
 			const crates = await this.$api.getCrates()

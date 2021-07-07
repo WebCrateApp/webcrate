@@ -37,6 +37,14 @@ class API {
 		return res.data
 	}
 
+	async addCrate(name) {
+		const { data: res } = await this.http.post(`/api/crate`, {
+			name
+		})
+
+		return res.data
+	}
+
 	async changeCrate(crate, data) {
 		const { data: res } = await this.http.put(`/api/crate?id=${ crate }`, {
 			...data

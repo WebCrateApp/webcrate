@@ -627,4 +627,4 @@ export default {
 	'large_blue_diamond': '🔷',
 	'small_orange_diamond': '🔸',
 	'small_blue_diamond': '🔹'
-}
+} as { [key: string]: string }

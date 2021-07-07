@@ -2,6 +2,7 @@
   <div>
     <ModalSearch v-if="showSearchModal" />
     <ModalAddLink v-if="showAddLinkModal" />
+    <ModalAddCrate v-if="showAddCrateModal" />
     <ConfirmModal />
     <SideBar>
       <template #content>
@@ -18,10 +19,13 @@
 export default {
 	computed: {
 		showSearchModal() {
-			return this.$store.state.showSearchModal
+			return this.$store.state.modals.search
 		},
 		showAddLinkModal() {
-			return this.$store.state.showAddLinkModal
+			return this.$store.state.modals.addLink
+		},
+		showAddCrateModal() {
+			return this.$store.state.modals.addCrate
 		}
 	},
 	created() {

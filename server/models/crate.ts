@@ -1,4 +1,5 @@
 import db from '../service/db'
+import emojis from '../utils/emojis'
 
 const Crates = db.Base('crates')
 
@@ -29,9 +30,10 @@ export class Crate {
 	}
 
 	static async create(name: string, description?: string, icon?: string, isPublic?: boolean): Promise<Crate> {
+		const randomEmoji = Object.keys(emojis)[Math.floor(Math.random() * Object.keys(emojis).length)]
 		const toBeCreated = {
 			name,
-			icon: icon || 'scroll',
+			icon: icon || randomEmoji,
 			description: description || undefined,
 			public: isPublic || false,
 			addedAt: new Date()
