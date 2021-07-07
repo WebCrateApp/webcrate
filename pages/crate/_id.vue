@@ -2,13 +2,8 @@
   <div class="crate-wrapper">
     <div class="top-section">
       <div class="title">
-        <h2>{{ emojiIcon }} {{ crate.name }}</h2>
-        <p v-if="crate.description">
-          {{ crate.description }}
-        </p>
-        <p v-else>
-          Click to add a description for this Crate.
-        </p>
+        <h1>{{ emojiIcon }} <input v-model="crateName" placeholder="Crate Title" class="no-input headline"></h1>
+        <input v-model="crateDescription" class="no-input subtext" placeholder="Click to add a description for this Crate" />
       </div>
       <div class="actions">
         <button class="button add-btn" @click.stop="showAddLinkModal">
@@ -43,7 +38,7 @@ export default {
 			return redirect('/home')
 		}
 
-		store.commit('SET_CURRENT_CRATE', crate)
+		store.commit('SET_CURRENT_CRATE', crate.key)
 
 		store.dispatch('GET_LINKS_FOR_CRATE', crate.key)
 
@@ -55,6 +50,22 @@ export default {
 		},
 		links() {
 			return this.$store.state.currentCrateLinks
+		},
+		crateDescription: {
+			set(value) {
+				this.$store.dispatch('CHANGE_CRATE_DESCRIPTION', { crateId: this.crate.key, description: value })
+			},
+			get() {
+				return this.crate.description
+			}
+		},
+		crateName: {
+			set(value) {
+				this.$store.dispatch('CHANGE_CRATE_NAME', { crateId: this.crate.key, name: value })
+			},
+			get() {
+				return this.crate.name
+			}
 		}
 	},
 	methods: {
@@ -82,9 +93,27 @@ export default {
 	}
 
 	.title {
-		& p {
+		flex-grow: 1;
+
+		& h1 {
+			display: flex;
+			align-items: center;
+			font-size: 1.3rem;
+		}
+
+		.headline {
+			font-size: 1.3rem;
+			font-weight: 600;
+			color: var(--text);
+			flex-grow: 1;
+			margin-left: 0.5rem;
+		}
+
+		.subtext {
+			font-size: 0.9rem;
 			margin-top: 0.3rem;
 			color: var(--text-light);
+			width: 100%;
 		}
 	}
 

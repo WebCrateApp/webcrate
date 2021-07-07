@@ -37,7 +37,7 @@ export default {
 			const value = this.newLink
 			if (!value) return
 
-			this.$store.dispatch('ADD_LINK', { url: value, crate: this.currentCrate.key }).then(() => {
+			this.$store.dispatch('ADD_LINK', { url: value, crate: this.currentCrate }).then(() => {
 				this.newLink = undefined
 				this.invalidLinkErr = undefined
 				this.showAddLinkModal = false

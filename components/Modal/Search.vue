@@ -22,7 +22,7 @@ export default {
 			}
 		},
 		currentCrate() {
-			return this.$store.state.currentCrate
+			return this.$store.getters.currentCrate
 		}
 	}
 }

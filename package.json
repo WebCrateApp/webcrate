@@ -39,7 +39,8 @@
     "metadata-scraper": "^0.1.1",
     "nuxt": "^2.15.3",
     "running-at": "^0.3.20",
-    "signale": "^1.4.0"
+    "signale": "^1.4.0",
+    "underscore": "^1.13.1"
   },
   "devDependencies": {
     "@betahuhn/config": "^1.1.0",
@@ -54,6 +55,7 @@
     "@types/node": "^15.12.5",
     "@types/signale": "^1.4.1",
     "babel-eslint": "^10.1.0",
+    "debounce": "^1.2.1",
     "eslint": "^7.22.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-vue": "^7.7.0",

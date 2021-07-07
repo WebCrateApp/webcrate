@@ -1,3 +1,8 @@
+import debounce from 'underscore/modules/debounce'
+import Vue from 'vue'
+
+const debounceThreshold = 500
+
 const isDev = process.env.NODE_ENV !== 'production'
 
 const defaultState = () => {
@@ -28,6 +33,12 @@ export default {
 		},
 		SET_CURRENT_CRATE(state, value) {
 			state.currentCrate = value
+		},
+		CHANGE_CRATE(state, crate) {
+			const idx = state.crates.findIndex((item) => item.key === crate.key)
+			if (idx === -1) return
+
+			Vue.set(state.crates, idx, crate)
 		},
 		SET_CURRENT_CRATE_LINKS(state, value) {
 			state.currentCrateLinks = value
@@ -67,111 +78,48 @@ export default {
 			})
 		},
 		async ADD_LINK({ commit }, { url, crate }) {
-			try {
-				const { data: res } = await this.$axios.post(`/api/link`, {
-					url,
-					...(![ 'home', 'today' ].includes(crate) && { crate })
-				})
+			const link = await this.$api.addLinkToCrate(url, crate)
 
-				const data = res.data
+			commit('ADD_CURRENT_CRATE_LINK', link)
 
-				// const { data } = await raw.json()
-				if (!data) {
-					throw new Error('invalid response')
-				}
-
-				commit('ADD_CURRENT_CRATE_LINK', data)
-
-				return data
-			} catch (err) {
-				if (err.name === 'HTTPERROR') {
-					throw new Error(err)
-				}
-
-				const data = err.response.data
-				throw new Error(data.message || err.message)
-			}
+			return link
 		},
 		async DELETE_LINK({ commit }, linkId) {
-			try {
-				await this.$axios.delete(`/api/link?id=${ linkId }`)
+			await this.$api.deleteLink(linkId)
 
-				commit('REMOVE_CURRENT_CRATE_LINK', linkId)
-			} catch (err) {
-				if (err.name === 'HTTPERROR') {
-					throw new Error(err)
-				}
-
-				const data = err.response.data
-				throw new Error(data.message || err.message)
-			}
+			commit('REMOVE_CURRENT_CRATE_LINK', linkId)
 		},
 		async MOVE_LINK({ commit }, { linkId, crate }) {
-			try {
-				const { data: res } = await this.$axios.put(`/api/link?id=${ linkId }`, {
-					crate
-				})
+			await this.$api.moveLinkToCrate(linkId, crate)
 
-				const data = res.data
-
-				// const { data } = await raw.json()
-				if (!data) {
-					throw new Error('invalid response')
-				}
-
-				commit('REMOVE_CURRENT_CRATE_LINK', linkId)
-			} catch (err) {
-				if (err.name === 'HTTPERROR') {
-					throw new Error(err)
-				}
-
-				const data = err.response.data
-				throw new Error(data.message || err.message)
-			}
+			commit('REMOVE_CURRENT_CRATE_LINK', linkId)
 		},
 		async GET_LINKS_FOR_CRATE({ commit }, crate) {
-			try {
-				const { data: res } = await this.$axios.get(`/api/crate/${ crate }/links`)
+			const links = await this.$api.getLinksOfCrate(crate)
 
-				const links = res.data
+			commit('SET_CURRENT_CRATE_LINKS', links)
 
-				// const { data } = await raw.json()
-				if (!links) {
-					throw new Error('invalid response')
-				}
-
-				commit('SET_CURRENT_CRATE_LINKS', links)
-
-				return links
-			} catch (err) {
-				if (err.name === 'HTTPERROR') {
-					throw new Error(err)
-				}
-
-				console.log(err)
-				throw new Error('invalid response')
-			}
+			return links
 		},
 		async GET_CRATES({ commit }) {
-			try {
-				const { data: res } = await this.$axios.get(`/api/crate`)
+			const crates = await this.$api.getCrates()
 
-				const data = res.data
+			commit('STORE_CRATES', crates)
+		},
+		CHANGE_CRATE_DESCRIPTION: debounce(async function(context, { crateId, description }) {
+			const crate = await this.$api.changeCrate(crateId, { description })
 
-				// const { data } = await raw.json()
-				if (!data) {
-					throw new Error('invalid response')
-				}
+			context.commit('CHANGE_CRATE', crate)
+		}, debounceThreshold),
+		CHANGE_CRATE_NAME: debounce(async function(context, { crateId, name }) {
+			const crate = await this.$api.changeCrate(crateId, { name })
 
-				commit('STORE_CRATES', data)
-			} catch (err) {
-				if (err.name === 'HTTPERROR') {
-					throw new Error(err)
-				}
-
-				console.log(err)
-				throw new Error('invalid response')
-			}
+			context.commit('CHANGE_CRATE', crate)
+		}, debounceThreshold)
+	},
+	getters: {
+		currentCrate: (state) => {
+			return state.crates.find((item) => item.key === state.currentCrate)
 		}
 	},
 	strict: isDev

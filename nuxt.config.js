@@ -37,10 +37,13 @@ export default {
 		'@nuxt/typescript-build'
 	],
 
-	plugins: [{
-		src: '~/plugins/confirm/index.js',
-		mode: 'client'
-	}],
+	plugins: [
+		{
+			src: '~/plugins/confirm/index.js',
+			mode: 'client'
+		},
+		'~/plugins/api.js'
+	],
 
 	modules: [
 		'@nuxtjs/axios',

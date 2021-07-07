@@ -24,7 +24,7 @@
           :name="crate.name"
           :emoji="crate.icon"
           :crate-id="crate.key"
-          :selected="currentCrate && currentCrate.key === crate.key"
+          :selected="currentCrate === crate.key"
           @click.native="changeCrate(crate)"
         />
       </div>
@@ -63,13 +63,8 @@ export default {
 		username() {
 			return this.$store.state.username
 		},
-		currentCrate: {
-			set(value) {
-				this.$store.commit('SET_CURRENT_CRATE', value)
-			},
-			get() {
-				return this.$store.state.currentCrate
-			}
+		currentCrate() {
+			return this.$store.state.currentCrate
 		},
 		loadingCrates: {
 			set(value) {
@@ -95,12 +90,12 @@ export default {
 	},
 	methods: {
 		changeCrate(crate) {
-			this.currentCrate = crate
+			this.$store.commit('SET_CURRENT_CRATE', crate.key)
 			this.currentPage = undefined
 			this.$router.push(`/crate/${ crate.key }`)
 		},
 		changePage(page) {
-			this.currentCrate = undefined
+			this.$store.commit('SET_CURRENT_CRATE', undefined)
 			this.currentPage = page
 			this.$router.push(`/${ page }`)
 		}
