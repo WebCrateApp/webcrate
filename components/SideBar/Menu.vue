@@ -106,6 +106,12 @@ export default {
 		changePage(page) {
 			this.$store.commit('SET_CURRENT_CRATE', undefined)
 			this.currentPage = page
+
+			if (page === 'home') {
+				this.$router.push(`/`)
+				return
+			}
+
 			this.$router.push(`/${ page }`)
 		}
 	}

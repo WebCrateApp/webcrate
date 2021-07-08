@@ -17,8 +17,8 @@ export default {
 	router: {
 		extendRoutes(routes) {
 			routes.push({
-				path: '/',
-				redirect: '/home'
+				path: '/home',
+				redirect: '/'
 			})
 		}
 	},
