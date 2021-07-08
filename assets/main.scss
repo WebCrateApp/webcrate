@@ -101,6 +101,9 @@ body {
     transition: none;
 }
 
+::-webkit-input-placeholder,
+::-moz-placeholder,
+::-ms-placeholder,
 ::placeholder {
     color: var(--text-dark);
 }
