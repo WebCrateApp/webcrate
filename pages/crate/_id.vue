@@ -16,9 +16,9 @@
     </div>
     <hr>
     <div class="links">
-      <LinkGrid>
-        <LinkGridItem v-for="link in links" :key="link.key" :link="link" />
-      </LinkGrid>
+      <Grid>
+        <LinkItem v-for="link in links" :key="link.key" :link="link" />
+      </Grid>
     </div>
   </div>
 </template>
@@ -28,12 +28,11 @@ import emojis from '../../server/utils/emojis'
 
 export default {
 	layout: 'sidebar',
-	async asyncData({ params, $axios, redirect, store }) {
+	async asyncData({ params, redirect, store, app: { $api } }) {
 		const crateId = params.id
 
-		const { data: res } = await $axios.get(`/api/crate/${ crateId }`)
+		const crate = await $api.getCrate(crateId)
 
-		const crate = res.data
 		if (!crate) {
 			return redirect('/home')
 		}

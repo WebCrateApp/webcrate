@@ -39,8 +39,31 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 			return res.fail(404, 'crate not found')
 		}
 
+		const links = await Link.getAllByCrate(crate.key)
+		crate.numLinks = links.length
+
 		log.debug(crate)
 		res.ok(crate)
+	} catch (err) {
+		return next(err)
+	}
+})
+
+router.get('/recent', async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+	try {
+		const crates = await Crate.getRecentlyUsed()
+
+		const newCrates = await Promise.all(crates.map(async (crate) => {
+			const links = await Link.getAllByCrate(crate.key)
+
+			return {
+				...crate,
+				numLinks: links.length
+			}
+		}))
+
+		log.debug(newCrates)
+		res.ok(newCrates)
 	} catch (err) {
 		return next(err)
 	}
@@ -57,6 +80,9 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 		if (!crate) {
 			return res.fail(404, 'crate not found')
 		}
+
+		const links = await Link.getAllByCrate(crate.key)
+		crate.numLinks = links.length
 
 		log.debug(crate)
 		res.ok(crate)

@@ -10,8 +10,20 @@ class API {
 		return res.data
 	}
 
+	async getRecentCrates() {
+		const { data: res } = await this.http.get(`/api/crate/recent`)
+
+		return res.data
+	}
+
 	async getLinksOfCrate(crate) {
 		const { data: res } = await this.http.get(`/api/crate/${ crate }/links`)
+
+		return res.data
+	}
+
+	async getRecentLinks() {
+		const { data: res } = await this.http.get(`/api/link/recent`)
 
 		return res.data
 	}
@@ -41,6 +53,12 @@ class API {
 		const { data: res } = await this.http.post(`/api/crate`, {
 			name
 		})
+
+		return res.data
+	}
+
+	async getCrate(id) {
+		const { data: res } = await this.http.get(`/api/crate/${ id }`)
 
 		return res.data
 	}

@@ -45,6 +45,17 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 	}
 })
 
+router.get('/recent', async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+	try {
+		const links = await Link.getRecent()
+
+		log.debug(links)
+		res.ok(links)
+	} catch (err) {
+		return next(err)
+	}
+})
+
 router.get('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
 		const id = req.params.id as string

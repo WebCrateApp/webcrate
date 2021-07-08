@@ -10,6 +10,7 @@ export class Crate {
 	description: string
 	icon: string
     public: boolean
+	numLinks?: number
 	addedAt: Date
 
 	constructor(data: Crate) {
@@ -48,6 +49,15 @@ export class Crate {
 
 	static async getAll(): Promise<Array<Crate>> {
 		const { value: crates } = await Crates.fetch().next()
+
+		if (!crates) return []
+
+		return crates.map((crate: Crate) => new Crate(crate))
+	}
+
+	// TODO: Track when a crate was last viewed and sort after that
+	static async getRecentlyUsed(): Promise<Array<Crate>> {
+		const { value: crates } = await Crates.fetch({}, 1, 5).next()
 
 		if (!crates) return []
 

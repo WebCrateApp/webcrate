@@ -72,6 +72,15 @@ export class Link {
 		return links.map((link: Link) => new Link(link))
 	}
 
+	// TODO: Actually get most recent
+	static async getRecent(): Promise<Array<Link>> {
+		const { value: links } = await Links.fetch({}, 1, 5).next()
+
+		if (!links) return []
+
+		return links.map((link: Link) => new Link(link))
+	}
+
 	static async getAllByCrate(crate: string): Promise<Array<Link>> {
 		const { value: links } = await Links.fetch({ crate }).next()
 
