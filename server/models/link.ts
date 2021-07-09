@@ -1,12 +1,12 @@
 import getMetaData from 'metadata-scraper'
 
-import db from '../service/db'
+import Base from '../service/base'
 
-const Links = db.Base('links')
+const Links = Base.use('links')
 
 export class Link {
 
-	key: string
+	id: string
 	url: string
 	crate?: string
 	meta?: {
@@ -24,7 +24,7 @@ export class Link {
 	addedAt: Date
 
 	constructor(data: Link) {
-		this.key = data.key
+		this.id = data.id
 		this.url = data.url
 		this.crate = data.crate
 		this.meta = data.meta
@@ -34,19 +34,19 @@ export class Link {
 	}
 
 	async update(changes: any) {
-		await Links.update(changes, this.key)
+		await Links.findByIdAndUpdate(this.id, changes)
 	}
 
 	async delete() {
-		await Links.delete(this.key)
+		await Links.findByIdAndDelete(this.id)
 	}
 
 	static async create(url: string, crate?: string): Promise<Link> {
 		const meta = await getMetaData(url)
 
 		const toBeCreated = {
-			url,
-			crate,
+			url: url,
+			crate: crate,
 			meta: {
 				title: meta.title,
 				description: meta.description,
@@ -55,53 +55,59 @@ export class Link {
 			redirect: {
 				enabled: false
 			},
-			addedWith: 'web',
-			addedAt: new Date()
+			addedWith: 'web'
 		}
 
-		const newLink = await Links.insert(toBeCreated)
-
+		const newLink = await Links.create(toBeCreated)
 		return new Link(newLink)
-	}
-
-	static async getAll(): Promise<Array<Link>> {
-		const { value: links } = await Links.fetch().next()
-
-		if (!links) return []
-
-		return links.map((link: Link) => new Link(link))
 	}
 
 	// TODO: Actually get most recent
 	static async getRecent(): Promise<Array<Link>> {
-		const { value: links } = await Links.fetch({}, 1, 5).next()
+		const links = await Links.find({}, 5)
 
 		if (!links) return []
 
 		return links.map((link: Link) => new Link(link))
 	}
 
-	static async getAllByCrate(crate: string): Promise<Array<Link>> {
-		const { value: links } = await Links.fetch({ crate }).next()
+	static async find(query: any = {}, limit?: number, last?: string): Promise<Array<Link>> {
+		const links = await Links.find(query, limit, last)
 
 		if (!links) return []
 
 		return links.map((link: Link) => new Link(link))
 	}
 
-	static async getById(id: string): Promise<Link | null> {
-		const data: Link = await Links.get(id)
+	static async findOne(query: any) {
+		const link = await Links.findOne(query)
 
-		if (!data) return null
+		if (!link) return null
 
-		return new Link(data)
+		return new Link(link)
 	}
 
-	static async getByShortCode(code: string): Promise<Link | null> {
-		const { value } = await Links.fetch({ 'redirect.shortCode': code }).next()
+	static async findById(id: string) {
+		const link = await Links.findById(id)
 
-		if (!value) return null
+		if (!link) return null
 
-		return new Link(value[0])
+		return new Link(link)
+	}
+
+	static async findByCrate(crate: string): Promise<Array<Link>> {
+		const links = await Links.find({ crate })
+
+		if (!links) return []
+
+		return links.map((link: Link) => new Link(link))
+	}
+
+	static async findByShortCode(code: string): Promise<Link | null> {
+		const link = await Links.findOne({ 'redirect.shortCode': code })
+
+		if (!link) return null
+
+		return new Link(link)
 	}
 }

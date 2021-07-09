@@ -10,13 +10,13 @@
     <div class="section">
       <h2>Recently used Crates</h2>
       <Grid max-width="300px">
-        <CrateItem v-for="crate in crates" :key="crate.key" :crate="crate" />
+        <CrateItem v-for="crate in crates" :key="crate.id" :crate="crate" />
       </Grid>
     </div>
     <div class="section">
       <h2>Recently added links</h2>
       <Grid>
-        <LinkItem v-for="link in links" :key="link.key" :link="link" />
+        <LinkItem v-for="link in links" :key="link.id" :link="link" />
       </Grid>
     </div>
   </div>

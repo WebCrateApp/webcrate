@@ -17,7 +17,7 @@
     <hr>
     <div class="links">
       <Grid>
-        <LinkItem v-for="link in links" :key="link.key" :link="link" />
+        <LinkItem v-for="link in links" :key="link.id" :link="link" />
       </Grid>
     </div>
   </div>
@@ -37,9 +37,9 @@ export default {
 			return redirect('/home')
 		}
 
-		store.commit('SET_CURRENT_CRATE', crate.key)
+		store.commit('SET_CURRENT_CRATE', crate.id)
 
-		store.dispatch('GET_LINKS_FOR_CRATE', crate.key)
+		store.dispatch('GET_LINKS_FOR_CRATE', crate.id)
 
 		return { crate }
 	},
@@ -52,7 +52,7 @@ export default {
 		},
 		crateDescription: {
 			set(value) {
-				this.$store.dispatch('CHANGE_CRATE_DESCRIPTION', { crateId: this.crate.key, description: value })
+				this.$store.dispatch('CHANGE_CRATE_DESCRIPTION', { crateId: this.crate.id, description: value })
 			},
 			get() {
 				return this.crate.description
@@ -60,7 +60,7 @@ export default {
 		},
 		crateName: {
 			set(value) {
-				this.$store.dispatch('CHANGE_CRATE_NAME', { crateId: this.crate.key, name: value })
+				this.$store.dispatch('CHANGE_CRATE_NAME', { crateId: this.crate.id, name: value })
 			},
 			get() {
 				return this.crate.name

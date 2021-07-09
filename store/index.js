@@ -38,7 +38,7 @@ export default {
 			state.currentCrate = value
 		},
 		CHANGE_CRATE(state, crate) {
-			const idx = state.crates.findIndex((item) => item.key === crate.key)
+			const idx = state.crates.findIndex((item) => item.id === crate.id)
 			if (idx === -1) return
 
 			Vue.set(state.crates, idx, crate)
@@ -62,7 +62,7 @@ export default {
 			state.loadingCrates = value
 		},
 		REMOVE_CURRENT_CRATE_LINK(state, value) {
-			state.currentCrateLinks = state.currentCrateLinks.filter((item) => item.key !== value)
+			state.currentCrateLinks = state.currentCrateLinks.filter((item) => item.id !== value)
 		}
 	},
 	actions: {
@@ -129,7 +129,7 @@ export default {
 	},
 	getters: {
 		currentCrate: (state) => {
-			return state.crates.find((item) => item.key === state.currentCrate)
+			return state.crates.find((item) => item.id === state.currentCrate)
 		}
 	},
 	strict: isDev

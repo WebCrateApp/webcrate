@@ -38,14 +38,14 @@ export default {
 			})
 
 			if (confirm) {
-				this.$store.dispatch('DELETE_LINK', this.link.key)
+				this.$store.dispatch('DELETE_LINK', this.link.id)
 			}
 		},
 		startDrag(e) {
 			this.drag = true
 			e.dataTransfer.dropEffect = 'move'
 			e.dataTransfer.effectAllowed = 'move'
-			e.dataTransfer.setData('linkId', this.link.key)
+			e.dataTransfer.setData('linkId', this.link.id)
 		}
 	}
 }

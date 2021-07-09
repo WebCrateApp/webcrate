@@ -29,17 +29,17 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 	try {
 		const id = req.query.id as string
 		if (!id) {
-			const crates = await Crate.getAll()
+			const crates = await Crate.find({})
 
 			return res.ok(crates)
 		}
 
-		const crate = await Crate.getById(id)
+		const crate = await Crate.findById(id)
 		if (!crate) {
 			return res.fail(404, 'crate not found')
 		}
 
-		const links = await Link.getAllByCrate(crate.key)
+		const links = await Link.findByCrate(crate.id)
 		crate.numLinks = links.length
 
 		log.debug(crate)
@@ -54,7 +54,7 @@ router.get('/recent', async (_req: express.Request, res: express.Response, next:
 		const crates = await Crate.getRecentlyUsed()
 
 		const newCrates = await Promise.all(crates.map(async (crate) => {
-			const links = await Link.getAllByCrate(crate.key)
+			const links = await Link.findByCrate(crate.id)
 
 			return {
 				...crate,
@@ -76,12 +76,12 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			return res.fail(400, 'no id provided')
 		}
 
-		const crate = await Crate.getById(id)
+		const crate = await Crate.findById(id)
 		if (!crate) {
 			return res.fail(404, 'crate not found')
 		}
 
-		const links = await Link.getAllByCrate(crate.key)
+		const links = await Link.findByCrate(crate.id)
 		crate.numLinks = links.length
 
 		log.debug(crate)
@@ -98,12 +98,12 @@ router.get('/:id/links', async (req: express.Request, res: express.Response, nex
 			return res.fail(400, 'no id provided')
 		}
 
-		const crate = await Crate.getById(id)
+		const crate = await Crate.findById(id)
 		if (!crate) {
 			return res.fail(404, 'crate not found')
 		}
 
-		const links = await Link.getAllByCrate(crate.key)
+		const links = await Link.findByCrate(crate.id)
 
 		log.debug(links)
 		res.ok(links)
@@ -120,7 +120,7 @@ router.get('/public', async (req: express.Request, res: express.Response, next: 
 			return res.fail(400, 'no id provided')
 		}
 
-		const crate = await Crate.getById(id)
+		const crate = await Crate.findById(id)
 		if (!crate || !crate.public) {
 			return res.fail(404, 'crate not found')
 		}
@@ -139,7 +139,7 @@ router.put('/', async (req: express.Request, res: express.Response, next: expres
 			return res.fail(400, 'no id provided')
 		}
 
-		const crate = await Crate.getById(id)
+		const crate = await Crate.findById(id)
 		if (!crate) {
 			return res.fail(404, 'crate not found')
 		}
@@ -154,7 +154,7 @@ router.put('/', async (req: express.Request, res: express.Response, next: expres
 			...(isPublic && { public: isPublic })
 		})
 
-		const updated = await Crate.getById(id)
+		const updated = await Crate.findById(id)
 
 		log.info('Crate updated')
 		res.ok(updated)
@@ -170,7 +170,7 @@ router.delete('/', async (req: express.Request, res: express.Response, next: exp
 			return res.fail(400, 'no id provided')
 		}
 
-		const crate = await Crate.getById(id)
+		const crate = await Crate.findById(id)
 		if (!crate) {
 			return res.fail(404, 'crate not found')
 		}

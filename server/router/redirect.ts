@@ -12,9 +12,9 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			return res.redirect('/')
 		}
 
-		let link = await Link.getById(id)
+		let link = await Link.findById(id)
 		if (!link) {
-			link = await Link.getByShortCode(id)
+			link = await Link.findByShortCode(id)
 			if (!link) {
 				return res.fail(404, 'link not found')
 			}
@@ -24,7 +24,7 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			return res.fail(404, 'link not found')
 		}
 
-		log.info(`Redirecting ${ link.key } to ${ link.url }`)
+		log.info(`Redirecting ${ link.id } to ${ link.url }`)
 
 		res.redirect(link.url)
 	} catch (err) {

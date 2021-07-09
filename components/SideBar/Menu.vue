@@ -21,11 +21,11 @@
       <div class="menus">
         <SideBarMenuItem
           v-for="crate in crates"
-          :key="crate.key"
+          :key="crate.id"
           :name="crate.name"
           :emoji="crate.icon"
-          :crate-id="crate.key"
-          :selected="currentCrate === crate.key"
+          :crate-id="crate.id"
+          :selected="currentCrate === crate.id"
           @click.native="changeCrate(crate)"
         />
       </div>
@@ -99,9 +99,9 @@ export default {
 	},
 	methods: {
 		changeCrate(crate) {
-			this.$store.commit('SET_CURRENT_CRATE', crate.key)
+			this.$store.commit('SET_CURRENT_CRATE', crate.id)
 			this.currentPage = undefined
-			this.$router.push(`/crate/${ crate.key }`)
+			this.$router.push(`/crate/${ crate.id }`)
 		},
 		changePage(page) {
 			this.$store.commit('SET_CURRENT_CRATE', undefined)

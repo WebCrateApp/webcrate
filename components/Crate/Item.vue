@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/crate/${ crate.key }`">
+  <nuxt-link :to="`/crate/${ crate.id }`">
     <div class="crate-item">
       <h4>{{ emojiIcon }} {{ crate.name }}</h4>
       <span>{{ crate.numLinks }} Links</span>

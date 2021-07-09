@@ -28,12 +28,12 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 	try {
 		const id = req.query.id as string
 		if (!id) {
-			const links = await Link.getAll()
+			const links = await Link.find({})
 
 			return res.ok(links)
 		}
 
-		const link = await Link.getById(id)
+		const link = await Link.findById(id)
 		if (!link) {
 			return res.fail(404, 'link not found')
 		}
@@ -63,7 +63,7 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			return res.fail(400, 'no id provided')
 		}
 
-		const link = await Link.getById(id)
+		const link = await Link.findById(id)
 		if (!link) {
 			return res.fail(404, 'link not found')
 		}
@@ -82,7 +82,7 @@ router.put('/', async (req: express.Request, res: express.Response, next: expres
 			return res.fail(400, 'no id provided')
 		}
 
-		const link = await Link.getById(id)
+		const link = await Link.findById(id)
 		if (!link) {
 			return res.fail(404, 'link not found')
 		}
@@ -103,7 +103,7 @@ router.put('/', async (req: express.Request, res: express.Response, next: expres
 			})
 		})
 
-		const updated = await Link.getById(id)
+		const updated = await Link.findById(id)
 
 		log.info('Link updated')
 		res.ok(updated)
@@ -119,7 +119,7 @@ router.delete('/', async (req: express.Request, res: express.Response, next: exp
 			return res.fail(400, 'no id provided')
 		}
 
-		const link = await Link.getById(id)
+		const link = await Link.findById(id)
 		if (!link) {
 			return res.fail(404, 'link not found')
 		}

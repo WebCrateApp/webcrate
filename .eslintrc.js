@@ -10,6 +10,7 @@ module.exports = {
 	],
 	rules: {
 		'curly': 0,
+		'object-shorthand': 0,
 		'no-cond-assign': [ 2, 'always' ],
 		'no-constant-condition': 2,
 		'no-dupe-args': 2,
