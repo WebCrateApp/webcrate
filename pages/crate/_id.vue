@@ -15,10 +15,24 @@
       </div>
     </div>
     <hr>
-    <div class="links">
+    <div v-if="links.length > 0" class="links">
       <Grid>
         <LinkItem v-for="link in links" :key="link.id" :link="link" />
       </Grid>
+    </div>
+    <div v-else class="empty-state">
+      <!-- <Icon name="link" class="link-icon" size="40px" /> -->
+      <div class="list">
+        <div v-for="i in 3" :key="i" class="empty-link">
+          <div class="icon-div"></div>
+          <div class="text-div"></div>
+        </div>
+      </div>
+      <h2>{{ emptyMessage }}</h2>
+      <p>Drag a link into this Crate or add a new one</p>
+      <button class="button" @click.stop="showAddLinkModal">
+        <Icon name="add" />Add Link
+      </button>
     </div>
   </div>
 </template>
@@ -43,12 +57,27 @@ export default {
 
 		return { crate }
 	},
+	data() {
+		return {
+			emptyMessages: [
+				'Nothing Here',
+				'Looks pretty Empty',
+				'No Links',
+				'*crickets chirping*',
+				'Nothing In Here',
+				'Add a Link'
+			]
+		}
+	},
 	computed: {
 		emojiIcon() {
 			return emojis[this.crate.icon]
 		},
 		links() {
 			return this.$store.state.currentCrateLinks
+		},
+		emptyMessage() {
+			return this.emptyMessages[Math.floor(Math.random() * this.emptyMessages.length)]
 		},
 		crateDescription: {
 			set(value) {
@@ -79,6 +108,7 @@ export default {
 <style lang="scss" scoped>
 	.crate-wrapper {
 		padding: 2rem;
+		min-height: 100vh;
 
 		& hr {
 			margin-top: 0.5rem;
@@ -139,29 +169,65 @@ export default {
 		margin-top: 1rem;
 	}
 
-	.add-modal {
-		& h1 {
-			font-size: 1.2rem;
-			margin-bottom: 1rem;
+	.empty-state {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-top: 4rem;
+
+		& .link-icon {
+			color: var(--text-light);
 		}
 
-		& input {
-			margin-bottom: 1rem;
+		& h2 {
+			margin-top: 1rem;
+		}
+
+		& p {
+			margin-top: 0.5rem;
 		}
 
 		& button {
 			display: flex;
 			align-items: center;
+			margin-top: 1rem;
 
 			& div {
-				margin-right: 0.3rem;
-				margin-left: -3px;
+				margin-right: 0.5rem;
 			}
 		}
 
-		& .error {
-			margin-top: 0.5rem;
-			color: var(--text-light);
+		& .list {
+			max-width: 200px;
+			width: 80%;
+		}
+
+		& .empty-link {
+			width: 100%;
+			height: 35px;
+			background: var(--background-2nd);
+			border-radius: var(--border-radius);
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			padding: 0.5rem;
+			margin-bottom: 0.5rem;
+
+			& .icon-div {
+				height: 100%;
+				width: 20px;
+				background: var(--grey-light);
+				border-radius: var(--border-radius);
+			}
+
+			& .text-div {
+				height: 100%;
+				flex-grow: 1;
+				background: var(--grey-light);
+				border-radius: var(--border-radius);
+				margin-left: 0.5rem;
+			}
 		}
 	}
 </style>
