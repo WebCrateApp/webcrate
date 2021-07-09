@@ -1,6 +1,8 @@
 import express from 'express'
 
 import { Link } from '../../models/link'
+import { Stat } from '../../models/stats'
+
 import log from '../../utils/log'
 
 export const router = express.Router()
@@ -15,6 +17,12 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 		log.debug(url)
 
 		const link = await Link.create(url, crate)
+
+		await Stat.addRecentlyAddedLink(link.id)
+
+		if (crate) {
+			await Stat.addRecentlyUsedCrate(crate)
+		}
 
 		log.debug(link)
 		log.info('Link added')
@@ -47,7 +55,7 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 
 router.get('/recent', async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const links = await Link.getRecent()
+		const links = await Link.find({}, 10)
 
 		log.debug(links)
 		res.ok(links)

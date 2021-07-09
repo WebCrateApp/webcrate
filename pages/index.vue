@@ -23,6 +23,9 @@
 </template>
 
 <script>
+/*
+	TODO: Refresh recent links when a new link is added
+*/
 export default {
 	layout: 'sidebar',
 	async asyncData({ app: { $api } }) {

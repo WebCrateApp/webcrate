@@ -2,6 +2,8 @@ import express from 'express'
 
 import { Crate } from '../../models/crate'
 import { Link } from '../../models/link'
+import { Stat } from '../../models/stats'
+
 import log from '../../utils/log'
 
 export const router = express.Router()
@@ -16,6 +18,8 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 		log.debug(name)
 
 		const crate = await Crate.create(name, description, icon, isPublic)
+
+		await Stat.addRecentlyUsedCrate(crate.id)
 
 		log.debug(crate)
 		log.info('Crate added')
@@ -42,6 +46,8 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 		const links = await Link.findByCrate(crate.id)
 		crate.numLinks = links.length
 
+		await Stat.addRecentlyUsedCrate(crate.id)
+
 		log.debug(crate)
 		res.ok(crate)
 	} catch (err) {
@@ -51,7 +57,12 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 
 router.get('/recent', async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const crates = await Crate.getRecentlyUsed()
+		const crateIds = await Stat.getRecentlyUsedCrateIds()
+		if (!crateIds) {
+			return res.ok([])
+		}
+
+		const crates = await Crate.findByIds(crateIds)
 
 		const newCrates = await Promise.all(crates.map(async (crate) => {
 			const links = await Link.findByCrate(crate.id)
@@ -84,6 +95,8 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 		const links = await Link.findByCrate(crate.id)
 		crate.numLinks = links.length
 
+		await Stat.addRecentlyUsedCrate(crate.id)
+
 		log.debug(crate)
 		res.ok(crate)
 	} catch (err) {
@@ -104,6 +117,8 @@ router.get('/:id/links', async (req: express.Request, res: express.Response, nex
 		}
 
 		const links = await Link.findByCrate(crate.id)
+
+		await Stat.addRecentlyUsedCrate(crate.id)
 
 		log.debug(links)
 		res.ok(links)

@@ -43,15 +43,6 @@ export class Crate {
 		return new Crate(newCrate)
 	}
 
-	// TODO: Track when a crate was last viewed and sort after that
-	static async getRecentlyUsed(): Promise<Array<Crate>> {
-		const crates = await Crates.find({}, 5)
-
-		if (!crates) return []
-
-		return crates.map((crate: Crate) => new Crate(crate))
-	}
-
 	static async find(query: any = {}, limit?: number, last?: string): Promise<Array<Crate>> {
 		const crates = await Crates.find(query, limit, last)
 
@@ -74,5 +65,16 @@ export class Crate {
 		if (!crate) return null
 
 		return new Crate(crate)
+	}
+
+	static async findByIds(ids: Array<string>) {
+		const crates = await Promise.all(ids.map(async (id) => {
+			const data = await Crates.findById(id)
+			if (!data) return undefined
+
+			return new Crate(data)
+		}))
+
+		return crates.filter((item) => item !== undefined) as Array<Crate>
 	}
 }

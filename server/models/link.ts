@@ -62,15 +62,6 @@ export class Link {
 		return new Link(newLink)
 	}
 
-	// TODO: Actually get most recent
-	static async getRecent(): Promise<Array<Link>> {
-		const links = await Links.find({}, 5)
-
-		if (!links) return []
-
-		return links.map((link: Link) => new Link(link))
-	}
-
 	static async find(query: any = {}, limit?: number, last?: string): Promise<Array<Link>> {
 		const links = await Links.find(query, limit, last)
 
@@ -109,5 +100,16 @@ export class Link {
 		if (!link) return null
 
 		return new Link(link)
+	}
+
+	static async findByIds(ids: Array<string>) {
+		const links = await Promise.all(ids.map(async (id) => {
+			const data = await Links.findById(id)
+			if (!data) return undefined
+
+			return new Link(data)
+		}))
+
+		return links.filter((item) => item)
 	}
 }
