@@ -64,7 +64,7 @@
     "sass-loader": "10.1.1",
     "ts-node": "^10.0.0",
     "tsc-watch": "^4.4.0",
-    "typescript": "^4.3.4",
+    "typescript": "^4.3.5",
     "vue-click-outside": "^1.1.0",
     "vue-select": "^3.11.2"
   }
