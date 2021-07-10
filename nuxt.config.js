@@ -42,7 +42,8 @@ export default {
 			src: '~/plugins/confirm/index.js',
 			mode: 'client'
 		},
-		'~/plugins/api.js'
+		'~/plugins/api.js',
+		'~/plugins/vue-select.js'
 	],
 
 	modules: [

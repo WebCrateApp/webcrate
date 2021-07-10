@@ -120,3 +120,20 @@ a {
     color: var(--text);
     text-decoration: none;
 }
+
+.dropdown {
+    @import "vue-select/src/scss/vue-select.scss";
+
+    .vs__search::placeholder,
+    .vs__dropdown-toggle,
+    .vs__dropdown-menu {
+        background: var(--background-2nd);
+        border-radius: var(--border-radius);
+        border: 2px solid var(--background-2nd);
+        border-radius: var(--border-radius);
+    }
+
+    .vs__dropdown-option--highlight {
+        background: var(--text)
+    }
+}

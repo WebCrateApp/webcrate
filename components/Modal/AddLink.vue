@@ -1,7 +1,19 @@
 <template>
-  <Modal class="add-modal" @close="showModal = false">
+  <Modal class="add-modal" @close="close">
     <h1>Add a new Link</h1>
     <input v-model="newLink" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
+    <div class="dropdown">
+      <v-select
+        v-if="!currentCrate"
+        v-model="selectedCrate"
+        :reduce="item => item.id"
+        :options="crates"
+        label="name"
+        placeholder="Select a Crate"
+        @open="isOpen = true"
+        @close="closeDropdown"
+      ></v-select>
+    </div>
     <button class="primary-button" @click="add">
       <Icon name="add" />Add Link
     </button>
@@ -16,7 +28,9 @@ export default {
 	data() {
 		return {
 			newLink: undefined,
-			invalidLinkErr: undefined
+			selectedCrate: undefined,
+			invalidLinkErr: undefined,
+			isOpen: false
 		}
 	},
 	computed: {
@@ -30,21 +44,45 @@ export default {
 		},
 		currentCrate() {
 			return this.$store.state.currentCrate
+		},
+		crates() {
+			return this.$store.state.crates
 		}
 	},
 	methods: {
 		add() {
-			const value = this.newLink
-			if (!value) return
+			const url = this.newLink
+			if (!url) {
+				this.invalidLinkErr = 'Please enter a valid URL'
+				return
+			}
 
-			this.$store.dispatch('ADD_LINK', { url: value, crate: this.currentCrate }).then(() => {
+			const crate = this.currentCrate || this.selectedCrate
+			if (!crate) {
+				this.invalidLinkErr = 'Please select a Crate'
+				return
+			}
+
+			this.$store.dispatch('ADD_LINK', { url, crate }).then(() => {
 				this.newLink = undefined
+				this.selectedCrate = undefined
 				this.invalidLinkErr = undefined
 				this.showModal = false
 			}).catch((err) => {
 				this.invalidLinkErr = err.message
 				console.log(err)
 			})
+		},
+		closeDropdown() {
+			// Delay enable closing of modal so select doesn't trigger close when dropdown is outside of modal
+			setTimeout(() => {
+				this.isOpen = false
+			}, 500)
+		},
+		close() {
+			if (!this.isOpen) {
+				this.showModal = false
+			}
 		}
 	}
 }
@@ -54,10 +92,6 @@ export default {
 	.add-modal {
 		& h1 {
 			font-size: 1.2rem;
-			margin-bottom: 1rem;
-		}
-
-		& input {
 			margin-bottom: 1rem;
 		}
 
@@ -74,6 +108,13 @@ export default {
 		& .error {
 			margin-top: 0.5rem;
 			color: var(--text-light);
+		}
+
+		.dropdown {
+			width: 200px;
+			margin-top: 0.5rem;
+			margin-bottom: 1rem;
+			font-size: 0.9rem;
 		}
 	}
 </style>
