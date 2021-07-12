@@ -1,0 +1,20 @@
+name: Deploy to Deta
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Deploy to Deta
+        uses: BogDAAAMN/deta-deploy-action@v1.0.0
+        with:
+          # Deta access token https://docs.deta.sh/docs/cli/auth
+          deta-access-token: ${{ secrets.DETA_ACCESS_TOKEN }}
+          deta-name: ${{ secrets.DETA_MICRO_NAME }}
+          deta-project: ${{ secrets.DETA_PROJECT_NAME }}
