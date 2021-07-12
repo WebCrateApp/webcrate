@@ -9,7 +9,6 @@
       <hr>
       <div class="menus">
         <SideBarMenuItem name="Home" icon="home" :selected="currentPage === 'home'" @click.native="changePage('home')" />
-        <SideBarMenuItem name="Today" icon="calendar" :selected="currentPage === 'today'" @click.native="changePage('today')" />
         <SideBarMenuItem name="Quick Search" icon="search" @click.native.stop="showSearchModal = true" />
       </div>
       <div class="section-title">

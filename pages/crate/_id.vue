@@ -73,8 +73,13 @@ export default {
 		emojiIcon() {
 			return emojis[this.crate.icon]
 		},
-		links() {
-			return this.$store.state.currentCrateLinks
+		links: {
+			set(value) {
+				this.$store.commit('SET_CURRENT_CRATE_LINKS', value)
+			},
+			get() {
+				return this.$store.state.currentCrateLinks
+			}
 		},
 		emptyMessage() {
 			return this.emptyMessages[Math.floor(Math.random() * this.emptyMessages.length)]
