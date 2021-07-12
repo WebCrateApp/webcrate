@@ -8,10 +8,6 @@ export const router = express.Router()
 
 router.use('/api', apiRouter)
 router.use('/r', redirectRouter)
-router.use('/n', wildcardAddRouter)
-
-router.get('/test', (_req: express.Request, res: express.Response) => {
-	res.send('Hello World')
-})
+router.use(wildcardAddRouter)
 
 export default router

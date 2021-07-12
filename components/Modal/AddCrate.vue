@@ -21,8 +21,8 @@ export default {
 	},
 	computed: {
 		showModal: {
-			set(value) {
-				this.$store.commit('SET_SHOW_MODAL', { modal: 'addCrate', value })
+			set(show) {
+				this.$modal.set('addCrate', show)
 			},
 			get() {
 				return this.$store.state.modals.addCrate

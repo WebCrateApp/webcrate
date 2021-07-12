@@ -43,7 +43,8 @@ export default {
 			mode: 'client'
 		},
 		'~/plugins/api.js',
-		'~/plugins/vue-select.js'
+		'~/plugins/vue-select.js',
+		'~/plugins/modals.js'
 	],
 
 	modules: [

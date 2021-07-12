@@ -1,25 +1,20 @@
 import express from 'express'
 
-import { Link } from '../models/link'
 import log from '../utils/log'
 import { isValidUrl } from '../utils/isValidUrl'
 
 export const router = express.Router()
 
-router.get('*', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.get('*', (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const url = req.originalUrl.split('/n/')[1] as string
+		const url = req.path.replace(/^\/+/, '') as string
 		if (!url || !isValidUrl(url)) {
-			return res.redirect('/')
+			return next()
 		}
 
 		log.debug(url)
 
-		const link = await Link.create(url)
-
-		log.debug(link)
-		log.info('Link added')
-		res.ok(link)
+		res.redirect(`/?addUrl=${ url }`)
 	} catch (err) {
 		return next(err)
 	}

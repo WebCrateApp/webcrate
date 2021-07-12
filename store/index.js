@@ -13,7 +13,8 @@ const defaultState = () => {
 		modals: {
 			search: false,
 			addLink: false,
-			addCrate: false
+			addCrate: false,
+			inputValue: undefined
 		},
 		confirmActionModal: {
 			show: false,
@@ -52,8 +53,11 @@ export default {
 		ADD_CURRENT_CRATE_LINK(state, value) {
 			state.currentCrateLinks.push(value)
 		},
-		SET_SHOW_MODAL(state, { modal, value }) {
-			state.modals[modal] = value
+		SET_SHOW_MODAL(state, { modal, show }) {
+			state.modals[modal] = show
+		},
+		SET_MODAL_INPUT_VALUE(state, value) {
+			state.modals.inputValue = value
 		},
 		SET_SHOW_CONFIRM_ACTION_MODAL(state, value) {
 			state.confirmActionModal = value
@@ -79,6 +83,13 @@ export default {
 				confirmText: undefined,
 				actionText: undefined
 			})
+		},
+		SHOW_MODAL({ commit }, { modal, show, value }) {
+			if (value) {
+				commit('SET_MODAL_INPUT_VALUE', value)
+			}
+
+			commit('SET_SHOW_MODAL', { modal, show })
 		},
 		async ADD_LINK({ commit }, { url, crate }) {
 			const link = await this.$api.addLinkToCrate(url, crate)

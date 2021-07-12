@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 // import isDev from './utils/isDev'
 dotenv.config()
 
-import app from '../server'
+import app from './index'
 
 const PORT = process.env.PORT || 3000
 

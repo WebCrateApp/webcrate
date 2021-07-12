@@ -98,7 +98,7 @@ export default {
 	},
 	methods: {
 		showAddLinkModal() {
-			this.$store.commit('SET_SHOW_MODAL', { modal: 'addLink', value: true })
+			this.$modal.show('addLink')
 		}
 	}
 }

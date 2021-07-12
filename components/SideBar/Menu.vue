@@ -76,16 +76,16 @@ export default {
 			}
 		},
 		showSearchModal: {
-			set(value) {
-				this.$store.commit('SET_SHOW_MODAL', { modal: 'search', value })
+			set(show) {
+				this.$modal.set('search', show)
 			},
 			get() {
 				return this.$store.state.modals.search
 			}
 		},
 		showAddNewCrateModal: {
-			set(value) {
-				this.$store.commit('SET_SHOW_MODAL', { modal: 'addCrate', value })
+			set(show) {
+				this.$modal.set('addCrate', show)
 			},
 			get() {
 				return this.$store.state.modals.addCrate

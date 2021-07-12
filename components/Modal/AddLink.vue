@@ -1,7 +1,7 @@
 <template>
   <Modal class="add-modal" @close="close">
     <h1>Add a new Link</h1>
-    <input v-model="newLink" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
+    <input v-model="inputValue" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
     <div class="dropdown">
       <v-select
         v-if="!currentCrate"
@@ -27,7 +27,6 @@
 export default {
 	data() {
 		return {
-			newLink: undefined,
 			selectedCrate: undefined,
 			invalidLinkErr: undefined,
 			isOpen: false
@@ -35,11 +34,19 @@ export default {
 	},
 	computed: {
 		showModal: {
-			set(value) {
-				this.$store.commit('SET_SHOW_MODAL', { modal: 'addLink', value })
+			set(show) {
+				this.$modal.set('addLink', show)
 			},
 			get() {
 				return this.$store.state.modals.addLink
+			}
+		},
+		inputValue: {
+			set(value) {
+				this.$store.commit('SET_MODAL_INPUT_VALUE', value)
+			},
+			get() {
+				return this.$store.state.modals.inputValue
 			}
 		},
 		currentCrate() {
@@ -51,7 +58,7 @@ export default {
 	},
 	methods: {
 		add() {
-			const url = this.newLink
+			const url = this.inputValue
 			if (!url) {
 				this.invalidLinkErr = 'Please enter a valid URL'
 				return
@@ -64,7 +71,7 @@ export default {
 			}
 
 			this.$store.dispatch('ADD_LINK', { url, crate }).then(() => {
-				this.newLink = undefined
+				this.inputValue = undefined
 				this.selectedCrate = undefined
 				this.invalidLinkErr = undefined
 				this.showModal = false
@@ -82,6 +89,13 @@ export default {
 		close() {
 			if (!this.isOpen) {
 				this.showModal = false
+
+				// Remove addUrl parameter if it exists
+				const query = Object.assign({}, this.$route.query)
+				if (query.addUrl) {
+					delete query.addUrl
+					this.$router.replace({ query })
+				}
 			}
 		}
 	}

@@ -14,8 +14,8 @@ export default {
 	},
 	computed: {
 		showModal: {
-			set(value) {
-				this.$store.commit('SET_SHOW_MODAL', { modal: 'search', value })
+			set(show) {
+				this.$modal.set('search', show)
 			},
 			get() {
 				return this.$store.state.modals.search

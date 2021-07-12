@@ -28,7 +28,13 @@
 */
 export default {
 	layout: 'sidebar',
-	async asyncData({ app: { $api } }) {
+	async asyncData({ app: { $api, $modal }, query }) {
+		const addUrl = query.addUrl
+
+		if (addUrl) {
+			$modal.show('addLink', addUrl)
+		}
+
 		const links = await $api.getRecentLinks()
 		const crates = await $api.getRecentCrates()
 
@@ -52,7 +58,7 @@ export default {
 	},
 	methods: {
 		showAddLinkModal() {
-			this.$store.commit('SET_SHOW_MODAL', { modal: 'addLink', value: true })
+			this.$modal.show('addLink')
 		}
 	}
 }
