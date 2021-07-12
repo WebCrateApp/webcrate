@@ -47,6 +47,9 @@ export default {
 		ADD_CRATE(state, crate) {
 			state.crates.push(crate)
 		},
+		REMOVE_CRATE(state, value) {
+			state.crates = state.crates.filter((item) => item.id !== value)
+		},
 		SET_CURRENT_CRATE_LINKS(state, value) {
 			state.currentCrateLinks = value
 		},
@@ -102,6 +105,11 @@ export default {
 			await this.$api.deleteLink(linkId)
 
 			commit('REMOVE_CURRENT_CRATE_LINK', linkId)
+		},
+		async DELETE_CRATE({ commit }, crateId) {
+			await this.$api.deleteCrate(crateId)
+
+			commit('REMOVE_CRATE', crateId)
 		},
 		async MOVE_LINK({ commit }, { linkId, crate }) {
 			await this.$api.moveLinkToCrate(linkId, crate)

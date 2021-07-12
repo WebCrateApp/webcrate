@@ -11,6 +11,7 @@
 
     --accent: #89b3e2;
     --red: rgb(197, 63, 63);
+    --red-dark: rgb(146, 40, 40);
 
     /* Values */
     --border-radius: 8px;
@@ -66,6 +67,18 @@ body {
 
     &:hover {
         border: 2px solid var(--text-light);
+    }
+}
+
+.danger-button {
+    @extend .button;
+
+    color: var(--background);
+    border: 2px solid var(--red);
+    background: var(--red);
+
+    &:hover {
+        border: 2px solid var(--red-dark);
     }
 }
 

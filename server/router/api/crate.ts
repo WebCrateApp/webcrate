@@ -190,6 +190,14 @@ router.delete('/', async (req: express.Request, res: express.Response, next: exp
 			return res.fail(404, 'crate not found')
 		}
 
+		const links = await Link.findByCrate(crate.id)
+
+		for await (const link of links) {
+			await link.delete()
+		}
+
+		log.debug('All related links deleted')
+
 		await crate.delete()
 
 		log.info('Crate deleted')

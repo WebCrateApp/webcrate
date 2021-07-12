@@ -9,9 +9,14 @@
         <button class="button add-btn" @click.stop="showAddLinkModal">
           <Icon name="add" />Add Link
         </button>
-        <button class="button">
+        <button class="button" @click.stop="showCrateMenu = !showCrateMenu">
           <Icon name="dotsV" />
         </button>
+        <div v-if="showCrateMenu" v-click-outside="closeShowMenu" class="crate-menu">
+          <button class="button delete-btn" @click.stop="deleteCrate">
+            <Icon name="delete" />Delete Crate
+          </button>
+        </div>
       </div>
     </div>
     <hr>
@@ -38,9 +43,13 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside'
 import emojis from '../../server/utils/emojis'
 
 export default {
+	directives: {
+		ClickOutside
+	},
 	layout: 'sidebar',
 	async asyncData({ params, redirect, store, app: { $api } }) {
 		const crateId = params.id
@@ -66,7 +75,8 @@ export default {
 				'*crickets chirping*',
 				'Nothing In Here',
 				'Add a Link'
-			]
+			],
+			showCrateMenu: false
 		}
 	},
 	computed: {
@@ -104,6 +114,23 @@ export default {
 	methods: {
 		showAddLinkModal() {
 			this.$modal.show('addLink')
+		},
+		closeShowMenu() {
+			this.showCrateMenu = false
+		},
+		async deleteCrate() {
+			const confirm = await this.$confirm({
+				title: `Are you sure you want to delete this Crate?`,
+				message: 'This will also permanently delete all links belonging to that Crate.',
+				confirmText: 'Delete Crate'
+			})
+
+			if (confirm) {
+				this.$store.dispatch('DELETE_CRATE', this.crate.id).then(() => {
+					this.$store.commit('SET_CURRENT_CRATE', undefined)
+					this.$router.push(`/`)
+				})
+			}
 		}
 	}
 }
@@ -155,6 +182,7 @@ export default {
 		margin-left: auto;
 		display: flex;
 		align-items: center;
+		position: relative;
 
 		& button {
 			display: flex;
@@ -232,6 +260,26 @@ export default {
 				background: var(--grey-light);
 				border-radius: var(--border-radius);
 				margin-left: 0.5rem;
+			}
+		}
+	}
+
+	.crate-menu {
+		position: absolute;
+		z-index: 10;
+		right: 0;
+		bottom: -4rem;
+		background: var(--background-2nd);
+		padding: 0.5rem;
+		border-radius: var(--border-radius);
+		border: 2px solid var(--grey);
+
+		& .delete-btn {
+			display: flex;
+			align-items: center;
+
+			& div {
+				margin-right: 0.5rem;
 			}
 		}
 	}
