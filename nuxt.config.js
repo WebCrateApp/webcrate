@@ -1,3 +1,5 @@
+import pkg from './package.json'
+
 export default {
 	components: true,
 
@@ -23,6 +25,10 @@ export default {
 		}
 	},
 
+	env: {
+		appVersion: pkg.version
+	},
+
 	loading: {
 		color: 'var(--text)'
 	},
@@ -44,7 +50,8 @@ export default {
 		},
 		'~/plugins/api.js',
 		'~/plugins/vue-select.js',
-		'~/plugins/modals.js'
+		'~/plugins/modals.js',
+		'~/plugins/version.js'
 	],
 
 	modules: [

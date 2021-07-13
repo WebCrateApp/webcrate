@@ -4,6 +4,7 @@
     <ModalAddLink v-if="showAddLinkModal" />
     <ModalAddCrate v-if="showAddCrateModal" />
     <ConfirmModal />
+    <Help />
     <SideBar>
       <template #content>
         <Nuxt />
