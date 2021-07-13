@@ -195,6 +195,10 @@ export default {
 			margin-top: 0.3rem;
 			color: var(--text-light);
 			width: 100%;
+
+			&:focus {
+				color: var(--text);
+			}
 		}
 
 		.emoji {
