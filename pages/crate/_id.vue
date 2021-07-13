@@ -16,7 +16,7 @@
           <Icon name="dotsV" />
         </button>
         <div v-if="showCrateMenu" v-click-outside="closeShowMenu" class="crate-menu">
-          <button class="button delete-btn" @click.stop="deleteCrate">
+          <button class="no-button delete-btn" @click.stop="deleteCrate">
             <Icon name="delete" />Delete Crate
           </button>
         </div>
@@ -296,18 +296,24 @@ export default {
 		position: absolute;
 		z-index: 10;
 		right: 0;
-		bottom: -4rem;
+		bottom: -3.5rem;
 		background: var(--background-2nd);
-		padding: 0.5rem;
 		border-radius: var(--border-radius);
 		border: 2px solid var(--grey);
 
 		& .delete-btn {
 			display: flex;
 			align-items: center;
+			padding: 0.8rem 1rem;
+			transition: background .2s ease;
 
 			& div {
 				margin-right: 0.5rem;
+			}
+
+			&:hover {
+				background: var(--grey);
+				transition: none;
 			}
 		}
 	}
