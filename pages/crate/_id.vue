@@ -2,8 +2,11 @@
   <div class="crate-wrapper">
     <div class="top-section">
       <div class="title">
-        <h1>{{ emojiIcon }} <input v-model="crateName" placeholder="Crate Title" class="no-input headline"></h1>
+        <h1><span class="emoji" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span> <input v-model="crateName" placeholder="Crate Title" class="no-input headline"></h1>
         <input v-model="crateDescription" class="no-input subtext" placeholder="Click to add a description for this Crate" />
+        <div v-if="showEmojiPicker" class="emoji-picker">
+          <EmojiPicker @selected="selectEmoji" @close="showEmojiPicker = false" />
+        </div>
       </div>
       <div class="actions">
         <button class="button add-btn" @click.stop="showAddLinkModal">
@@ -76,7 +79,8 @@ export default {
 				'Nothing In Here',
 				'Add a Link'
 			],
-			showCrateMenu: false
+			showCrateMenu: false,
+			showEmojiPicker: false
 		}
 	},
 	computed: {
@@ -96,6 +100,7 @@ export default {
 		},
 		crateDescription: {
 			set(value) {
+				this.crate.description = value
 				this.$store.dispatch('CHANGE_CRATE_DESCRIPTION', { crateId: this.crate.id, description: value })
 			},
 			get() {
@@ -104,10 +109,20 @@ export default {
 		},
 		crateName: {
 			set(value) {
+				this.crate.name = value
 				this.$store.dispatch('CHANGE_CRATE_NAME', { crateId: this.crate.id, name: value })
 			},
 			get() {
 				return this.crate.name
+			}
+		},
+		crateIcon: {
+			set(value) {
+				this.crate.icon = value
+				this.$store.dispatch('CHANGE_CRATE_ICON', { crateId: this.crate.id, icon: value })
+			},
+			get() {
+				return this.crate.icon
 			}
 		}
 	},
@@ -131,6 +146,10 @@ export default {
 					this.$router.push(`/`)
 				})
 			}
+		},
+		selectEmoji(key) {
+			this.showEmojiPicker = false
+			this.crateIcon = key
 		}
 	}
 }
@@ -155,6 +174,7 @@ export default {
 
 	.title {
 		flex-grow: 1;
+		position: relative;
 
 		& h1 {
 			display: flex;
@@ -175,6 +195,10 @@ export default {
 			margin-top: 0.3rem;
 			color: var(--text-light);
 			width: 100%;
+		}
+
+		.emoji {
+			cursor: pointer;
 		}
 	}
 
@@ -282,5 +306,12 @@ export default {
 				margin-right: 0.5rem;
 			}
 		}
+	}
+
+	.emoji-picker {
+		position: absolute;
+		z-index: 10;
+		left: 0;
+		top: 2rem;
 	}
 </style>

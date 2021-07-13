@@ -53,9 +53,10 @@ class API {
 		return res.data
 	}
 
-	async addCrate(name) {
+	async addCrate(name, icon) {
 		const { data: res } = await this.http.post(`/api/crate`, {
-			name
+			name,
+			icon
 		})
 
 		return res.data

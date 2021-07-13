@@ -123,8 +123,8 @@ export default {
 
 			return links
 		},
-		async ADD_CRATE({ commit }, { name }) {
-			const crate = await this.$api.addCrate(name)
+		async ADD_CRATE({ commit }, { name, icon }) {
+			const crate = await this.$api.addCrate(name, icon)
 
 			commit('ADD_CRATE', crate)
 
@@ -144,7 +144,12 @@ export default {
 			const crate = await this.$api.changeCrate(crateId, { name })
 
 			context.commit('CHANGE_CRATE', crate)
-		}, debounceThreshold)
+		}, debounceThreshold),
+		async CHANGE_CRATE_ICON(context, { crateId, icon }) {
+			const crate = await this.$api.changeCrate(crateId, { icon })
+
+			context.commit('CHANGE_CRATE', crate)
+		}
 	},
 	getters: {
 		currentCrate: (state) => {

@@ -1,7 +1,15 @@
 <template>
   <Modal class="add-modal" @close="showModal = false">
     <h1>Add a new Crate</h1>
-    <input v-model="name" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="Name">
+    <div class="inputs">
+      <button class="button" @click.stop="showEmojiPicker = !showEmojiPicker">
+        {{ emojiIcon }}
+      </button>
+      <input v-model="name" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="Name">
+      <div v-if="showEmojiPicker" class="add-crate-emoji-picker">
+        <EmojiPicker @selected="selectEmoji" @close="showEmojiPicker = false" />
+      </div>
+    </div>
     <button class="primary-button" @click="add">
       <Icon name="add" />Add Crate
     </button>
@@ -12,14 +20,21 @@
 </template>
 
 <script>
+import emojis from '../../server/utils/emojis'
+
 export default {
 	data() {
 		return {
 			name: undefined,
-			invalidLinkErr: undefined
+			icon: undefined,
+			invalidLinkErr: undefined,
+			showEmojiPicker: false
 		}
 	},
 	computed: {
+		emojiIcon() {
+			return emojis[this.icon]
+		},
 		showModal: {
 			set(show) {
 				this.$modal.set('addCrate', show)
@@ -32,12 +47,17 @@ export default {
 			return this.$store.state.currentCrate
 		}
 	},
+	created() {
+		this.icon = this.randomEmoji()
+	},
 	methods: {
 		add() {
-			const value = this.name
-			if (!value) return
+			const name = this.name
+			if (!name) return
 
-			this.$store.dispatch('ADD_CRATE', { name: value }).then(() => {
+			const icon = this.icon
+
+			this.$store.dispatch('ADD_CRATE', { name, icon }).then(() => {
 				this.name = undefined
 				this.invalidLinkErr = undefined
 				this.showModal = false
@@ -45,6 +65,13 @@ export default {
 				this.invalidLinkErr = err.message
 				console.log(err)
 			})
+		},
+		selectEmoji(key) {
+			this.showEmojiPicker = false
+			this.icon = key
+		},
+		randomEmoji() {
+			return Object.keys(emojis)[Math.floor(Math.random() * Object.keys(emojis).length)]
 		}
 	}
 }
@@ -57,8 +84,15 @@ export default {
 			margin-bottom: 1rem;
 		}
 
-		& input {
+		.inputs {
+			display: flex;
+			align-items: center;
 			margin-bottom: 1rem;
+			position: relative;
+
+			& button {
+				margin-right: 0.5rem;
+			}
 		}
 
 		& button {
@@ -74,6 +108,13 @@ export default {
 		& .error {
 			margin-top: 0.5rem;
 			color: var(--text-light);
+		}
+
+		.add-crate-emoji-picker {
+			position: absolute;
+			z-index: 10;
+			left: 0;
+			top: 3rem;
 		}
 	}
 </style>
