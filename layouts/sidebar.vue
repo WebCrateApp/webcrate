@@ -1,9 +1,6 @@
 <template>
   <div>
-    <ModalSearch v-if="showSearchModal" />
-    <ModalAddLink v-if="showAddLinkModal" />
-    <ModalAddCrate v-if="showAddCrateModal" />
-    <ConfirmModal />
+    <ModalWrapper />
     <Help />
     <SideBar>
       <template #content>
@@ -18,17 +15,6 @@
 
 <script>
 export default {
-	computed: {
-		showSearchModal() {
-			return this.$store.state.modals.search
-		},
-		showAddLinkModal() {
-			return this.$store.state.modals.addLink
-		},
-		showAddCrateModal() {
-			return this.$store.state.modals.addCrate
-		}
-	},
 	created() {
 		this.loadingCrates = true
 		this.$store.dispatch('GET_CRATES').then(() => {

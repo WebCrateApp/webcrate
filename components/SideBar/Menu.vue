@@ -9,13 +9,13 @@
       <hr>
       <div class="menus">
         <SideBarMenuItem name="Home" icon="home" :selected="currentPage === 'home'" @click.native="changePage('home')" />
-        <SideBarMenuItem name="Quick Search" icon="search" @click.native.stop="showSearchModal = true" />
+        <SideBarMenuItem name="Quick Search" icon="search" @click.native.stop="showModal('search')" />
       </div>
       <div class="section-title">
         <h4>
           My Crates
         </h4>
-        <Icon name="add" @click.native.stop="showAddNewCrateModal = true" />
+        <Icon name="add" @click.native.stop="showModal('addCrate')" />
       </div>
       <div class="menus">
         <SideBarMenuItem
@@ -73,22 +73,6 @@ export default {
 			get() {
 				return this.$store.state.loadingCrates
 			}
-		},
-		showSearchModal: {
-			set(show) {
-				this.$modal.set('search', show)
-			},
-			get() {
-				return this.$store.state.modals.search
-			}
-		},
-		showAddNewCrateModal: {
-			set(show) {
-				this.$modal.set('addCrate', show)
-			},
-			get() {
-				return this.$store.state.modals.addCrate
-			}
 		}
 	},
 	watch: {
@@ -112,6 +96,9 @@ export default {
 			}
 
 			this.$router.push(`/${ page }`)
+		},
+		showModal(value) {
+			this.$modal.show(value)
 		}
 	}
 }

@@ -1,7 +1,6 @@
 <template>
-  <Modal class="search-modal" @close="close">
-    <h1>Quick Search</h1>
-    <input v-model="searchValue" class="input" :placeholder="`Search ${ currentCrate ? currentCrate.name : 'everything' }`">
+  <Modal class="link-details-modal" @close="close">
+    <h1>Link Details</h1>
   </Modal>
 </template>
 
@@ -26,13 +25,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-	.search-modal {
+	.link-details-modal {
 		& h1 {
 			font-size: 1.2rem;
-			margin-bottom: 1rem;
-		}
-
-		& input {
 			margin-bottom: 1rem;
 		}
 	}

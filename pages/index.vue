@@ -32,7 +32,7 @@ export default {
 		const addUrl = query.addUrl
 
 		if (addUrl) {
-			$modal.show('addLink', addUrl)
+			$modal.show('addLink', { inputValue: addUrl })
 		}
 
 		const links = await $api.getRecentLinks()

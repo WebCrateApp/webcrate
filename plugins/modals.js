@@ -1,25 +1,25 @@
 export default ({ store }, inject) => {
 	inject('modal', {
 		show: (type, value) => {
-			store.dispatch('SHOW_MODAL', {
+			store.commit('modal/show', {
 				modal: type,
-				show: true,
-				value
+				data: value
 			})
 		},
-		hide: (type, value) => {
-			store.dispatch('SHOW_MODAL', {
-				modal: type,
-				show: false,
-				value
-			})
+		hide: () => {
+			store.commit('modal/hide')
 		},
-		set: (type, show, value) => {
-			store.dispatch('SHOW_MODAL', {
-				modal: type,
-				show,
-				value
-			})
+		isShown: () => {
+			return store.state.modal.show !== undefined
+		},
+		getShown: () => {
+			return store.state.modal.show
+		},
+		setData: (data) => {
+			store.commit('modal/set_data', data)
+		},
+		getData: () => {
+			return store.state.modal.data
 		}
 	})
 }

@@ -38,6 +38,16 @@ Document.delete()
 
 Document.name // => 'name' */
 
+/*
+	Resources:
+
+	- https://github.com/sindresorhus/conf/blob/main/source/index.ts
+	- https://json-schema.org/
+	- https://github.com/ajv-validator/ajv-formats
+	- https://github.com/typicode/lowdb
+
+*/
+
 import { Deta } from 'deta'
 import Base from 'deta/dist/types/base'
 import { generateId, generateKey } from '../../utils/random'

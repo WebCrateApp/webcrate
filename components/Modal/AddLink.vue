@@ -33,20 +33,12 @@ export default {
 		}
 	},
 	computed: {
-		showModal: {
-			set(show) {
-				this.$modal.set('addLink', show)
-			},
-			get() {
-				return this.$store.state.modals.addLink
-			}
-		},
 		inputValue: {
 			set(value) {
-				this.$store.commit('SET_MODAL_INPUT_VALUE', value)
+				this.$modal.setData({ inputValue: value })
 			},
 			get() {
-				return this.$store.state.modals.inputValue
+				return this.$store.state.modal.data.inputValue
 			}
 		},
 		currentCrate() {
@@ -74,7 +66,7 @@ export default {
 				this.inputValue = undefined
 				this.selectedCrate = undefined
 				this.invalidLinkErr = undefined
-				this.showModal = false
+				this.close()
 			}).catch((err) => {
 				this.invalidLinkErr = err.message
 				console.log(err)
@@ -88,7 +80,7 @@ export default {
 		},
 		close() {
 			if (!this.isOpen) {
-				this.showModal = false
+				this.$modal.hide()
 
 				// Remove addUrl parameter if it exists
 				const query = Object.assign({}, this.$route.query)

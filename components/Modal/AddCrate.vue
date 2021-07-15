@@ -1,5 +1,5 @@
 <template>
-  <Modal class="add-modal" @close="showModal = false">
+  <Modal class="add-modal" @close="close">
     <h1>Add a new Crate</h1>
     <div class="inputs">
       <button class="button" @click.stop="showEmojiPicker = !showEmojiPicker">
@@ -35,14 +35,6 @@ export default {
 		emojiIcon() {
 			return emojis[this.icon]
 		},
-		showModal: {
-			set(show) {
-				this.$modal.set('addCrate', show)
-			},
-			get() {
-				return this.$store.state.modals.addCrate
-			}
-		},
 		currentCrate() {
 			return this.$store.state.currentCrate
 		}
@@ -60,11 +52,14 @@ export default {
 			this.$store.dispatch('ADD_CRATE', { name, icon }).then(() => {
 				this.name = undefined
 				this.invalidLinkErr = undefined
-				this.showModal = false
+				this.close()
 			}).catch((err) => {
 				this.invalidLinkErr = err.message
 				console.log(err)
 			})
+		},
+		close() {
+			this.$modal.hide()
 		},
 		selectEmoji(key) {
 			this.showEmojiPicker = false
