@@ -5,7 +5,8 @@ export const state = () => ({
 	data: {
 		inputValue: undefined,
 		actionText: undefined,
-		confirmText: undefined
+		confirmText: undefined,
+		link: undefined
 	}
 })
 

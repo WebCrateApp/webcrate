@@ -54,7 +54,7 @@ export default {
 		ClickOutside
 	},
 	layout: 'sidebar',
-	async asyncData({ params, redirect, store, app: { $api } }) {
+	async asyncData({ params, redirect, store, app: { $api, $modal }, query }) {
 		const crateId = params.id
 
 		const crate = await $api.getCrate(crateId)
@@ -66,6 +66,12 @@ export default {
 		store.commit('SET_CURRENT_CRATE', crate.id)
 
 		store.dispatch('GET_LINKS_FOR_CRATE', crate.id)
+
+		const link = query.link
+
+		if (link) {
+			$modal.show('linkDetails', { link })
+		}
 
 		return { crate }
 	},

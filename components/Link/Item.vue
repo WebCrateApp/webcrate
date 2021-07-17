@@ -1,18 +1,18 @@
 <template>
-  <a
-    :href="link.url"
-    target="_blank"
-    rel="noopener"
+  <div
     draggable
     @dragstart.stop="startDrag($event)"
+    @click.stop="openLinkDetails"
   >
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
       <h4>{{ link.meta && link.meta.title }}</h4>
       <p>{{ domain }}</p>
       <span>{{ new Date(link.addedAt).toLocaleString() }}</span>
-      <Icon v-if="hover" name="delete" class="delete-icon" @click.native.stop.prevent="deleteLink" />
+      <a :href="link.url" target="_blank" rel="noopener">
+        <Icon v-if="hover" name="externalLink" class="delete-icon" />
+      </a>
     </div>
-  </a>
+  </div>
 </template>
 
 <script>
@@ -40,6 +40,9 @@ export default {
 			if (confirm) {
 				this.$store.dispatch('DELETE_LINK', this.link.id)
 			}
+		},
+		openLinkDetails() {
+			this.$modal.show('linkDetails', { link: this.link })
 		},
 		startDrag(e) {
 			this.drag = true
