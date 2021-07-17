@@ -51,7 +51,8 @@ export default {
 		'~/plugins/api.js',
 		'~/plugins/vue-select.js',
 		'~/plugins/modals.js',
-		'~/plugins/version.js'
+		'~/plugins/version.js',
+		'~/plugins/vue-shortkey.js'
 	],
 
 	modules: [

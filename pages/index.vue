@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div v-shortkey="['ctrl', 'alt', 'a']" class="page-wrapper" @shortkey="showAddLinkModal">
     <div class="title">
       <h1>{{ welcomeMessage }}</h1>
       <button class="button add-btn" @click.stop="showAddLinkModal">

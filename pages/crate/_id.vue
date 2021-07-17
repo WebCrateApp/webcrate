@@ -1,5 +1,5 @@
 <template>
-  <div class="crate-wrapper">
+  <div v-shortkey="['ctrl', 'alt', 'a']" class="crate-wrapper" @shortkey="showAddLinkModal">
     <div class="top-section">
       <div class="title">
         <h1><span class="emoji" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span> <input v-model="crateName" placeholder="Crate Title" class="no-input headline"></h1>
