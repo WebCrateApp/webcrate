@@ -26,7 +26,19 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 		}
 
 		log.debug('Getting image')
-		got.stream(link.meta.image).pipe(res)
+		const stream = got.stream(link.meta.image)
+
+		stream.on('end', () => {
+			res.end()
+		})
+
+		stream.on('error', (err) => {
+			log.fatal(err)
+
+			res.fail(500, err.message, 'could not get image')
+		})
+
+		stream.pipe(res)
 	} catch (err) {
 		return next(err)
 	}
