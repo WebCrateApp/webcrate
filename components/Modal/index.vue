@@ -47,7 +47,7 @@ export default {
 		width: 95%;
 		position: absolute;
 		left: 50%;
-		top: 5rem;
+		top: 10%; // 5rem
 		transform: translateX(-50%);
 		padding: 1.5rem
 	}

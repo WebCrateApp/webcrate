@@ -47,6 +47,12 @@ export const mutations = {
 	SET_CURRENT_LINK(state, value) {
 		state.currentLink = value
 	},
+	CHANGE_LINK(state, link) {
+		const idx = state.currentCrateLinks.findIndex((item) => item.id === link.id)
+		if (idx === -1) return
+
+		Vue.set(state.currentCrateLinks, idx, link)
+	},
 	SET_LOADING_CRATES(state, value) {
 		state.loadingCrates = value
 	},

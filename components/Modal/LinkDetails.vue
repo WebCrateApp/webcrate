@@ -1,19 +1,31 @@
 <template>
-  <Modal class="link-details-modal" width="1200px" @close="close">
-    <div v-if="link.url">
-      <h1>{{ link.meta.title || 'Link Title' }}</h1>
-      <a :href="link.url" target="_blank" rel="noopener">
-        {{ link.url }}
-      </a>
+  <Modal class="link-details-modal" width="1000px" @close="close">
+    <p v-if="$fetchState.pending ">
+      Loading link...
+    </p>
+    <div v-else-if="link">
+      <div class="top">
+        <div class="title">
+          <h1>{{ link.meta.title || 'Link Title' }}</h1>
+          <a :href="link.url" target="_blank" rel="noopener">
+            {{ link.url }}
+          </a>
+        </div>
+        <button class="button delete-btn" @click.stop="deleteLink">
+          <Icon name="delete" />
+        </button>
+      </div>
       <div v-if="link.meta.image" class="image-wrapper">
         <div class="image">
           <img :src="`/img/${ link.id }`">
         </div>
       </div>
-      <p>{{ link.meta.description || 'Link description' }}</p>
+      <p class="description">
+        {{ link.meta.description || 'Link description' }}
+      </p>
     </div>
     <p v-else>
-      {{ link }}
+      Error
     </p>
   </Modal>
 </template>
@@ -22,14 +34,19 @@
 export default {
 	data() {
 		return {
-			searchValue: undefined
+			link: undefined,
+			canClose: true
 		}
+	},
+	async fetch() {
+		const link = await this.$api.getLink(this.linkId)
+		this.link = link
 	},
 	computed: {
 		currentCrate() {
 			return this.$store.getters.currentCrate
 		},
-		link() {
+		linkId() {
 			return this.$store.state.modal.data.link
 		},
 		domain() {
@@ -38,8 +55,10 @@ export default {
 	},
 	created() {
 		const query = Object.assign({}, this.$route.query)
-		query.link = this.link.id || this.link
-		this.$router.push({ query })
+		if (!query.link) {
+			query.link = this.linkId
+			this.$router.push({ query })
+		}
 	},
 	beforeDestroy() {
 		const query = Object.assign({}, this.$route.query)
@@ -48,7 +67,28 @@ export default {
 	},
 	methods: {
 		close() {
-			this.$modal.hide()
+			if (this.canClose) {
+				this.$modal.hide()
+			}
+		},
+		async deleteLink() {
+			this.canClose = false
+			const confirm = await this.$confirm({
+				title: `Are you sure you want to delete this link?`,
+				confirmText: 'Delete Link'
+			})
+
+			if (!confirm) {
+				setTimeout(() => {
+					this.canClose = true
+				}, 500)
+
+				return
+			}
+
+			this.$store.dispatch('DELETE_LINK', this.link.id)
+			this.canClose = true
+			this.close()
 		}
 	}
 }
@@ -83,7 +123,7 @@ export default {
 
 	.image {
 		max-width: 100%;
-		max-height: 500px;
+		max-height: 300px;
 		overflow: hidden;
 		display: flex;
 		align-items: center;
@@ -94,5 +134,23 @@ export default {
 			height: 100%;
 			pointer-events: none;
 		}
+	}
+
+	.top {
+		display: flex;
+		align-items: center;
+		margin-bottom: 0.5rem;
+
+		.title {
+			flex-grow: 1;
+		}
+
+		.delete-btn {
+			margin-left: auto;
+		}
+	}
+
+	.description {
+		margin-top: 0.5rem;
 	}
 </style>

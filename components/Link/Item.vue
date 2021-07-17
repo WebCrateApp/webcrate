@@ -42,7 +42,7 @@ export default {
 			}
 		},
 		openLinkDetails() {
-			this.$modal.show('linkDetails', { link: this.link })
+			this.$modal.show('linkDetails', { link: this.link.id })
 		},
 		startDrag(e) {
 			this.drag = true

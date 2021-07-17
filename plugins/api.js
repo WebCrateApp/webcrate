@@ -41,6 +41,12 @@ class API {
 		await this.http.delete(`/api/link?id=${ id }`)
 	}
 
+	async getLink(id) {
+		const { data: res } = await this.http.get(`/api/link/${ id }`)
+
+		return res.data
+	}
+
 	async deleteCrate(id) {
 		await this.http.delete(`/api/crate?id=${ id }`)
 	}
