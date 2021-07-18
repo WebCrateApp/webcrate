@@ -12,6 +12,8 @@ const app = express()
 
 // Server Nuxt static files
 app.use(express.static(path.join(__dirname, '../dist')))
+app.set('view engine', 'ejs')
+app.set('views', 'server/views')
 
 app.use(routeLog)
 app.use(sendResponse)
