@@ -8,7 +8,7 @@
       <h4>{{ link.meta && link.meta.title }}</h4>
       <p>{{ domain }}</p>
       <span>{{ new Date(link.addedAt).toLocaleString() }}</span>
-      <a :href="link.url" target="_blank" rel="noopener">
+      <a :href="link.url" target="_blank" rel="noopener" @click.stop>
         <Icon v-if="hover" name="externalLink" class="delete-icon" />
       </a>
     </div>
