@@ -73,27 +73,39 @@ export default {
 	build: {},
 
 	head: {
-		title: 'WebCrate',
+		title: 'WebCrate - Organize the Web',
 		htmlAttrs: {
 			lang: 'en'
 		},
-		meta: [{
-			charset: 'utf-8'
-		},
-		{
-			name: 'viewport',
-			content: 'width=device-width, initial-scale=1'
-		},
-		{
-			hid: 'description',
-			name: 'description',
-			content: ''
-		}
+		meta: [
+			{
+				charset: 'utf-8'
+			},
+			{
+				name: 'viewport',
+				content: 'width=device-width, initial-scale=1'
+			},
+			{
+				hid: 'description',
+				name: 'description',
+				content: 'WebCrate helps you organize and share links, articles and more from around the web. It\'s more than just a bookmarking tool.'
+			},
+			{
+				hid: 'title',
+				name: 'title',
+				content: 'WebCrate - Organize the Web'
+			},
+			{
+				hid: 'og:image',
+				property: 'og:image',
+				// Must use externally hosted image because we can't use relative path with og:image and we don't know the root of the site at build time
+				content: 'https://webcrate.fra1.cdn.digitaloceanspaces.com/static/banner.png'
+			}
 		],
 		link: [{
 			rel: 'icon',
 			type: 'image/x-icon',
-			href: '/favicon.ico'
+			href: '/favicon.png'
 		}]
 	},
 

@@ -58,7 +58,7 @@ export default {
 		return {
 			title: 'Home | WebCrate',
 			link: [
-				{ rel: 'icon', type: 'image/icon', href: `/favicon.ico` }
+				{ rel: 'icon', type: 'image/icon', href: `/favicon.png` }
 			]
 		}
 	},
