@@ -53,7 +53,8 @@ export default {
 		'~/plugins/modals.js',
 		'~/plugins/version.js',
 		'~/plugins/vue-shortkey.js',
-		'~/plugins/vue-textarea-autosize.js'
+		'~/plugins/vue-textarea-autosize.js',
+		'~/plugins/clipboard.js'
 	],
 
 	modules: [

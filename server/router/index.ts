@@ -1,15 +1,13 @@
 import express from 'express'
 
 import apiRouter from './api'
-import redirectRouter from './redirect'
 import imageRouter from './image'
-import wildcardAddRouter from './wildcardAdd'
+import wildcardRouter from './wildcard'
 
 export const router = express.Router()
 
 router.use('/api', apiRouter)
-router.use('/r', redirectRouter)
 router.use('/img', imageRouter)
-router.use(wildcardAddRouter)
+router.use(wildcardRouter)
 
 export default router
