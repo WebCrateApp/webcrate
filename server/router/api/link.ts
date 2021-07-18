@@ -1,4 +1,5 @@
 import express from 'express'
+import getMetaData from 'metadata-scraper'
 
 import { Link } from '../../models/link'
 import { Stat } from '../../models/stats'
@@ -16,7 +17,14 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 
 		log.debug(url)
 
-		const link = await Link.create(url, crate)
+		let meta
+		try {
+			meta = await getMetaData(url)
+		} catch (err) {
+			log.debug(err)
+		}
+
+		const link = await Link.create(url, meta, crate)
 
 		await Stat.addRecentlyAddedLink(link.id)
 

@@ -30,9 +30,12 @@ export default {
 	layout: 'sidebar',
 	async asyncData({ app: { $api, $modal }, query }) {
 		const addUrl = query.addUrl
+		const link = query.link
 
 		if (addUrl) {
 			$modal.show('addLink', { inputValue: addUrl })
+		} else if (link) {
+			$modal.show('linkDetails', { link })
 		}
 
 		const links = await $api.getRecentLinks()

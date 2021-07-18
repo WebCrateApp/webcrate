@@ -1,5 +1,3 @@
-import getMetaData from 'metadata-scraper'
-
 import Base from '../service/base'
 
 const Links = Base.use('links')
@@ -34,6 +32,7 @@ export class Link {
 	}
 
 	async update(changes: any) {
+		console.log(changes)
 		await Links.findByIdAndUpdate(this.id, changes)
 	}
 
@@ -41,16 +40,16 @@ export class Link {
 		await Links.findByIdAndDelete(this.id)
 	}
 
-	static async create(url: string, crate?: string): Promise<Link> {
-		const meta = await getMetaData(url)
-
+	static async create(url: string, meta?: any, crate?: string): Promise<Link> {
 		const toBeCreated = {
 			url: url,
 			crate: crate,
 			meta: {
-				title: meta.title,
-				description: meta.description,
-				image: meta.image
+				...(meta && {
+					title: meta.title,
+					description: meta.description,
+					image: meta.image
+				})
 			},
 			redirect: {
 				enabled: false

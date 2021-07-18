@@ -48,6 +48,16 @@ export default {
 			return this.$store.state.crates
 		}
 	},
+	beforeDestroy() {
+		// Remove addUrl parameter if it exists
+		const query = Object.assign({}, this.$route.query)
+		if (query.addUrl) {
+			delete query.addUrl
+			this.$router.replace({ query })
+		}
+
+		this.inputValue = undefined
+	},
 	methods: {
 		add() {
 			const url = this.inputValue
@@ -62,11 +72,12 @@ export default {
 				return
 			}
 
-			this.$store.dispatch('ADD_LINK', { url, crate }).then(() => {
-				this.inputValue = undefined
-				this.selectedCrate = undefined
-				this.invalidLinkErr = undefined
-				this.close()
+			this.$store.dispatch('ADD_LINK', { url, crate }).then((link) => {
+				if (!link.meta || !link.meta.title) {
+					this.$modal.show('linkDetails', { link: link.id })
+				} else {
+					this.$modal.hide()
+				}
 			}).catch((err) => {
 				this.invalidLinkErr = err.message
 				console.log(err)
@@ -81,13 +92,6 @@ export default {
 		close() {
 			if (!this.isOpen) {
 				this.$modal.hide()
-
-				// Remove addUrl parameter if it exists
-				const query = Object.assign({}, this.$route.query)
-				if (query.addUrl) {
-					delete query.addUrl
-					this.$router.replace({ query })
-				}
 			}
 		}
 	}

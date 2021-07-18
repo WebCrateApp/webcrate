@@ -15,7 +15,7 @@
           <Icon name="delete" />
         </button>
       </div>
-      <div v-if="link.meta.image" class="image-wrapper">
+      <div v-if="link.meta && link.meta.image" class="image-wrapper">
         <div class="image">
           <img :src="`/img/${ link.id }`">
         </div>
@@ -52,6 +52,8 @@ export default {
 		},
 		linkDescription: {
 			set(value) {
+				if (!value) return
+
 				this.link.meta = { ...this.link.meta, description: value }
 				this.$store.dispatch('CHANGE_LINK', {
 					linkId: this.link.id,
@@ -68,6 +70,8 @@ export default {
 		},
 		linkTitle: {
 			set(value) {
+				if (!value) return
+
 				this.link.meta = { ...this.link.meta, title: value }
 				this.$store.dispatch('CHANGE_LINK', {
 					linkId: this.link.id,
