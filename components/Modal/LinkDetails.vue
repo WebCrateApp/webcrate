@@ -4,6 +4,9 @@
       Loading link...
     </p>
     <div v-else-if="link">
+      <div v-shortkey="['ctrl', 'del']" @shortkey="deleteLink"></div>
+      <div v-shortkey="['ctrl', 'alt', 'c']" @shortkey="copyLink"></div>
+      <div v-shortkey="['ctrl', 'alt', 'r']" @shortkey="toggleRedirect"></div>
       <div class="top">
         <div class="title">
           <h1><input v-model="linkTitle" class="no-input headline" placeholder="Click to add a title for this link" /></h1>
@@ -204,6 +207,13 @@ export default {
 				this.$clipboard(link)
 			}
 		},
+		toggleRedirect() {
+			if (this.link.redirect && this.link.redirect.enabled) {
+				this.disableRedirect()
+			} else {
+				this.enableRedirect()
+			}
+		},
 		enableRedirect() {
 			this.link.redirect = { enabled: true }
 			this.$store.dispatch('CHANGE_LINK', {
@@ -241,6 +251,10 @@ export default {
 					}
 				}
 			})
+
+			setTimeout(() => {
+				this.canClose = true
+			}, 500)
 		}
 	}
 }

@@ -7,6 +7,9 @@
         </h1>
       </div>
       <hr>
+      <div v-shortkey="['ctrl', 's']" @shortkey="showModal('search')"></div>
+      <div v-shortkey="['ctrl', 'h']" @shortkey="changePage('home')"></div>
+      <div v-shortkey="['ctrl', 'alt', 'n']" @shortkey="showModal('addCrate')"></div>
       <div class="menus">
         <SideBarMenuItem name="Home" icon="home" :selected="currentPage === 'home'" @click.native="changePage('home')" />
         <SideBarMenuItem name="Quick Search" icon="search" @click.native.stop="showModal('search')" />
@@ -19,13 +22,15 @@
       </div>
       <div class="menus">
         <SideBarMenuItem
-          v-for="crate in crates"
+          v-for="(crate, idx) in crates"
           :key="crate.id"
+          v-shortkey="['ctrl', idx + 1]"
           :name="crate.name"
           :emoji="crate.icon"
           :crate-id="crate.id"
           :selected="currentCrate === crate.id"
           @click.native="changeCrate(crate)"
+          @shortkey.native="changeCrate(crate)"
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
-  <div v-click-outside="close" class="help-wrapper">
-    <div v-if="show" class="help-widget">
+  <div v-shortkey="['ctrl', 'h']" class="help-wrapper" @shortkey="show = !show">
+    <div v-if="show" v-click-outside="close" class="help-widget">
       <a class="no-button">
         <span>👨‍💻</span>About
       </a>

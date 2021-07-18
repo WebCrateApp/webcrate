@@ -1,6 +1,6 @@
 <template>
   <div class="modal-wrapper" :style="{ '--width': width }">
-    <div v-click-outside="close" class="modal-content">
+    <div v-click-outside="close" v-shortkey="['esc']" class="modal-content" @shortkey="close">
       <Icon name="close" class="close-icon" @click.native="close" />
       <slot></slot>
     </div>

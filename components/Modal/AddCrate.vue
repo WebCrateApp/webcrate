@@ -49,9 +49,11 @@ export default {
 
 			const icon = this.icon
 
-			this.$store.dispatch('ADD_CRATE', { name, icon }).then(() => {
+			this.$store.dispatch('ADD_CRATE', { name, icon }).then((crate) => {
 				this.name = undefined
 				this.invalidLinkErr = undefined
+				this.$store.commit('SET_CURRENT_CRATE', crate.id)
+				this.$router.push(`/crate/${ crate.id }`)
 				this.close()
 			}).catch((err) => {
 				this.invalidLinkErr = err.message
