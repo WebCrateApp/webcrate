@@ -52,7 +52,8 @@ export default {
 		'~/plugins/vue-select.js',
 		'~/plugins/modals.js',
 		'~/plugins/version.js',
-		'~/plugins/vue-shortkey.js'
+		'~/plugins/vue-shortkey.js',
+		'~/plugins/vue-textarea-autosize.js'
 	],
 
 	modules: [

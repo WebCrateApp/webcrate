@@ -6,7 +6,7 @@
     <div v-else-if="link">
       <div class="top">
         <div class="title">
-          <h1>{{ link.meta.title || 'Link Title' }}</h1>
+          <h1><input v-model="linkTitle" class="no-input headline" placeholder="Click to add a title for this link" /></h1>
           <a :href="link.url" target="_blank" rel="noopener">
             {{ link.url }}
           </a>
@@ -20,9 +20,7 @@
           <img :src="`/img/${ link.id }`">
         </div>
       </div>
-      <p class="description">
-        {{ link.meta.description || 'Link description' }}
-      </p>
+      <textarea-autosize v-model="linkDescription" class="no-input description" placeholder="Click to add a description for this link" />
     </div>
     <p v-else>
       Error
@@ -51,6 +49,38 @@ export default {
 		},
 		domain() {
 			return new URL(this.link.url).host
+		},
+		linkDescription: {
+			set(value) {
+				this.link.meta = { ...this.link.meta, description: value }
+				this.$store.dispatch('CHANGE_LINK', {
+					linkId: this.link.id,
+					changes: {
+						meta: {
+							description: value
+						}
+					}
+				})
+			},
+			get() {
+				return this.link && this.link.meta && this.link.meta.description ? this.link.meta.description : undefined
+			}
+		},
+		linkTitle: {
+			set(value) {
+				this.link.meta = { ...this.link.meta, title: value }
+				this.$store.dispatch('CHANGE_LINK', {
+					linkId: this.link.id,
+					changes: {
+						meta: {
+							title: value
+						}
+					}
+				})
+			},
+			get() {
+				return this.link && this.link.meta && this.link.meta.title ? this.link.meta.title : undefined
+			}
 		}
 	},
 	created() {
@@ -110,47 +140,61 @@ export default {
 				text-decoration: underline;
 			}
 		}
-	}
 
-	.image-wrapper {
-		margin-top: 1rem;
-		margin-bottom: 1rem;
-		background: var(--background-2nd);
-		overflow: hidden;
-		border-radius: var(--border-radius);
-		resize: vertical;
-	}
+		.image-wrapper {
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+			background: var(--background-2nd);
+			overflow: hidden;
+			border-radius: var(--border-radius);
+			resize: vertical;
+		}
 
-	.image {
-		max-width: 100%;
-		max-height: 300px;
-		overflow: hidden;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		.image {
+			max-width: 100%;
+			max-height: 300px;
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 
-		& img {
+			& img {
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+			}
+		}
+
+		.top {
+			display: flex;
+			align-items: center;
+			margin-bottom: 0.5rem;
+
+			.title {
+				flex-grow: 1;
+			}
+
+			.delete-btn {
+				margin-left: auto;
+			}
+		}
+
+		.headline {
+			font-size: inherit;
+			font-weight: 600;
+			color: var(--text);
 			width: 100%;
-			height: 100%;
-			pointer-events: none;
-		}
-	}
-
-	.top {
-		display: flex;
-		align-items: center;
-		margin-bottom: 0.5rem;
-
-		.title {
-			flex-grow: 1;
 		}
 
-		.delete-btn {
-			margin-left: auto;
-		}
-	}
+		.description {
+			font-size: 1rem;
+			margin-top: 0.5rem;
+			color: var(--text-light);
+			width: 100%;
 
-	.description {
-		margin-top: 0.5rem;
+			&:focus {
+				color: var(--text);
+			}
+		}
 	}
 </style>

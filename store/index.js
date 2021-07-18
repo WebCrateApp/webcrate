@@ -117,6 +117,11 @@ export const actions = {
 		const crate = await this.$api.changeCrate(crateId, { icon })
 
 		context.commit('CHANGE_CRATE', crate)
+	},
+	async CHANGE_LINK(context, { linkId, changes }) {
+		const link = await this.$api.changeLink(linkId, changes)
+
+		context.commit('CHANGE_LINK', link)
 	}
 }
 
