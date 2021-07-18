@@ -89,6 +89,12 @@ class API {
 
 		return res.data
 	}
+
+	async search(query) {
+		const { data: res } = await this.http.get(`/api/search?query=${ query }`)
+
+		return res.data
+	}
 }
 
 export default ({ app: { $axios } }, inject) => {
