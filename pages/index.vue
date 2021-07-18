@@ -51,6 +51,14 @@ export default {
 			]
 		}
 	},
+	head() {
+		return {
+			title: 'Home | WebCrate',
+			link: [
+				{ rel: 'icon', type: 'image/icon', href: `/favicon.ico` }
+			]
+		}
+	},
 	computed: {
 		welcomeMessage() {
 			return this.welcomeMessages[Math.floor(Math.random() * this.welcomeMessages.length)]
