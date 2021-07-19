@@ -10,9 +10,12 @@
       <div class="top">
         <div class="title">
           <h1><input v-model="linkTitle" class="no-input headline" placeholder="Click to add a title for this link" /></h1>
-          <a :href="link.url" target="_blank" rel="noopener">
-            {{ link.url }}
-          </a>
+          <div class="url-wrapper">
+            <img v-if="link.meta && link.meta.icon" :src="`/img/${ link.id }?type=icon`">
+            <a :href="link.url" target="_blank" rel="noopener">
+              {{ link.url }}
+            </a>
+          </div>
         </div>
         <div class="actions">
           <a :href="link.url" target="_blank" rel="noopener">
@@ -23,6 +26,7 @@
           <ActionDropdown icon="dotsV" :actions="shareActions" />
         </div>
       </div>
+      <hr>
       <div v-if="link.redirect && link.redirect.enabled" class="redirect">
         <Icon name="info" />
         <p>Short link: <span>{{ host }}/<input v-model="linkShortCode" class="no-input" placeholder="short-code" /></span></p>
@@ -370,6 +374,22 @@ export default {
 				margin-right: 0.5rem;
 				cursor: pointer;
 			}
+		}
+
+		.url-wrapper {
+			display: flex;
+			align-items: center;
+
+			& img {
+				width: 17px;
+				height: 17px;
+				margin-right: 0.3rem;
+			}
+		}
+
+		hr {
+			margin-top: 0.5rem;
+			margin-bottom: 0.5rem;
 		}
 	}
 </style>

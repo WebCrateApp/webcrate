@@ -6,7 +6,10 @@
   >
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
       <h4>{{ link.meta && link.meta.title }}</h4>
-      <p>{{ domain }}</p>
+      <div class="domain-wrapper">
+        <img v-if="link.meta && link.meta.icon" :src="`/img/${ link.id }?type=icon`">
+        <p>{{ domain }}</p>
+      </div>
       <span>{{ new Date(link.addedAt).toLocaleString() }}</span>
       <a :href="link.url" target="_blank" rel="noopener" @click.stop>
         <Icon v-if="hover" name="externalLink" class="delete-icon" />
@@ -73,6 +76,17 @@ export default {
 		&:hover {
 			border: 2px solid var(--grey);
 			transition: none;
+		}
+
+		.domain-wrapper {
+			display: flex;
+			align-items: center;
+
+			& img {
+				width: 15px;
+				height: 15px;
+				margin-right: 0.3rem;
+			}
 		}
 	}
 

@@ -1,3 +1,4 @@
+import { MetaData } from 'metadata-scraper/lib/types'
 import Base from '../service/base'
 
 const Links = Base.use('links')
@@ -10,7 +11,8 @@ export class Link {
 	meta?: {
 		title?: string,
 		description?: string,
-		image?: string
+		image?: string,
+		icon?: string
 	}
 
 	redirect: {
@@ -40,7 +42,12 @@ export class Link {
 		await Links.findByIdAndDelete(this.id)
 	}
 
-	static async create(url: string, meta?: any, crate?: string): Promise<Link> {
+	static async create(url: string, meta?: MetaData, crate?: string): Promise<Link> {
+
+		const makeAbsoluteUrl = (base: string, path: string) => {
+			return new URL(path, base).href
+		}
+
 		const toBeCreated = {
 			url: url,
 			crate: crate,
@@ -48,7 +55,8 @@ export class Link {
 				...(meta && {
 					title: meta.title,
 					description: meta.description,
-					image: meta.image
+					image: meta.image ? makeAbsoluteUrl(url, meta.image) : undefined,
+					icon: meta.icon ? makeAbsoluteUrl(url, meta.icon) : undefined
 				})
 			},
 			redirect: {

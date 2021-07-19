@@ -1,5 +1,6 @@
 import express from 'express'
 import getMetaData from 'metadata-scraper'
+import { MetaData } from 'metadata-scraper/lib/types'
 
 import { Link } from '../../models/link'
 import { Stat } from '../../models/stats'
@@ -17,7 +18,7 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 
 		log.debug(url)
 
-		let meta
+		let meta: MetaData | undefined
 		try {
 			meta = await getMetaData(url)
 		} catch (err) {

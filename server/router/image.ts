@@ -21,12 +21,23 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			}
 		}
 
-		if (!link.meta?.image) {
-			return res.fail(400, 'link has no image')
+		const type = req.query.type || 'image'
+
+		let url
+		if (type === 'image') {
+			url = link.meta?.image
+		} else if (type === 'icon') {
+			url = link.meta?.icon
+		} else {
+			return res.fail(400, 'Invalid type')
+		}
+
+		if (!url) {
+			return res.fail(400, `link has no ${ type }`)
 		}
 
 		log.debug('Getting image')
-		const stream = got.stream(link.meta.image)
+		const stream = got.stream(url)
 
 		stream.on('end', () => {
 			res.end()
@@ -35,7 +46,7 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 		stream.on('error', (err) => {
 			log.fatal(err)
 
-			res.fail(500, err.message, 'could not get image')
+			res.fail(500, err.message, `could not get ${ type }`)
 		})
 
 		stream.pipe(res)

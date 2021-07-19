@@ -12,9 +12,12 @@
       <h2>Links</h2>
       <div v-for="link in links" :key="link.id" class="link-item" @click.stop="openLink(link)">
         <p>{{ link.meta.title }}</p>
-        <p class="domain">
-          {{ domain(link.url) }}
-        </p>
+        <div class="right">
+          <img v-if="link.meta && link.meta.icon" :src="`/img/${ link.id }?type=icon`">
+          <p class="domain">
+            {{ domain(link.url) }}
+          </p>
+        </div>
       </div>
     </div>
   </Modal>
@@ -127,6 +130,17 @@ export default {
 			transition: background .2s ease;
 			cursor: pointer;
 			padding-left: 1rem;
+
+			.right {
+				display: flex;
+				align-items: center;
+			}
+
+			& img {
+				width: 15px;
+				height: 15px;
+				margin-right: 0.5rem;
+			}
 
 			.domain {
 				color: var(--text-light);
