@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Redirecting - WebCrate</title>
+        <title><%= title %></title>
         <meta name="title" content="<%= title %>">
         <meta name="description" content="<%= description %>">
 
@@ -27,13 +27,33 @@
         <link rel="manifest" href="/manifest.json">
 
         <style>
+            :root {
+                /* Colors */
+                --background: #fff;
+                --background-2nd: #F7F6F4;
+                --grey: #E8E8E8;
+                --grey-light: #EEEEEE;
+
+                --text: #474440;
+                --text-light: #7B7B7B;
+                --text-dark:#242221;
+
+                --accent: #89b3e2;
+                --red: rgb(197, 63, 63);
+                --red-dark: rgb(146, 40, 40);
+
+                /* Values */
+                --border-radius: 8px;
+                --click-scale-factor: 0.95;
+            }
+
             html, body {
                 height: 100%;
                 width: 100%;
                 margin: 0;
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-                color: #fff;
-                background-color: #282d2d;
+                color: var(--text);
+                background-color: var(--background);
             }
 
             #app {
@@ -45,9 +65,9 @@
                 height: 100%;
             }
 
-            main .content {
+            .content {
                 width: 85%;
-                max-width: 1000px;
+                max-width: 700px;
                 overflow: hidden;
                 margin: auto;
                 text-align: center;
@@ -62,48 +82,27 @@
                 animation: fadein 1s;
             }
 
-            .logo{
-                font-size: 1.4rem;
-                font-weight: 700;
-            }
-
-            .logo a {
-                text-decoration: none;
-                color: #fff;
-            }
-
-            .logo a:hover{
-                text-decoration: underline;
+            .box {
+                background: var(--background-2nd);
+                border-radius: var(--border-radius);
+                padding: 2rem;
             }
 
             .title {
                 font-size: 1.5rem;
                 font-weight: 650;
                 margin-top: 0;
-                color: #60ddaf;
+                color: var(--text);
             }
 
-            .url {
+            a {
                 font-size: 1rem;
-                color: #8b9595;
+                color: var(--text-light);
                 text-decoration: none;
             }
 
-            .url:hover{
+            a:hover {
                 text-decoration: underline;
-            }
-
-            .by{
-                text-align: center;
-                position: fixed;
-                bottom: 20px;
-                left: 2rem;
-            }
-
-            .by a{
-                text-decoration: none;
-                color: #60ddaf;
-                font-weight: 600;
             }
 
             @keyframes fadein {
@@ -166,11 +165,12 @@
         <div id="app">
             <main>
                 <div class="content">
-                    <h1 class="logo"><a href="https://qrgen.cc">WebCrate</a> is redirecting you to:</h1>
-                    <%if (metaAvailable === true) { %>
-                        <h2 class="title"><%= title %></h2>
-                    <% } %>
-                    <a class="url" href="<%= url %>"><%= url %></a>
+                    <div class="box">
+                        <h1 class="title"><%= title %></h1>
+                        <p><%= description %></p>
+                        <a class="url" href="<%= url %>"><%= url %></a>
+                    </div>
+                    <p>Redirecting...</p>
                 </div>
             </main>
         </div>
@@ -178,7 +178,7 @@
             function redirect() {
                 setTimeout(function(){
                     window.location.href = "<%= url %>"
-                }, 500)
+                }, 200)
             }
         </script>
     </body>
