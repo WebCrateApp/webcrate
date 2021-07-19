@@ -7,6 +7,7 @@
       <div v-shortkey="['ctrl', 'del']" @shortkey="deleteLink"></div>
       <div v-shortkey="['ctrl', 'alt', 'c']" @shortkey="copyLink"></div>
       <div v-shortkey="['ctrl', 'alt', 'r']" @shortkey="toggleRedirect"></div>
+      <a ref="externalLink" :href="link.url" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
       <div class="top">
         <div class="title">
           <h1><input v-model="linkTitle" class="no-input headline" placeholder="Click to add a title for this link" /></h1>
@@ -17,12 +18,22 @@
             </a>
           </div>
         </div>
-        <div class="actions">
-          <a :href="link.url" target="_blank" rel="noopener">
-            <button class="button">
-              <Icon name="externalLink" />
-            </button>
-          </a>
+        <div v-if="windowSize <= 600" class="actions">
+          <ActionDropdown icon="dotsV" :actions="shareActions" />
+        </div>
+        <div v-else-if="windowSize <= 900" class="actions">
+          <button class="button" @click.stop="openExternalLink">
+            <Icon name="externalLink" />
+          </button>
+          <ActionDropdown icon="dotsV" :actions="shareActions" />
+        </div>
+        <div v-else class="actions">
+          <button class="button" @click.stop="openExternalLink">
+            <Icon name="externalLink" />
+          </button>
+          <button class="button" @click.stop="deleteLink">
+            <Icon name="delete" />
+          </button>
           <ActionDropdown icon="dotsV" :actions="shareActions" />
         </div>
       </div>
@@ -51,7 +62,8 @@ export default {
 		return {
 			link: undefined,
 			canClose: true,
-			showShareMenu: false
+			showShareMenu: false,
+			windowSize: undefined
 		}
 	},
 	async fetch() {
@@ -94,11 +106,21 @@ export default {
 				})
 			}
 
-			items.push({
-				text: 'Delete link',
-				icon: 'delete',
-				click: this.deleteLink
-			})
+			if (this.windowSize <= 600) {
+				items.push({
+					text: 'Open link',
+					icon: 'externalLink',
+					click: this.openExternalLink
+				})
+			}
+
+			if (this.windowSize <= 900) {
+				items.push({
+					text: 'Delete link',
+					icon: 'delete',
+					click: this.deleteLink
+				})
+			}
 
 			return items
 		},
@@ -165,6 +187,15 @@ export default {
 			query.link = this.linkId
 			this.$router.push({ query })
 		}
+	},
+	mounted() {
+		const onResize = () => {
+			this.windowSize = window.innerWidth
+		}
+
+		onResize()
+
+		window.onresize = onResize
 	},
 	beforeDestroy() {
 		const query = Object.assign({}, this.$route.query)
@@ -259,6 +290,9 @@ export default {
 			setTimeout(() => {
 				this.canClose = true
 			}, 500)
+		},
+		openExternalLink() {
+			this.$refs.externalLink.click()
 		}
 	}
 }
@@ -322,7 +356,7 @@ export default {
 				margin-left: auto;
 				display: flex;
 
-				& a {
+				& .button {
 					margin-right: 0.5rem;
 				}
 			}
