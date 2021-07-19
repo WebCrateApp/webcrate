@@ -49,6 +49,15 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			res.fail(500, err.message, `could not get ${ type }`)
 		})
 
+		// Instruct browser to cache image
+		if (type === 'image') {
+			const sec = 60 * 2 // 2 hours
+			res.header('Cache-Control', `public, max-age=${ sec }`)
+		} else if (type === 'icon') {
+			const sec = 60 * 24 * 7 * 4 // 1 month
+			res.header('Cache-Control', `public, max-age=${ sec }`)
+		}
+
 		stream.pipe(res)
 	} catch (err) {
 		return next(err)
