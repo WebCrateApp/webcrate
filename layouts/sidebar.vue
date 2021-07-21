@@ -7,7 +7,8 @@
         <Nuxt />
       </template>
       <template #sidebar>
-        <SideBarMenu />
+        <SideBarMenuPublic v-if="isPublic" />
+        <SideBarMenu v-else />
       </template>
     </SideBar>
   </div>
@@ -15,13 +16,34 @@
 
 <script>
 export default {
+	data() {
+		return {
+			isPublic: false
+		}
+	},
+	computed: {
+		loadingCrates: {
+			set(value) {
+				this.$store.commit('SET_LOADING_CRATES', value)
+			},
+			get() {
+				return this.$store.state.loadingCrates
+			}
+		}
+	},
 	created() {
-		this.loadingCrates = true
-		this.$store.dispatch('GET_CRATES').then(() => {
-			this.loadingCrates = false
-		})
+		this.isPublic = this.$route.path.includes('public')
 
-		this.$store.dispatch('GET_EXTERNAL_CRATES')
+		if (!this.isPublic) {
+			this.loadingCrates = true
+			this.$store.dispatch('GET_CRATES').then(() => {
+				setTimeout(() => {
+					this.loadingCrates = false
+				}, 500)
+			})
+
+			this.$store.dispatch('GET_EXTERNAL_CRATES')
+		}
 	}
 }
 </script>

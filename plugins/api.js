@@ -160,7 +160,9 @@ class API {
 }
 
 export default ({ app: { $axios }, store, params }, inject) => {
+	console.log(params)
 	const isPublic = params.pathMatch && params.pathMatch.includes('public')
+	console.log(isPublic)
 
 	if (isPublic) {
 		store.commit('SET_PUBLIC_MODE', true)
