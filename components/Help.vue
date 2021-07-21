@@ -1,17 +1,17 @@
 <template>
   <div v-shortkey="['ctrl', 'h']" class="help-wrapper" @shortkey="show = !show">
     <div v-if="show" v-click-outside="close" class="help-widget">
-      <a class="no-button">
+      <a href="https://webcrate.deta.dev/" target="_blank" rel="noopener" class="no-button">
         <span>👨‍💻</span>About
       </a>
-      <a class="no-button">
+      <a href="https://webcrate.deta.dev/releases" target="_blank" rel="noopener" class="no-button">
         <span>🎁</span>What's new?
       </a>
-      <a class="no-button">
+      <a href="https://webcrate.deta.dev/docs" target="_blank" rel="noopener" class="no-button">
         <span>🤔</span>How-to guide
       </a>
       <hr>
-      <a href="https://github.com/WebCrateApp/feedback" class="no-button">
+      <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener" class="no-button">
         <span>💬</span>Feedback
       </a>
       <hr>
