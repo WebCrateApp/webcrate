@@ -4,13 +4,18 @@
       Loading link...
     </p>
     <div v-else-if="link">
-      <div v-shortkey="['ctrl', 'del']" @shortkey="deleteLink"></div>
+      <div v-if="editable" v-shortkey="['ctrl', 'del']" @shortkey="deleteLink"></div>
+      <div v-if="editable" v-shortkey="['ctrl', 'alt', 'r']" @shortkey="toggleRedirect"></div>
       <div v-shortkey="['ctrl', 'alt', 'c']" @shortkey="copyLink"></div>
-      <div v-shortkey="['ctrl', 'alt', 'r']" @shortkey="toggleRedirect"></div>
       <a ref="externalLink" :href="link.url" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
       <div class="top">
         <div class="title">
-          <h1><input v-model="linkTitle" class="no-input headline" placeholder="Click to add a title for this link" /></h1>
+          <h1 v-if="editable">
+            <input v-model="linkTitle" class="no-input headline" placeholder="Click to add a title for this link" />
+          </h1>
+          <h1 v-else class="headline">
+            {{ link.meta && link.meta.title }}
+          </h1>
           <div class="url-wrapper">
             <img v-if="link.meta && link.meta.icon" :src="`/img/${ link.id }?type=icon`">
             <a :href="link.url" target="_blank" rel="noopener">
@@ -18,27 +23,34 @@
             </a>
           </div>
         </div>
-        <div v-if="windowSize <= 600" class="actions">
-          <ActionDropdown icon="dotsV" :actions="shareActions" />
-        </div>
-        <div v-else-if="windowSize <= 900" class="actions">
-          <button class="button" @click.stop="openExternalLink">
-            <Icon name="externalLink" />
-          </button>
-          <ActionDropdown icon="dotsV" :actions="shareActions" />
+        <div v-if="editable">
+          <div v-if="windowSize <= 600" class="actions">
+            <ActionDropdown icon="dotsV" :actions="shareActions" />
+          </div>
+          <div v-else-if="windowSize <= 900" class="actions">
+            <button class="button" @click.stop="openExternalLink">
+              <Icon name="externalLink" />
+            </button>
+            <ActionDropdown icon="dotsV" :actions="shareActions" />
+          </div>
+          <div v-else class="actions">
+            <button class="button" @click.stop="openExternalLink">
+              <Icon name="externalLink" />
+            </button>
+            <button class="button" @click.stop="deleteLink">
+              <Icon name="delete" />
+            </button>
+            <ActionDropdown icon="dotsV" :actions="shareActions" />
+          </div>
         </div>
         <div v-else class="actions">
           <button class="button" @click.stop="openExternalLink">
             <Icon name="externalLink" />
           </button>
-          <button class="button" @click.stop="deleteLink">
-            <Icon name="delete" />
-          </button>
-          <ActionDropdown icon="dotsV" :actions="shareActions" />
         </div>
       </div>
       <hr>
-      <div v-if="link.redirect && link.redirect.enabled" class="redirect">
+      <div v-if="editable && link.redirect && link.redirect.enabled" class="redirect">
         <Icon name="info" />
         <p>Short link: <span>{{ host }}/r/<input v-model="linkShortCode" class="no-input" placeholder="short-code" /></span></p>
         <Icon :name="copyIcon" class="copy-short" @click.native.stop="copyShortLink" />
@@ -48,7 +60,10 @@
           <img :src="`/img/${ link.id }`">
         </div>
       </div>
-      <textarea-autosize v-model="linkDescription" class="no-input description" placeholder="Click to add a description for this link" />
+      <textarea-autosize v-if="editable" v-model="linkDescription" class="no-input description" placeholder="Click to add a description for this link" />
+      <p v-else class="description">
+        {{ link.meta && link.meta.description }}
+      </p>
     </div>
     <p v-else>
       Error
@@ -77,6 +92,9 @@ export default {
 		},
 		linkId() {
 			return this.$store.state.modal.data.link
+		},
+		editable() {
+			return this.$store.state.modal.data.editable
 		},
 		domain() {
 			return new URL(this.link.url).host

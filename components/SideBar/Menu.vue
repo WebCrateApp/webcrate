@@ -33,6 +33,25 @@
           @shortkey.native="changeCrate(crate)"
         />
       </div>
+      <div class="section-title">
+        <h4>
+          External Crates
+        </h4>
+        <Icon name="add" @click.native.stop="showModal('addExternalCrate')" />
+      </div>
+      <div class="menus">
+        <SideBarMenuItem
+          v-for="(crate, idx) in externalCrates"
+          :key="crate.id"
+          v-shortkey="['ctrl', idx + 1]"
+          :name="crate.name"
+          :emoji="crate.icon"
+          :crate-id="crate.id"
+          :selected="currentCrate === crate.id"
+          @click.native="changeCrate(crate)"
+          @shortkey.native="changeCrate(crate)"
+        />
+      </div>
     </div>
 
     <!-- Loading state -->
@@ -65,6 +84,9 @@ export default {
 		crates() {
 			return this.$store.state.crates
 		},
+		externalCrates() {
+			return this.$store.state.externalCrates
+		},
 		username() {
 			return this.$store.state.username
 		},
@@ -80,15 +102,16 @@ export default {
 			}
 		}
 	},
-	watch: {
-		loadingCrates(newVal) {
-			console.log(newVal)
-		}
-	},
 	methods: {
 		changeCrate(crate) {
 			this.$store.commit('SET_CURRENT_CRATE', crate.id)
 			this.currentPage = undefined
+
+			if (crate.endpoint !== undefined) {
+				this.$router.push(`/crate/external/${ crate.id }`)
+				return
+			}
+
 			this.$router.push(`/crate/${ crate.id }`)
 		},
 		changePage(page) {

@@ -6,7 +6,11 @@ import { Stat } from '../../models/stats'
 
 import log from '../../utils/log'
 
+import externalRouter from './external'
+
 export const router = express.Router()
+
+router.use('/external', externalRouter)
 
 router.post('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
@@ -122,26 +126,6 @@ router.get('/:id/links', async (req: express.Request, res: express.Response, nex
 
 		log.debug(links)
 		res.ok(links)
-	} catch (err) {
-		return next(err)
-	}
-})
-
-router.get('/public', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-	try {
-		const id = req.query.id as string
-		if (!id) {
-			// Restrict public API to only allow direct querying, no indexing of all crates
-			return res.fail(400, 'no id provided')
-		}
-
-		const crate = await Crate.findById(id)
-		if (!crate || !crate.public) {
-			return res.fail(404, 'crate not found')
-		}
-
-		log.debug(crate)
-		res.ok(crate)
 	} catch (err) {
 		return next(err)
 	}

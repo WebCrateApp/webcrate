@@ -3,8 +3,8 @@
     <ModalSearch v-if="showModal === 'search'" />
     <ModalAddLink v-else-if="showModal === 'addLink'" />
     <ModalAddCrate v-else-if="showModal === 'addCrate'" />
+    <ModalAddExternalCrate v-else-if="showModal === 'addExternalCrate'" />
     <ModalLinkDetails v-else-if="showModal === 'linkDetails'" />
-    <ModalLinkDetailsPublic v-else-if="showModal === 'linkDetailsPublic'" />
     <ModalCopyOutput v-else-if="showModal === 'copyOutput'" />
     <ConfirmModal />
   </div>

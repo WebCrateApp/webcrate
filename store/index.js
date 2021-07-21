@@ -10,6 +10,7 @@ const defaultState = () => {
 		loadingCrates: false,
 		currentCrate: undefined,
 		crates: [],
+		externalCrates: [],
 		currentCrateLinks: [],
 		currentLink: undefined
 	}
@@ -24,6 +25,9 @@ export const mutations = {
 	STORE_CRATES(state, data) {
 		state.crates = data
 	},
+	STORE_EXTERNAL_CRATES(state, data) {
+		state.externalCrates = data
+	},
 	SET_CURRENT_CRATE(state, value) {
 		state.currentCrate = value
 	},
@@ -36,8 +40,14 @@ export const mutations = {
 	ADD_CRATE(state, crate) {
 		state.crates.push(crate)
 	},
+	ADD_EXTERNAL_CRATE(state, crate) {
+		state.externalCrates.push(crate)
+	},
 	REMOVE_CRATE(state, value) {
 		state.crates = state.crates.filter((item) => item.id !== value)
+	},
+	REMOVE_EXTERNAL_CRATE(state, value) {
+		state.externalCrates = state.externalCrates.filter((item) => item.id !== value)
 	},
 	SET_CURRENT_CRATE_LINKS(state, value) {
 		state.currentCrateLinks = value
@@ -83,6 +93,11 @@ export const actions = {
 
 		commit('REMOVE_CRATE', crateId)
 	},
+	async DELETE_EXTERNAL_CRATE({ commit }, crateId) {
+		await this.$api.deleteExternalCrate(crateId)
+
+		commit('REMOVE_EXTERNAL_CRATE', crateId)
+	},
 	async MOVE_LINK({ commit }, { linkId, crate }) {
 		await this.$api.moveLinkToCrate(linkId, crate)
 
@@ -101,6 +116,18 @@ export const actions = {
 		commit('ADD_CRATE', crate)
 
 		return crate
+	},
+	async ADD_EXTERNAL_CRATE({ commit }, url) {
+		const crate = await this.$api.addExternalCrate(url)
+
+		commit('ADD_EXTERNAL_CRATE', crate)
+
+		return crate
+	},
+	async GET_EXTERNAL_CRATES({ commit }) {
+		const crates = await this.$api.getExternalCrates()
+
+		commit('STORE_EXTERNAL_CRATES', crates)
 	},
 	async GET_CRATES({ commit }) {
 		const crates = await this.$api.getCrates()
@@ -136,6 +163,10 @@ export const actions = {
 
 export const getters = {
 	currentCrate: (state) => {
-		return state.crates.find((item) => item.id === state.currentCrate)
+		const crate = state.crates.find((item) => item.id === state.currentCrate)
+
+		if (!crate) return state.externalCrates.find((item) => item.id === state.currentCrate)
+
+		return crate
 	}
 }

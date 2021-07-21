@@ -20,6 +20,8 @@ export default {
 		this.$store.dispatch('GET_CRATES').then(() => {
 			this.loadingCrates = false
 		})
+
+		this.$store.dispatch('GET_EXTERNAL_CRATES')
 	}
 }
 </script>

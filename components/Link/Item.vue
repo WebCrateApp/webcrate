@@ -1,7 +1,7 @@
 <template>
   <div
-    draggable
-    @dragstart.stop="startDrag($event)"
+    :draggable="editable"
+    @[dragStartEvent].stop="startDrag($event)"
     @click.stop="openLinkDetails"
   >
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
@@ -21,7 +21,16 @@
 <script>
 export default {
 	// eslint-disable-next-line vue/require-prop-types
-	props: [ 'link' ],
+	props: {
+		link: {
+			type: Object,
+			required: true
+		},
+		editable: {
+			type: Boolean,
+			default: true
+		}
+	},
 	data() {
 		return {
 			hover: false,
@@ -31,11 +40,14 @@ export default {
 	computed: {
 		domain() {
 			return new URL(this.link.url).host
+		},
+		dragStartEvent() {
+			return this.editable ? 'dragstart' : null
 		}
 	},
 	methods: {
 		openLinkDetails() {
-			this.$modal.show('linkDetails', { link: this.link.id })
+			this.$modal.show('linkDetails', { link: this.link.id, editable: this.editable })
 		},
 		startDrag(e) {
 			this.drag = true

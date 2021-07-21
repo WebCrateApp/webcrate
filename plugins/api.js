@@ -16,6 +16,14 @@ class API {
 		return res.data
 	}
 
+	async getExternalCrates() {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.get(`/crate/external`)
+
+		return res.data
+	}
+
 	async getRecentCrates() {
 		if (this.publicMode) return undefined
 
@@ -26,6 +34,12 @@ class API {
 
 	async getLinksOfCrate(crate) {
 		const { data: res } = await this.http.get(`/crate/${ crate }/links`)
+
+		return res.data
+	}
+
+	async getLinksOfExternalCrate(crate) {
+		const { data: res } = await this.http.get(`/crate/external/${ crate }/links`)
 
 		return res.data
 	}
@@ -77,6 +91,12 @@ class API {
 		await this.http.delete(`/crate?id=${ id }`)
 	}
 
+	async deleteExternalCrate(id) {
+		if (this.publicMode) return undefined
+
+		await this.http.delete(`/crate/external?id=${ id }`)
+	}
+
 	async moveLinkToCrate(id, crate) {
 		if (this.publicMode) return undefined
 
@@ -98,8 +118,24 @@ class API {
 		return res.data
 	}
 
+	async addExternalCrate(url) {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.post(`/crate/external`, {
+			url
+		})
+
+		return res.data
+	}
+
 	async getCrate(id) {
 		const { data: res } = await this.http.get(`/crate/${ id }`)
+
+		return res.data
+	}
+
+	async getExternalCrate(id) {
+		const { data: res } = await this.http.get(`/crate/external/${ id }`)
 
 		return res.data
 	}
@@ -123,8 +159,8 @@ class API {
 	}
 }
 
-export default ({ app: { $axios }, store, route }, inject) => {
-	const isPublic = route.path.startsWith('/public')
+export default ({ app: { $axios }, store, params }, inject) => {
+	const isPublic = params.pathMatch && params.pathMatch.includes('public')
 
 	if (isPublic) {
 		store.commit('SET_PUBLIC_MODE', true)

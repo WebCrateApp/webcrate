@@ -2,14 +2,23 @@
   <div class="crate-wrapper">
     <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
     <div class="top-section">
-      <div class="title">
+      <div v-if="editable" class="title">
         <h1><span class="emoji" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span> <input v-model="crateName" placeholder="Crate Title" class="no-input headline"></h1>
         <input v-model="crateDescription" class="no-input subtext" placeholder="Click to add a description for this Crate" />
         <div v-if="showEmojiPicker" class="emoji-picker">
           <EmojiPicker @selected="selectEmoji" @close="showEmojiPicker = false" />
         </div>
       </div>
-      <div class="actions">
+      <div v-else class="title">
+        <h1>
+          <span>{{ emojiIcon }}</span>
+          <span class="headline">{{ crate.name }}<span v-if="isExternal" class="endpoint"> @{{ crate.endpoint }}</span></span>
+        </h1>
+        <p class="subtext">
+          {{ crate.description }}
+        </p>
+      </div>
+      <div v-if="editable" class="actions">
         <button class="button add-btn" @click.stop="showAddLinkModal">
           <Icon name="add" />Add Link
         </button>
@@ -18,15 +27,24 @@
         </button>
         <ActionDropdown icon="dotsV" :actions="crateActions" />
       </div>
+      <div v-else-if="isPublic" class="actions">
+        <button class="button add-btn" @click.stop="showAddModal">
+          <Icon name="heart" />Save this Crate
+        </button>
+      </div>
+      <div v-else-if="isExternal" class="actions">
+        <button class="button delete-btn" @click.stop="deleteExternal">
+          <Icon name="delete" />
+        </button>
+      </div>
     </div>
     <hr>
     <div v-if="links.length > 0" class="links">
       <Grid>
-        <LinkItem v-for="link in links" :key="link.id" :link="link" />
+        <LinkItem v-for="link in links" :key="link.id" :link="link" :editable="editable" />
       </Grid>
     </div>
     <div v-else class="empty-state">
-      <!-- <Icon name="link" class="link-icon" size="40px" /> -->
       <div class="list">
         <div v-for="i in 3" :key="i" class="empty-link">
           <div class="icon-div"></div>
@@ -34,10 +52,18 @@
         </div>
       </div>
       <h2>{{ emptyMessage }}</h2>
-      <p>Drag a link into this Crate or add a new one</p>
-      <button class="button" @click.stop="showAddLinkModal">
-        <Icon name="add" />Add Link
-      </button>
+      <div v-if="editable">
+        <p>Drag a link into this Crate or add a new one</p>
+        <button class="button" @click.stop="showAddLinkModal">
+          <Icon name="add" />Add Link
+        </button>
+      </div>
+      <div v-else-if="isPublic">
+        <p>Poke the creator to add some links or <a href="https://webcrate.deta.dev/docs" target="_blank" rel="noopener">create your own crate</a></p>
+      </div>
+      <div v-else-if="isExternal">
+        <p>Poke the creator to add some links</p>
+      </div>
     </div>
   </div>
 </template>
@@ -48,9 +74,20 @@ import emojis from '../../server/utils/emojis'
 export default {
 	layout: 'sidebar',
 	async asyncData({ params, redirect, store, app: { $api, $modal }, query }) {
-		const crateId = params.id
+		const isExternal = params.pathMatch.includes('external')
+		const isPublic = params.pathMatch.includes('public')
+		const editable = !isExternal && !isPublic
 
-		const crate = await $api.getCrate(crateId)
+		let crateId
+		if (isExternal) {
+			crateId = params.pathMatch.split('external/')[1]
+		} else if (isPublic) {
+			crateId = params.pathMatch.split('public/')[1]
+		} else {
+			crateId = params.pathMatch
+		}
+
+		const crate = isExternal ? await $api.getExternalCrate(crateId) : await $api.getCrate(crateId)
 
 		if (!crate) {
 			return redirect('/home')
@@ -58,15 +95,15 @@ export default {
 
 		store.commit('SET_CURRENT_CRATE', crate.id)
 
-		store.dispatch('GET_LINKS_FOR_CRATE', crate.id)
+		const links = isExternal ? await $api.getLinksOfExternalCrate(crate.id) : await $api.getLinksOfCrate(crate.id)
+		store.commit('SET_CURRENT_CRATE_LINKS', links)
 
 		const link = query.link
-
 		if (link) {
 			$modal.show('linkDetails', { link })
 		}
 
-		return { crate }
+		return { crate, isExternal, isPublic, editable }
 	},
 	data() {
 		return {
@@ -163,9 +200,16 @@ export default {
 		},
 		showShareModal() {
 			this.$modal.show('copyOutput', {
-				inputValue: `${ location.protocol }//${ location.host }/public/crate/${ this.crate.id }`,
+				inputValue: `${ location.protocol }//${ location.host }/crate/public/${ this.crate.id }`,
 				title: `Share: ${ this.emojiIcon } ${ this.crate.name }`,
 				message: `Copy the URL below to share this crate with anyone!`
+			})
+		},
+		showAddModal() {
+			this.$modal.show('copyOutput', {
+				inputValue: `${ location.protocol }//${ location.host }/crate/public/${ this.crate.id }`,
+				title: `Add this crate to your own WebCrate`,
+				message: `Go to your own WebCrate and paste this URL in the "add external crate" field`
 			})
 		},
 		async deleteCrate() {
@@ -178,6 +222,21 @@ export default {
 
 			if (confirm) {
 				this.$store.dispatch('DELETE_CRATE', this.crate.id).then(() => {
+					this.$store.commit('SET_CURRENT_CRATE', undefined)
+					this.$router.push(`/`)
+				})
+			}
+		},
+		async deleteExternal() {
+			const confirm = await this.$confirm({
+				title: `Are you sure you want to remove this external crate?`,
+				message: 'You can always readd it later.',
+				confirmText: 'Remove Crate',
+				danger: true
+			})
+
+			if (confirm) {
+				this.$store.dispatch('DELETE_EXTERNAL_CRATE', this.crate.id).then(() => {
 					this.$store.commit('SET_CURRENT_CRATE', undefined)
 					this.$router.push(`/`)
 				})
@@ -259,6 +318,10 @@ export default {
 
 		.emoji {
 			cursor: pointer;
+		}
+
+		.endpoint {
+			color: var(--text-light);
 		}
 	}
 
