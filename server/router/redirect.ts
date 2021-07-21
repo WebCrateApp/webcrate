@@ -5,9 +5,9 @@ import { getLink } from '../utils/getRedirectLink'
 
 export const router = express.Router()
 
-router.get('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.get('/*', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const id = req.params.id as string
+		const id = req.path.replace(/^\/+/, '') as string
 		if (!id) {
 			return res.redirect('/')
 		}
