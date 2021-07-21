@@ -40,8 +40,8 @@
       <hr>
       <div v-if="link.redirect && link.redirect.enabled" class="redirect">
         <Icon name="info" />
-        <p>Short link: <span>{{ host }}/<input v-model="linkShortCode" class="no-input" placeholder="short-code" /></span></p>
-        <Icon name="clipboard" class="copy-short" @click.native.stop="copyShortLink" />
+        <p>Short link: <span>{{ host }}/r/<input v-model="linkShortCode" class="no-input" placeholder="short-code" /></span></p>
+        <Icon :name="copyIcon" class="copy-short" @click.native.stop="copyShortLink" />
       </div>
       <div v-if="link.meta && link.meta.image" class="image-wrapper">
         <div class="image">
@@ -63,7 +63,8 @@ export default {
 			link: undefined,
 			canClose: true,
 			showShareMenu: false,
-			windowSize: undefined
+			windowSize: undefined,
+			copyIcon: 'clipboard'
 		}
 	},
 	async fetch() {
@@ -212,7 +213,8 @@ export default {
 			this.canClose = false
 			const confirm = await this.$confirm({
 				title: `Are you sure you want to delete this link?`,
-				confirmText: 'Delete Link'
+				confirmText: 'Delete Link',
+				danger: true
 			})
 
 			if (!confirm) {
@@ -237,9 +239,13 @@ export default {
 			}
 		},
 		copyShortLink() {
-			const link = `${ this.host }/${ this.linkShortCode }`
+			const link = `${ this.host }/r/${ this.linkShortCode }`
 			if (link) {
+				this.copyIcon = 'check'
 				this.$clipboard(link)
+				setTimeout(() => {
+					this.copyIcon = 'clipboard'
+				}, 1000)
 			}
 		},
 		toggleRedirect() {
@@ -265,7 +271,8 @@ export default {
 			const confirm = await this.$confirm({
 				title: `Are you sure you want to disable redirection?`,
 				message: 'The short link will stop working and a 404 error will be shown instead.',
-				confirmText: 'Disable redirection'
+				confirmText: 'Disable redirection',
+				danger: true
 			})
 
 			if (!confirm) {

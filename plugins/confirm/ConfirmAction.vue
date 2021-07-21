@@ -3,7 +3,7 @@
     <h1>{{ title }}</h1>
     <p>{{ message }}</p>
     <div class="buttons">
-      <button class="danger-button" @click="confirm">
+      <button :class="danger ? 'danger-button' : 'primary-button'" @click="confirm">
         {{ confirmText }}
       </button>
       <button class="button" @click="cancel">
@@ -24,19 +24,21 @@ export default {
 			message: null,
 			title: null,
 			confirmText: null,
-			cancelText: null
+			cancelText: null,
+			danger: true
 		}
 	},
 	mounted() {
 		events.$on('open', this.open)
 	},
 	methods: {
-		open({ title, message, confirmText, cancelText }) {
+		open({ title, message, confirmText, cancelText, danger }) {
 			this.show = true
 			this.title = title
 			this.message = message
 			this.confirmText = confirmText
 			this.cancelText = cancelText
+			this.danger = danger
 		},
 		confirm() {
 			events.$emit('confirmed', true)

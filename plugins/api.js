@@ -1,35 +1,47 @@
 
 class API {
-	constructor(axios) {
-		this.http = axios
+	constructor(axios, publicMode) {
+		this.http = axios.create({
+			baseURL: publicMode ? '/api/public' : '/api'
+		})
+
+		this.publicMode = publicMode
 	}
 
 	async getCrates() {
-		const { data: res } = await this.http.get(`/api/crate`)
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.get(`/crate`)
 
 		return res.data
 	}
 
 	async getRecentCrates() {
-		const { data: res } = await this.http.get(`/api/crate/recent`)
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.get(`/crate/recent`)
 
 		return res.data
 	}
 
 	async getLinksOfCrate(crate) {
-		const { data: res } = await this.http.get(`/api/crate/${ crate }/links`)
+		const { data: res } = await this.http.get(`/crate/${ crate }/links`)
 
 		return res.data
 	}
 
 	async getRecentLinks() {
-		const { data: res } = await this.http.get(`/api/link/recent`)
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.get(`/link/recent`)
 
 		return res.data
 	}
 
 	async addLinkToCrate(url, crate) {
-		const { data: res } = await this.http.post(`/api/link`, {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.post(`/link`, {
 			url,
 			crate
 		})
@@ -38,17 +50,21 @@ class API {
 	}
 
 	async deleteLink(id) {
-		await this.http.delete(`/api/link?id=${ id }`)
+		if (this.publicMode) return undefined
+
+		await this.http.delete(`/link?id=${ id }`)
 	}
 
 	async getLink(id) {
-		const { data: res } = await this.http.get(`/api/link/${ id }`)
+		const { data: res } = await this.http.get(`/link/${ id }`)
 
 		return res.data
 	}
 
 	async changeLink(link, data) {
-		const { data: res } = await this.http.put(`/api/link?id=${ link }`, {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.put(`/link?id=${ link }`, {
 			...data
 		})
 
@@ -56,11 +72,15 @@ class API {
 	}
 
 	async deleteCrate(id) {
-		await this.http.delete(`/api/crate?id=${ id }`)
+		if (this.publicMode) return undefined
+
+		await this.http.delete(`/crate?id=${ id }`)
 	}
 
 	async moveLinkToCrate(id, crate) {
-		const { data: res } = await this.http.put(`/api/link?id=${ id }`, {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.put(`/link?id=${ id }`, {
 			crate
 		})
 
@@ -68,7 +88,9 @@ class API {
 	}
 
 	async addCrate(name, icon) {
-		const { data: res } = await this.http.post(`/api/crate`, {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.post(`/crate`, {
 			name,
 			icon
 		})
@@ -77,13 +99,15 @@ class API {
 	}
 
 	async getCrate(id) {
-		const { data: res } = await this.http.get(`/api/crate/${ id }`)
+		const { data: res } = await this.http.get(`/crate/${ id }`)
 
 		return res.data
 	}
 
 	async changeCrate(crate, data) {
-		const { data: res } = await this.http.put(`/api/crate?id=${ crate }`, {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.put(`/crate?id=${ crate }`, {
 			...data
 		})
 
@@ -91,14 +115,22 @@ class API {
 	}
 
 	async search(query) {
-		const { data: res } = await this.http.get(`/api/search?query=${ query }`)
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.get(`/search?query=${ query }`)
 
 		return res.data
 	}
 }
 
-export default ({ app: { $axios } }, inject) => {
-	const api = new API($axios)
+export default ({ app: { $axios }, store, route }, inject) => {
+	const isPublic = route.path.startsWith('/public')
+
+	if (isPublic) {
+		store.commit('SET_PUBLIC_MODE', true)
+	}
+
+	const api = new API($axios, isPublic)
 
 	inject('api', api)
 }

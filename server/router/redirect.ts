@@ -1,7 +1,7 @@
 import express from 'express'
 
-import { Link } from '../models/link'
 import log from '../utils/log'
+import { getLink } from '../utils/getRedirectLink'
 
 export const router = express.Router()
 
@@ -12,21 +12,30 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			return res.redirect('/')
 		}
 
-		let link = await Link.findById(id)
+		// Check if path is a shortened link
+		const link = await getLink(id)
 		if (!link) {
-			link = await Link.findByShortCode(id)
-			if (!link) {
-				return res.fail(404, 'link not found')
-			}
+			return next()
 		}
 
+		// If redirect is disabled, return 404
 		if (!link.redirect.enabled) {
-			return res.fail(404, 'link not found')
+			return next()
 		}
 
 		log.info(`Redirecting ${ link.id } to ${ link.url }`)
 
-		res.redirect(link.url)
+		const data = {
+			url: link.url,
+			code: link.id,
+			metaAvailable: link.meta?.title !== undefined,
+			title: link.meta?.title ? `${ link.meta.title }` : 'Short URL by QrGen.cc',
+			provider: link.url,
+			image: link.meta?.image || '/banner.png',
+			description: link.meta?.description ? link.meta.description : 'This URL was shortened by WebCrate, a bookmarking application which let\'s you organize the web.'
+		}
+
+		return res.render('redirect.ejs', data)
 	} catch (err) {
 		return next(err)
 	}

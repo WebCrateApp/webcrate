@@ -1,9 +1,5 @@
 <template>
-  <div
-    draggable
-    @dragstart.stop="startDrag($event)"
-    @click.stop="openLinkDetails"
-  >
+  <div @click.stop="openLinkDetails">
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
       <h4>{{ link.meta && link.meta.title }}</h4>
       <div class="domain-wrapper">
@@ -24,8 +20,7 @@ export default {
 	props: [ 'link' ],
 	data() {
 		return {
-			hover: false,
-			drag: false
+			hover: false
 		}
 	},
 	computed: {
@@ -35,13 +30,7 @@ export default {
 	},
 	methods: {
 		openLinkDetails() {
-			this.$modal.show('linkDetails', { link: this.link.id })
-		},
-		startDrag(e) {
-			this.drag = true
-			e.dataTransfer.dropEffect = 'move'
-			e.dataTransfer.effectAllowed = 'move'
-			e.dataTransfer.setData('linkId', this.link.id)
+			this.$modal.show('linkDetailsPublic', { link: this.link.id })
 		}
 	}
 }

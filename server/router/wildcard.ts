@@ -1,21 +1,10 @@
 import express from 'express'
 
-import { Link } from '../models/link'
 import log from '../utils/log'
 import { isValidUrl } from '../utils/isValidUrl'
+import { getLink } from '../utils/getRedirectLink'
 
 export const router = express.Router()
-
-const getLink = async (path: string) => {
-	let link = await Link.findById(path)
-	if (!link) {
-		link = await Link.findByShortCode(path)
-
-		if (!link) return undefined
-	}
-
-	return link
-}
 
 router.get('*', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {

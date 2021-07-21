@@ -4,6 +4,8 @@
     <ModalAddLink v-else-if="showModal === 'addLink'" />
     <ModalAddCrate v-else-if="showModal === 'addCrate'" />
     <ModalLinkDetails v-else-if="showModal === 'linkDetails'" />
+    <ModalLinkDetailsPublic v-else-if="showModal === 'linkDetailsPublic'" />
+    <ModalCopyOutput v-else-if="showModal === 'copyOutput'" />
     <ConfirmModal />
   </div>
 </template>

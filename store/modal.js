@@ -1,8 +1,10 @@
-const modals = [ 'search', 'addLink', 'addCrate', 'linkDetails', 'confirm' ]
+const modals = [ 'search', 'addLink', 'addCrate', 'linkDetails', 'linkDetailsPublic', 'confirm', 'copyOutput' ]
 
 export const state = () => ({
 	show: undefined,
 	data: {
+		title: undefined,
+		message: undefined,
 		inputValue: undefined,
 		actionText: undefined,
 		confirmText: undefined,

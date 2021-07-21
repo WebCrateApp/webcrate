@@ -166,7 +166,7 @@ router.put('/', async (req: express.Request, res: express.Response, next: expres
 			...(name && { name }),
 			...(description && { description }),
 			...(icon && { icon }),
-			...(isPublic && { public: isPublic })
+			...(isPublic !== undefined && { public: isPublic })
 		})
 
 		const updated = await Crate.findById(id)

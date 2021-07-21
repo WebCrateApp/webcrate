@@ -1,32 +1,28 @@
 <template>
   <div class="crate-wrapper">
-    <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
     <div class="top-section">
       <div class="title">
-        <h1><span class="emoji" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span> <input v-model="crateName" placeholder="Crate Title" class="no-input headline"></h1>
-        <input v-model="crateDescription" class="no-input subtext" placeholder="Click to add a description for this Crate" />
-        <div v-if="showEmojiPicker" class="emoji-picker">
-          <EmojiPicker @selected="selectEmoji" @close="showEmojiPicker = false" />
-        </div>
+        <h1>
+          <span class="emoji" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span>
+          <span class="headline">{{ crate.name }}</span>
+        </h1>
+        <p class="subtext">
+          {{ crate.description }}
+        </p>
       </div>
       <div class="actions">
-        <button class="button add-btn" @click.stop="showAddLinkModal">
-          <Icon name="add" />Add Link
+        <button class="button add-btn" @click.stop="showAddModal">
+          <Icon name="heart" />Save this Crate
         </button>
-        <button v-if="crate.public" class="button share-btn" @click.stop="showShareModal">
-          <Icon name="share" />
-        </button>
-        <ActionDropdown icon="dotsV" :actions="crateActions" />
       </div>
     </div>
     <hr>
     <div v-if="links.length > 0" class="links">
       <Grid>
-        <LinkItem v-for="link in links" :key="link.id" :link="link" />
+        <LinkItemPublic v-for="link in links" :key="link.id" :link="link" />
       </Grid>
     </div>
     <div v-else class="empty-state">
-      <!-- <Icon name="link" class="link-icon" size="40px" /> -->
       <div class="list">
         <div v-for="i in 3" :key="i" class="empty-link">
           <div class="icon-div"></div>
@@ -34,19 +30,16 @@
         </div>
       </div>
       <h2>{{ emptyMessage }}</h2>
-      <p>Drag a link into this Crate or add a new one</p>
-      <button class="button" @click.stop="showAddLinkModal">
-        <Icon name="add" />Add Link
-      </button>
+      <p>Poke the creator to add some links or <a href="https://webcrate.deta.dev/docs" target="_blank" rel="noopener">create your own crate</a></p>
     </div>
   </div>
 </template>
 
 <script>
-import emojis from '../../server/utils/emojis'
+import emojis from '@/server/utils/emojis'
 
 export default {
-	layout: 'sidebar',
+	layout: 'sidebarPublic',
 	async asyncData({ params, redirect, store, app: { $api, $modal }, query }) {
 		const crateId = params.id
 
@@ -103,109 +96,15 @@ export default {
 		},
 		emptyMessage() {
 			return this.emptyMessages[Math.floor(Math.random() * this.emptyMessages.length)]
-		},
-		crateDescription: {
-			set(value) {
-				this.crate.description = value
-				this.$store.dispatch('CHANGE_CRATE_DESCRIPTION', { crateId: this.crate.id, description: value })
-			},
-			get() {
-				return this.crate.description
-			}
-		},
-		crateName: {
-			set(value) {
-				this.crate.name = value
-				this.$store.dispatch('CHANGE_CRATE_NAME', { crateId: this.crate.id, name: value })
-			},
-			get() {
-				return this.crate.name
-			}
-		},
-		crateIcon: {
-			set(value) {
-				this.crate.icon = value
-				this.$store.dispatch('CHANGE_CRATE_ICON', { crateId: this.crate.id, icon: value })
-			},
-			get() {
-				return this.crate.icon
-			}
-		},
-		crateActions() {
-			const items = []
-
-			if (this.crate.public) {
-				items.push({
-					text: 'Make Private',
-					icon: 'eyeOff',
-					click: this.makePrivate
-				})
-			} else {
-				items.push({
-					text: 'Make Public',
-					icon: 'eye',
-					click: this.makePublic
-				})
-			}
-
-			items.push({
-				text: 'Delete Crate',
-				icon: 'delete',
-				click: this.deleteCrate
-			})
-
-			return items
 		}
 	},
 	methods: {
-		showAddLinkModal() {
-			this.$modal.show('addLink')
-		},
-		showShareModal() {
+		showAddModal() {
 			this.$modal.show('copyOutput', {
 				inputValue: `${ location.protocol }//${ location.host }/public/crate/${ this.crate.id }`,
-				title: `Share: ${ this.emojiIcon } ${ this.crate.name }`,
-				message: `Copy the URL below to share this crate with anyone!`
+				title: `Add this crate to your own WebCrate`,
+				message: `Go to your own WebCrate and paste this URL in the "add external crate" field`
 			})
-		},
-		async deleteCrate() {
-			const confirm = await this.$confirm({
-				title: `Are you sure you want to delete this crate?`,
-				message: 'This will also permanently delete all links belonging to that crate.',
-				confirmText: 'Delete Crate',
-				danger: true
-			})
-
-			if (confirm) {
-				this.$store.dispatch('DELETE_CRATE', this.crate.id).then(() => {
-					this.$store.commit('SET_CURRENT_CRATE', undefined)
-					this.$router.push(`/`)
-				})
-			}
-		},
-		makePublic() {
-			this.$store.dispatch('CHANGE_CRATE_ACCESS', { crateId: this.crate.id, isPublic: true }).then(() => {
-				this.crate.public = true
-				this.showShareModal()
-			})
-		},
-		async makePrivate() {
-			const confirm = await this.$confirm({
-				title: `Are you sure you want to make this crate private?`,
-				message: 'If you have already shared this crate, users will see a 404 error.',
-				confirmText: 'Make Private',
-				danger: true
-			})
-
-			if (confirm) {
-				this.$store.dispatch('CHANGE_CRATE_ACCESS', { crateId: this.crate.id, isPublic: false }).then(() => {
-					this.crate.public = false
-				})
-			}
-		},
-		selectEmoji(key) {
-			this.showEmojiPicker = false
-			this.crateIcon = key
 		}
 	}
 }

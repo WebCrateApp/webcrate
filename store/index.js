@@ -6,6 +6,7 @@ const debounceThreshold = 500
 const defaultState = () => {
 	return {
 		username: 'Maxi',
+		publicMode: false,
 		loadingCrates: false,
 		currentCrate: undefined,
 		crates: [],
@@ -58,6 +59,9 @@ export const mutations = {
 	},
 	REMOVE_CURRENT_CRATE_LINK(state, value) {
 		state.currentCrateLinks = state.currentCrateLinks.filter((item) => item.id !== value)
+	},
+	SET_PUBLIC_MODE(state, value) {
+		state.publicMode = value
 	}
 }
 
@@ -115,6 +119,11 @@ export const actions = {
 	}, debounceThreshold),
 	async CHANGE_CRATE_ICON(context, { crateId, icon }) {
 		const crate = await this.$api.changeCrate(crateId, { icon })
+
+		context.commit('CHANGE_CRATE', crate)
+	},
+	async CHANGE_CRATE_ACCESS(context, { crateId, isPublic }) {
+		const crate = await this.$api.changeCrate(crateId, { public: isPublic })
 
 		context.commit('CHANGE_CRATE', crate)
 	},
