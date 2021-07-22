@@ -22,7 +22,7 @@ export function routeLog(req: express.Request, _res: express.Response, next: exp
 
 export function disableCaching(req: express.Request, res: express.Response, next: express.NextFunction) {
 	if (req.originalUrl === '/') {
-		res.set('Cache-contro', 'no-store')
+		res.set('Cache-control', 'no-store')
 	}
 
 	next()
