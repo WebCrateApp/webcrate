@@ -36,6 +36,7 @@ body {
     padding: 0;
     cursor: pointer;
     color: var(--text);
+    font-family: inherit;
 
     &:active {
         transform: scale(var(--click-scale-factor));

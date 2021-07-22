@@ -4,28 +4,25 @@
     <input v-model="searchValue" class="input" placeholder="Search for a link or crate by their name, description, icon or URL">
     <div v-if="crates.length > 0" class="section">
       <h2>Crates</h2>
-      <div v-for="crate in crates" :key="crate.id" class="crate-item" @click.stop="changeCrate(crate)">
-        <p><span>{{ emojiIcon(crate.icon) }}</span>{{ crate.name }}</p>
-      </div>
+      <CrateListItem v-for="crate in crates" :key="crate.id" :icon="crate.icon" :name="crate.name" @click.native.stop="changeCrate(crate)" />
     </div>
     <div v-if="links.length > 0" class="section">
       <h2>Links</h2>
-      <div v-for="link in links" :key="link.id" class="link-item" @click.stop="openLink(link)">
-        <p>{{ link.meta.title }}</p>
-        <div class="right">
-          <img v-if="link.meta && link.meta.icon" :src="`/img/${ link.id }?type=icon`">
-          <p class="domain">
-            {{ domain(link.url) }}
-          </p>
-        </div>
-      </div>
+      <LinkListItem
+        v-for="link in links"
+        :id="link.id"
+        :key="link.id"
+        :title="link.meta.title"
+        :url="link.url"
+        :icon="link.meta && link.meta.icon"
+        @click.native.stop="openLink(link)"
+      />
     </div>
   </Modal>
 </template>
 
 <script>
 import debounce from 'underscore/modules/debounce'
-import emojis from '../../server/utils/emojis'
 
 export default {
 	data() {
@@ -73,12 +70,6 @@ export default {
 			} else {
 				this.$modal.show('linkDetails', { link: link.id })
 			}
-		},
-		emojiIcon(icon) {
-			return emojis[icon]
-		},
-		domain(url) {
-			return new URL(url).host
 		}
 	}
 }
@@ -105,50 +96,6 @@ export default {
 				color: var(--text-light);
 				margin-bottom: 0.5rem;
 				margin-top: 0.5rem;
-			}
-		}
-
-		.crate-item {
-			padding: 0.5rem;
-			border-radius: var(--border-radius);
-			transition: background .2s ease;
-			cursor: pointer;
-
-			& span {
-				margin-right: 0.5rem;
-			}
-
-			&:hover {
-				background: var(--background-2nd);
-				transition: none;
-			}
-		}
-
-		.link-item {
-			padding: 0.5rem;
-			border-radius: var(--border-radius);
-			transition: background .2s ease;
-			cursor: pointer;
-			padding-left: 1rem;
-
-			.right {
-				display: flex;
-				align-items: center;
-			}
-
-			& img {
-				width: 15px;
-				height: 15px;
-				margin-right: 0.5rem;
-			}
-
-			.domain {
-				color: var(--text-light);
-			}
-
-			&:hover {
-				background: var(--background-2nd);
-				transition: none;
 			}
 		}
 	}

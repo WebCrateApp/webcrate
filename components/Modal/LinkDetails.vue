@@ -17,7 +17,7 @@
             {{ link.meta && link.meta.title }}
           </h1>
           <div class="url-wrapper">
-            <img v-if="link.meta && link.meta.icon" :src="`/img/${ link.id }?type=icon`">
+            <img v-if="link.meta && link.meta.icon" :src="link.id === 'demo' ? link.meta.icon : `/img/${ link.id }?type=icon`">
             <a :href="link.url" target="_blank" rel="noopener">
               {{ link.url }}
             </a>
@@ -57,7 +57,7 @@
       </div>
       <div v-if="link.meta && link.meta.image" class="image-wrapper">
         <div class="image">
-          <img :src="`/img/${ link.id }`">
+          <img :src="link.id === 'demo' ? link.meta.image : `/img/${ link.id }`">
         </div>
       </div>
       <textarea-autosize v-if="editable" v-model="linkDescription" class="no-input description" placeholder="Click to add a description for this link" />
@@ -83,6 +83,11 @@ export default {
 		}
 	},
 	async fetch() {
+		if (this.linkId.id !== undefined) {
+			this.link = this.linkId
+			return
+		}
+
 		const link = await this.$api.getLink(this.linkId)
 		this.link = link
 	},
@@ -94,7 +99,7 @@ export default {
 			return this.$store.state.modal.data.link
 		},
 		editable() {
-			return this.$store.state.modal.data.editable || true
+			return this.$store.state.modal.data.editable !== undefined ? this.$store.state.modal.data.editable : true
 		},
 		domain() {
 			return new URL(this.link.url).host
@@ -203,7 +208,7 @@ export default {
 	created() {
 		const query = Object.assign({}, this.$route.query)
 		if (!query.link) {
-			query.link = this.linkId
+			query.link = this.linkId.id || this.linkId
 			this.$router.push({ query })
 		}
 	},
