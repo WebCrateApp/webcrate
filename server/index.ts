@@ -10,8 +10,7 @@ import log from './utils/log'
 
 const app = express()
 
-// Server Nuxt static files
-app.use(express.static(path.join(__dirname, '../dist')))
+// Use ejs as view engine
 app.set('view engine', 'ejs')
 app.set('views', 'server/views')
 
@@ -27,6 +26,9 @@ app.use(disableCaching)
 
 // Use router
 app.use(routes)
+
+// Serve Nuxt static files (needs to come after routes)
+app.use(express.static(path.join(__dirname, '../dist')))
 
 // Redirect to Nuxt SPA
 app.get('*', (_req, res, next) => {
