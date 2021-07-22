@@ -59,7 +59,7 @@
         </button>
       </div>
       <div v-else-if="isPublic">
-        <p>Poke the creator to add some links or <a href="https://webcrate.deta.dev/docs" target="_blank" rel="noopener">create your own crate</a></p>
+        <p>Poke the creator to add some links or <a href="https://webcrate.app/docs" target="_blank" rel="noopener">create your own crate</a></p>
       </div>
       <div v-else-if="isExternal">
         <p>Poke the creator to add some links</p>

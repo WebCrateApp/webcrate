@@ -7,10 +7,10 @@
     </div>
     <hr>
     <div class="menus">
-      <a href="https://webcrate.deta.dev" target="_blank" rel="noopener">
+      <a href="https://webcrate.app" target="_blank" rel="noopener">
         <SideBarMenuItem name="What's WebCrate?" icon="info" />
       </a>
-      <a href="https://webcrate.deta.dev/docs" target="_blank" rel="noopener">
+      <a href="https://webcrate.app/docs" target="_blank" rel="noopener">
         <SideBarMenuItem name="Create your own crate" icon="add" />
       </a>
     </div>
