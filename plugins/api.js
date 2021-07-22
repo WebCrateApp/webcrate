@@ -44,10 +44,10 @@ class API {
 		return res.data
 	}
 
-	async getRecentLinks() {
+	async getRecentLinks(num = 10) {
 		if (this.publicMode) return undefined
 
-		const { data: res } = await this.http.get(`/link/recent`)
+		const { data: res } = await this.http.get(`/link/recent?num=${ num }`)
 
 		return res.data
 	}
@@ -160,9 +160,7 @@ class API {
 }
 
 export default ({ app: { $axios }, store, params }, inject) => {
-	console.log(params)
 	const isPublic = params.pathMatch && params.pathMatch.includes('public')
-	console.log(isPublic)
 
 	if (isPublic) {
 		store.commit('SET_PUBLIC_MODE', true)

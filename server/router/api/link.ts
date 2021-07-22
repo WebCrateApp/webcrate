@@ -62,9 +62,11 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 	}
 })
 
-router.get('/recent', async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.get('/recent', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const links = await Link.find({}, 10)
+		const numString = req.query.num as string
+		const num = numString ? parseInt(numString) : 10
+		const links = await Link.find({}, num)
 
 		log.debug(links)
 		res.ok(links)

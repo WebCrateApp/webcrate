@@ -2,19 +2,13 @@
   <div class="page-wrapper">
     <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
     <div class="title">
-      <h1>{{ welcomeMessage }}</h1>
+      <h1>Inbox</h1>
       <input v-model="newUrl" v-shortkey="['enter']" class="input" placeholder="Quick add a URL" @shortkey="addLink">
       <button class="button add-btn" @click.stop="addLink">
         <Icon name="add" />Add Link
       </button>
     </div>
     <hr>
-    <div class="section">
-      <h2>Recently used Crates</h2>
-      <Grid max-width="300px">
-        <CrateItem v-for="crate in crates" :key="crate.id" :crate="crate" />
-      </Grid>
-    </div>
     <div class="section">
       <h2>Recently added links</h2>
       <Grid>
@@ -40,34 +34,21 @@ export default {
 			$modal.show('linkDetails', { link })
 		}
 
-		const links = await $api.getRecentLinks()
-		const crates = await $api.getRecentCrates()
+		const links = await $api.getRecentLinks(20)
 
-		return { links, crates }
+		return { links }
 	},
 	data() {
 		return {
-			welcomeMessages: [
-				'Welcome back!',
-				'Good day!',
-				'How\'s it going?',
-				'What up?',
-				'Great to see you!'
-			],
 			newUrl: undefined
 		}
 	},
 	head() {
 		return {
-			title: 'Home | WebCrate',
+			title: 'Inbox | WebCrate',
 			link: [
 				{ rel: 'icon', type: 'image/icon', href: `/favicon.png` }
 			]
-		}
-	},
-	computed: {
-		welcomeMessage() {
-			return this.welcomeMessages[Math.floor(Math.random() * this.welcomeMessages.length)]
 		}
 	},
 	methods: {
