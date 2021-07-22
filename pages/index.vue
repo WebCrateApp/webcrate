@@ -3,7 +3,8 @@
     <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
     <div class="title">
       <h1>{{ welcomeMessage }}</h1>
-      <button class="button add-btn" @click.stop="showAddLinkModal">
+      <input v-model="newUrl" v-shortkey="['enter']" class="input" placeholder="Quick add a URL" @shortkey="addLink">
+      <button class="button add-btn" @click.stop="addLink">
         <Icon name="add" />Add Link
       </button>
     </div>
@@ -52,7 +53,8 @@ export default {
 				'How\'s it going?',
 				'What up?',
 				'Great to see you!'
-			]
+			],
+			newUrl: undefined
 		}
 	},
 	head() {
@@ -69,6 +71,22 @@ export default {
 		}
 	},
 	methods: {
+		addLink() {
+			if (!this.newUrl) {
+				this.showAddLinkModal()
+
+				return
+			}
+
+			const url = this.newUrl
+
+			this.$store.dispatch('ADD_LINK', { url }).then((link) => {
+				this.newUrl = undefined
+				this.$modal.show('linkDetails', { link: link.id })
+			}).catch((err) => {
+				console.log(err)
+			})
+		},
 		showAddLinkModal() {
 			this.$modal.show('addLink')
 		}
@@ -93,14 +111,20 @@ export default {
 
 		& h1 {
 			font-size: 1.4rem;
-			flex-grow: 1;
+			flex-shrink: 0;
 			color: var(--text);
+		}
+
+		& input {
+			max-width: 400px;
+			margin: auto;
 		}
 
 		& button {
 			margin-left: auto;
 			display: flex;
 			align-items: center;
+			flex-shrink: 0;
 		}
 	}
 

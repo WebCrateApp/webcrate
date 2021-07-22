@@ -94,7 +94,7 @@ export default {
 			return this.$store.state.modal.data.link
 		},
 		editable() {
-			return this.$store.state.modal.data.editable
+			return this.$store.state.modal.data.editable || true
 		},
 		domain() {
 			return new URL(this.link.url).host
