@@ -37,6 +37,14 @@ export default {
 		},
 		currentCrate() {
 			return this.$store.state.currentCrate
+		},
+		changePageOnSuccess: {
+			set(value) {
+				this.$modal.setData({ changePageOnSuccess: value })
+			},
+			get() {
+				return this.$store.state.modal.data.changePageOnSuccess !== undefined ? this.$store.state.modal.data.changePageOnSuccess : true
+			}
 		}
 	},
 	created() {
@@ -52,8 +60,12 @@ export default {
 			this.$store.dispatch('ADD_CRATE', { name, icon }).then((crate) => {
 				this.name = undefined
 				this.invalidLinkErr = undefined
-				this.$store.commit('SET_CURRENT_CRATE', crate.id)
-				this.$router.push(`/crate/${ crate.id }`)
+
+				if (this.changePageOnSuccess) {
+					this.$store.commit('SET_CURRENT_CRATE', crate.id)
+					this.$router.push(`/crate/${ crate.id }`)
+				}
+
 				this.close()
 			}).catch((err) => {
 				this.invalidLinkErr = err.message

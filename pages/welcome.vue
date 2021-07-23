@@ -2,6 +2,7 @@
   <div class="page-wrapper">
     <ModalAddCrate v-if="showModal === 'addCrate'" />
     <ModalLinkDetails v-else-if="showModal === 'linkDetails'" />
+	<ModalAddLink v-else-if="showModal === 'addLink'" />
     <div v-if="state !== 'load'" class="logo">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="165" height="36" viewBox="0 0 165 36">
         <defs>
@@ -64,12 +65,12 @@
       <p>In WebCrate you organize links of the same topic into folders or groups called crates. Each crate can contain as many links as you want. You can give each crate a name and assign it an emoji as a icon.</p>
       <hr>
       <h2>We already created a few crates for you:</h2>
-      <CrateListItem icon="book" name="Read Later" style="cursor: initial" />
-      <CrateListItem icon="open_file_folder" name="Archive" style="cursor: initial" />
-      <CrateListItem icon="heavy_plus_sign" name="Add your own" @click.native.stop="showAddCrateModal" />
+	  <CrateListItem v-for="crate in crates" :key="crate.id" :icon="crate.icon" :name="crate.name" style="cursor: initial" />
+	  <hr>
+      <CrateListItem icon="heavy_plus_sign" name="Add your own crate" @click.native.stop="showAddCrateModal" />
       <div class="info">
         <Icon name="info" />
-        <p>Click on the last one to add your first crate</p>
+        <p>You can also create a new crate later</p>
       </div>
       <button class="button" @click="state = 'links'">
         Next Step
@@ -79,18 +80,29 @@
       <h1>The Basics: Links</h1>
       <p>A link is a URL of a website which you add to WebCrate. When you add a new link, we automatically grap the site's title, description and image and display them for you. You can change the title and description at any time to make it easier to know what a link is about.</p>
       <hr>
-      <h2>Here's what that looks like:</h2>
+      <h2>Here's how a link will look like (click it to open the details view):</h2>
       <LinkListItem
         id="AWZVIzS9HSVn7Ylv"
         title="GitHub: Where the world builds software"
         url="https://github.com"
         icon="https://github.githubassets.com/favicons/favicon.svg"
         :load-external-icon="true"
-        @click.native.stop="openLink"
+        @click.native.stop="openLink(link)"
       />
+	  <LinkListItem
+        v-for="link in links"
+        :id="link.id"
+        :key="link.id"
+        :title="link.meta.title"
+        :url="link.url"
+        :icon="link.meta && link.meta.icon"
+        @click.native.stop="openLink(link)"
+      />
+	  <hr>
+	  <CrateListItem icon="heavy_plus_sign" name="Add your first link" @click.native.stop="showAddLinkModal" />
       <div class="info">
         <Icon name="info" />
-        <p>Click on the link to open the link details view</p>
+        <p>You can also add a new link later</p>
       </div>
       <button class="button" @click="state = 'end'">
         Next Step
@@ -131,17 +143,32 @@ export default {
 			]
 		}
 	},
+	async created() {
+		this.$store.dispatch('GET_CRATES')
+
+		const links = await this.$api.getRecentLinks()
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
+	},
 	computed: {
 		showModal() {
 			return this.$modal.getShown()
+		},
+		crates() {
+			return this.$store.state.crates
+		},
+		links() {
+			return this.$store.state.currentCrateLinks
 		}
 	},
 	methods: {
 		showAddCrateModal() {
-			this.$modal.show('addCrate')
+			this.$modal.show('addCrate', { changePageOnSuccess: false })
 		},
-		openLink() {
-			this.$modal.show('linkDetails', { link: this.link, editable: false })
+		showAddLinkModal() {
+			this.$modal.show('addLink')
+		},
+		openLink(link) {
+			this.$modal.show('linkDetails', { link, editable: false })
 		},
 		done() {
 			this.$router.push(`/`)
@@ -250,7 +277,8 @@ export default {
 		}
 
 		& hr {
-			margin-top: 1rem
+			margin-top: 1rem;
+			margin-bottom: 1rem;
 		}
 
 		.info {
