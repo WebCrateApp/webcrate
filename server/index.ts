@@ -5,7 +5,7 @@ import compression from 'compression'
 import cors from 'cors'
 
 import routes from './router'
-import { routeLog, sendResponse, disableCaching } from './middleware'
+import { routeLog, sendResponse, disableCaching, checkIfSetup } from './middleware'
 import log from './utils/log'
 
 const app = express()
@@ -16,6 +16,7 @@ app.set('views', 'server/views')
 
 app.use(routeLog)
 app.use(sendResponse)
+app.use(checkIfSetup)
 
 app.use(bodyParser.json())
 app.use(compression())
@@ -24,11 +25,11 @@ app.use(cors())
 // Disable caching for /, reference: https://www.notion.so/Turning-off-Caching-on-the-Root-9879ed9411a4486dbeaf4cc57697d610
 app.use(disableCaching)
 
+// Serve Nuxt static files
+app.use(express.static(path.join(__dirname, '../dist')))
+
 // Use router
 app.use(routes)
-
-// Serve Nuxt static files (needs to come after routes)
-app.use(express.static(path.join(__dirname, '../dist')))
 
 // Redirect to Nuxt SPA
 app.get('*', (_req, res, next) => {

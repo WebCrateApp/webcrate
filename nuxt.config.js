@@ -16,15 +16,6 @@ export default {
 		'~/server/index.ts'
 	],
 
-	router: {
-		extendRoutes(routes) {
-			routes.push({
-				path: '/home',
-				redirect: '/'
-			})
-		}
-	},
-
 	env: {
 		appVersion: pkg.version
 	},

@@ -1,6 +1,10 @@
 import express from 'express'
+
 import log from '../utils/log'
 import { messages } from '../utils/status'
+import { isSetup } from '../utils/isSetup'
+
+import { Crate } from '../models/crate'
 
 const ignoreRequestStrings: Array<string> = [ 'js/', 'css/', 'img/', 'static/', '_nuxt', 'manifest.json' ] // Don't log request if one of the strings are in URL
 
@@ -26,6 +30,38 @@ export function disableCaching(req: express.Request, res: express.Response, next
 	}
 
 	next()
+}
+
+export async function checkIfSetup(req: express.Request, res: express.Response, next: express.NextFunction) {
+	// Check if WebCrate already set up
+	const setup = await isSetup()
+	if (!setup) {
+
+		console.log('not setup yet')
+
+		// Create default crates if they don't exist
+		const crates = await Crate.find([{ name: 'Read Later' }, { name: 'Archive' }])
+		if (crates.length === 0) {
+			console.log('creating default crates')
+			await Crate.create('Read Later', 'Articles and blog posts I want to read later', 'book', false)
+			await Crate.create('Archive', 'Archive of old links', 'open_file_folder', false)
+		}
+
+		// Redirect to welcome page
+		if (req.path === '/' || req.path === '/inbox' || req.path.startsWith('/crate')) {
+			console.log('redirecting to welcome page')
+			return res.redirect('/welcome')
+		}
+
+		return next()
+	}
+
+	// Block welcome page if already set up
+	if (req.path === '/welcome') {
+		return res.redirect('/')
+	}
+
+	return next()
 }
 
 export function sendResponse(_req: express.Request, res: express.Response, next: express.NextFunction) {
