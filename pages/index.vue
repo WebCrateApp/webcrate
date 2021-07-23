@@ -9,17 +9,30 @@
       </button>
     </div>
     <hr>
-    <div class="section">
+    <div v-if="crates.length > 0" class="section">
       <h2>Recently used Crates</h2>
       <Grid max-width="300px">
         <CrateItem v-for="crate in crates" :key="crate.id" :crate="crate" />
       </Grid>
     </div>
-    <div class="section">
+    <div v-if="links.length > 0" class="section">
       <h2>Recently added links</h2>
       <Grid>
         <LinkItem v-for="link in links" :key="link.id" :link="link" />
       </Grid>
+    </div>
+	<div v-if="links.length === 0 && crates.length === 0" class="empty-state">
+      <div class="list">
+        <div v-for="i in 3" :key="i" class="empty-link">
+          <div class="icon-div"></div>
+          <div class="text-div"></div>
+        </div>
+      </div>
+      <h2>{{ emptyMessage }}</h2>
+      <p>Drag a link into this crate or add a new one</p>
+	  <button class="button" @click.stop="showAddLinkModal">
+		<Icon name="add" />Add Link
+	  </button>
     </div>
   </div>
 </template>
@@ -54,6 +67,14 @@ export default {
 				'What up?',
 				'Great to see you!'
 			],
+			emptyMessages: [
+				'Nothing Here',
+				'Looks pretty Empty',
+				'No Links',
+				'*crickets chirping*',
+				'Nothing In Here',
+				'Add a Link'
+			],
 			newUrl: undefined
 		}
 	},
@@ -68,6 +89,9 @@ export default {
 	computed: {
 		welcomeMessage() {
 			return this.welcomeMessages[Math.floor(Math.random() * this.welcomeMessages.length)]
+		},
+		emptyMessage() {
+			return this.emptyMessages[Math.floor(Math.random() * this.emptyMessages.length)]
 		}
 	},
 	methods: {
@@ -137,6 +161,69 @@ export default {
 			font-weight: 550;
 			color: var(--text-light);
 			margin-bottom: 1rem;
+		}
+	}
+
+	.empty-state {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-top: 4rem;
+
+		& .link-icon {
+			color: var(--text-light);
+		}
+
+		& h2 {
+			margin-top: 1rem;
+		}
+
+		& p {
+			margin-top: 0.5rem;
+		}
+
+		& button {
+			display: flex;
+			align-items: center;
+			margin: auto;
+			margin-top: 1rem;
+
+			& div {
+				margin-right: 0.5rem;
+			}
+		}
+
+		& .list {
+			max-width: 200px;
+			width: 80%;
+		}
+
+		& .empty-link {
+			width: 100%;
+			height: 35px;
+			background: var(--background-2nd);
+			border-radius: var(--border-radius);
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			padding: 0.5rem;
+			margin-bottom: 0.5rem;
+
+			& .icon-div {
+				height: 100%;
+				width: 20px;
+				background: var(--grey-light);
+				border-radius: var(--border-radius);
+			}
+
+			& .text-div {
+				height: 100%;
+				flex-grow: 1;
+				background: var(--grey-light);
+				border-radius: var(--border-radius);
+				margin-left: 0.5rem;
+			}
 		}
 	}
 

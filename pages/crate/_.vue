@@ -53,7 +53,7 @@
       </div>
       <h2>{{ emptyMessage }}</h2>
       <div v-if="editable">
-        <p>Drag a link into this Crate or add a new one</p>
+        <p>Drag a link into this crate or add a new one</p>
         <button class="button" @click.stop="showAddLinkModal">
           <Icon name="add" />Add Link
         </button>
@@ -375,6 +375,7 @@ export default {
 		& button {
 			display: flex;
 			align-items: center;
+			margin: auto;
 			margin-top: 1rem;
 
 			& div {

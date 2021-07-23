@@ -18,6 +18,9 @@
         @click.native.stop="openLink(link)"
       />
     </div>
+	<div v-if="links.length === 0 && crates.length === 0 && searchValue" class="nothing">
+	  <p>{{ emptyMessage }}</p>
+	</div>
   </Modal>
 </template>
 
@@ -29,7 +32,13 @@ export default {
 		return {
 			searchValue: undefined,
 			links: [],
-			crates: []
+			crates: [],
+			emptyMessages: [
+				'Nothing found',
+				'*crickets chirping*',
+				'No results',
+				'No links or crates found'
+			]
 		}
 	},
 	computed: {
@@ -38,6 +47,9 @@ export default {
 		},
 		searchItems() {
 			return this.$api.search(this.searchValue)
+		},
+		emptyMessage() {
+			return this.emptyMessages[Math.floor(Math.random() * this.emptyMessages.length)]
 		}
 	},
 	watch: {
@@ -97,6 +109,10 @@ export default {
 				margin-bottom: 0.5rem;
 				margin-top: 0.5rem;
 			}
+		}
+
+		.nothing {
+			color: var(--text-light);
 		}
 	}
 </style>
