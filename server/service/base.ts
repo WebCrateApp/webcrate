@@ -4,15 +4,17 @@ import db from './db'
 export default class Base {
 
 	db: any
+	descendingOrder: Boolean
 
-	constructor(name: string) {
+	constructor(name: string, descendingOrder: Boolean) {
 		this.db = db.Base(name)
+		this.descendingOrder = descendingOrder
 	}
 
 	async create(data: any) {
 		// Generate defaults but allow changing them through data object
 		const toBeCreated = {
-			key: generateKey(),
+			key: generateKey(this.descendingOrder),
 			id: generateId(),
 			addedAt: new Date(),
 			...data
@@ -86,7 +88,7 @@ export default class Base {
 		return res.items[0]
 	}
 
-	static use(name: string): Base {
-		return new Base(name)
+	static use(name: string, descendingOrder: Boolean = false): Base {
+		return new Base(name, descendingOrder)
 	}
 }

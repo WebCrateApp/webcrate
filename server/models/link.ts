@@ -1,7 +1,7 @@
 import { MetaData } from 'metadata-scraper/lib/types'
 import Base from '../service/base'
 
-const Links = Base.use('links')
+const Links = Base.use('links', true)
 
 export class Link {
 

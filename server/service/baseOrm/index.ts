@@ -158,7 +158,7 @@ class Model {
 	static async create(data: any) {
 		// Generate defaults but allow changing them through data object
 		const toBeCreated = {
-			key: generateKey(),
+			key: generateKey(false),
 			id: generateId(),
 			addedAt: new Date(),
 			...data
