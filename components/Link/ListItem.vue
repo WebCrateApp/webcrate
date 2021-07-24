@@ -37,7 +37,11 @@ export default {
 	},
 	computed: {
 		domain() {
-			return new URL(this.url).host
+			try {
+				return new URL(this.url).host
+			} catch (err) {
+				return undefined
+			}
 		}
 	}
 }

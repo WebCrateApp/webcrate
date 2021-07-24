@@ -102,7 +102,11 @@ export default {
 			return this.$store.state.modal.data.editable !== undefined ? this.$store.state.modal.data.editable : true
 		},
 		domain() {
-			return new URL(this.link.url).host
+			try {
+				return new URL(this.link.url).host
+			} catch (err) {
+				return undefined
+			}
 		},
 		host() {
 			return `${ window.location.protocol }//${ window.location.host }`

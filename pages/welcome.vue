@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <ModalAddCrate v-if="showModal === 'addCrate'" />
     <ModalLinkDetails v-else-if="showModal === 'linkDetails'" />
-	<ModalAddLink v-else-if="showModal === 'addLink'" />
+    <ModalAddLink v-else-if="showModal === 'addLink'" />
     <div v-if="state !== 'load'" class="logo">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="165" height="36" viewBox="0 0 165 36">
         <defs>
@@ -35,7 +35,7 @@
     <div v-if="state === 'load'" class="welcome">
       <h1>Welcome to WebCrate 👋</h1>
       <p>Organize and share links from around the web.</p>
-      <button class="button" @click="state = 'crates'">
+      <button class="button" @click="state = 'name'">
         Start Setup
       </button>
       <hr>
@@ -60,13 +60,26 @@
         </a>
       </div>
     </div>
+    <div v-if="state === 'name'" class="basics">
+      <h1>Your own WebCrate</h1>
+      <p>This is your own instance of WebCrate. Give it a name to make it yours!</p>
+      <hr>
+      <input v-model="name" class="input" placeholder="Maxi's WebCrate" />
+      <div class="info">
+        <Icon name="info" />
+        <p>You can always change this later</p>
+      </div>
+      <button class="button" @click="saveName">
+        Next Step
+      </button>
+    </div>
     <div v-if="state === 'crates'" class="basics">
       <h1>The Basics: Crates</h1>
       <p>In WebCrate you organize links of the same topic into folders or groups called crates. Each crate can contain as many links as you want. You can give each crate a name and assign it an emoji as a icon.</p>
       <hr>
       <h2>We already created a few crates for you:</h2>
-	  <CrateListItem v-for="crate in crates" :key="crate.id" :icon="crate.icon" :name="crate.name" style="cursor: initial" />
-	  <hr>
+      <CrateListItem v-for="crate in crates" :key="crate.id" :icon="crate.icon" :name="crate.name" style="cursor: initial" />
+      <hr>
       <CrateListItem icon="heavy_plus_sign" name="Add your own crate" @click.native.stop="showAddCrateModal" />
       <div class="info">
         <Icon name="info" />
@@ -83,13 +96,13 @@
       <h2>Here's how a link will look like (click it to open the details view):</h2>
       <LinkListItem
         id="AWZVIzS9HSVn7Ylv"
-        title="GitHub: Where the world builds software"
-        url="https://github.com"
-        icon="https://github.githubassets.com/favicons/favicon.svg"
+        :title="demoLink.title"
+        :url="demoLink.url"
+        :icon="demoLink.meta.icon"
         :load-external-icon="true"
-        @click.native.stop="openLink(link)"
+        @click.native.stop="openLink(demoLink)"
       />
-	  <LinkListItem
+      <LinkListItem
         v-for="link in links"
         :id="link.id"
         :key="link.id"
@@ -98,8 +111,8 @@
         :icon="link.meta && link.meta.icon"
         @click.native.stop="openLink(link)"
       />
-	  <hr>
-	  <CrateListItem icon="heavy_plus_sign" name="Add your first link" @click.native.stop="showAddLinkModal" />
+      <hr>
+      <CrateListItem icon="heavy_plus_sign" name="Add your first link" @click.native.stop="showAddLinkModal" />
       <div class="info">
         <Icon name="info" />
         <p>You can also add a new link later</p>
@@ -132,7 +145,8 @@ export default {
 	data() {
 		return {
 			state: 'load',
-			link: { id: 'demo', url: 'https://github.com ', crate: undefined, meta: { description: 'GitHub is where over 65 million developers shape the future of software, together. Contribute to the open source community, manage your Git repositories, review code like a pro, track bugs and feat...', icon: 'https://github.githubassets.com/favicons/favicon.svg', image: 'https://github.githubassets.com/images/modules/site/social-cards/github-social.png', title: 'GitHub: Where the world builds software' }, redirect: { enabled: false }, addedWith: 'web', addedAt: '2021-07-19T17:34:25.671Z' }
+			name: undefined,
+			demoLink: { id: 'demo', url: 'https://github.com ', crate: undefined, meta: { description: 'GitHub is where over 65 million developers shape the future of software, together. Contribute to the open source community, manage your Git repositories, review code like a pro, track bugs and feat...', icon: 'https://github.githubassets.com/favicons/favicon.svg', image: 'https://github.githubassets.com/images/modules/site/social-cards/github-social.png', title: 'GitHub: Where the world builds software' }, redirect: { enabled: false }, addedWith: 'web', addedAt: '2021-07-19T17:34:25.671Z' }
 		}
 	},
 	head() {
@@ -142,12 +156,6 @@ export default {
 				{ rel: 'icon', type: 'image/icon', href: `/favicon.png` }
 			]
 		}
-	},
-	async created() {
-		this.$store.dispatch('GET_CRATES')
-
-		const links = await this.$api.getRecentLinks()
-		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
 	},
 	computed: {
 		showModal() {
@@ -159,6 +167,12 @@ export default {
 		links() {
 			return this.$store.state.currentCrateLinks
 		}
+	},
+	async created() {
+		this.$store.dispatch('GET_CRATES')
+
+		const links = await this.$api.getRecentLinks()
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
 	},
 	methods: {
 		showAddCrateModal() {
@@ -172,6 +186,15 @@ export default {
 		},
 		done() {
 			this.$router.push(`/`)
+		},
+		async saveName() {
+			if (!this.name) {
+				return
+			}
+
+			await this.$api.setConfig({ name: this.name })
+			this.$store.commit('SET_CONFIG', { name: this.name })
+			this.state = 'crates'
 		}
 	}
 }

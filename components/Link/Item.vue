@@ -39,7 +39,11 @@ export default {
 	},
 	computed: {
 		domain() {
-			return new URL(this.link.url).host
+			try {
+				return new URL(this.link.url).host
+			} catch (err) {
+				return undefined
+			}
 		},
 		dragStartEvent() {
 			return this.editable ? 'dragstart' : null

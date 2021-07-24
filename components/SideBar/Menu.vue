@@ -3,7 +3,7 @@
     <div v-if="!loadingCrates" key="loaded" class="sidemenu">
       <div class="headline">
         <h1>
-          {{ username }}'s WebCrate
+          {{ config && config.name ? config.name : 'WebCrate' }}
         </h1>
       </div>
       <hr>
@@ -88,8 +88,8 @@ export default {
 		externalCrates() {
 			return this.$store.state.externalCrates
 		},
-		username() {
-			return this.$store.state.username
+		config() {
+			return this.$store.state.config
 		},
 		currentCrate() {
 			return this.$store.state.currentCrate

@@ -8,6 +8,22 @@ class API {
 		this.publicMode = publicMode
 	}
 
+	async getConfig() {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.get(`/config`)
+
+		return res.data
+	}
+
+	async setConfig(config) {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.put(`/config`, config)
+
+		return res.data
+	}
+
 	async getCrates() {
 		if (this.publicMode) return undefined
 

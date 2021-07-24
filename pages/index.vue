@@ -21,7 +21,7 @@
         <LinkItem v-for="link in links" :key="link.id" :link="link" />
       </Grid>
     </div>
-	<div v-if="links.length === 0 && crates.length === 0" class="empty-state">
+    <div v-if="links.length === 0 && crates.length === 0" class="empty-state">
       <div class="list">
         <div v-for="i in 3" :key="i" class="empty-link">
           <div class="icon-div"></div>
@@ -30,9 +30,9 @@
       </div>
       <h2>{{ emptyMessage }}</h2>
       <p>Drag a link into this crate or add a new one</p>
-	  <button class="button" @click.stop="showAddLinkModal">
-		<Icon name="add" />Add Link
-	  </button>
+      <button class="button" @click.stop="showAddLinkModal">
+        <Icon name="add" />Add Link
+      </button>
     </div>
   </div>
 </template>
@@ -43,7 +43,7 @@
 */
 export default {
 	layout: 'sidebar',
-	async asyncData({ app: { $api, $modal }, query }) {
+	async asyncData({ app: { $api, $modal }, store, query }) {
 		const addUrl = query.addUrl
 		const link = query.link
 
@@ -52,6 +52,9 @@ export default {
 		} else if (link) {
 			$modal.show('linkDetails', { link })
 		}
+
+		const config = await $api.getConfig()
+		store.commit('SET_CONFIG', config)
 
 		const links = await $api.getRecentLinks()
 		const crates = await $api.getRecentCrates()

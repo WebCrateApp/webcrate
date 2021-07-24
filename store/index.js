@@ -5,7 +5,9 @@ const debounceThreshold = 500
 
 const defaultState = () => {
 	return {
-		username: 'Maxi',
+		config: {
+			name: undefined
+		},
 		publicMode: false,
 		loadingCrates: false,
 		currentCrate: undefined,
@@ -72,6 +74,9 @@ export const mutations = {
 	},
 	SET_PUBLIC_MODE(state, value) {
 		state.publicMode = value
+	},
+	SET_CONFIG(state, config) {
+		state.config = { ...state.config, ...config }
 	}
 }
 
