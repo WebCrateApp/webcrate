@@ -1,7 +1,7 @@
 name: Dependabot PR CI
 on:
   schedule:
-    - cron: "0 */6 * * *" # Every six hours
+    - cron: "0 */24 * * *" # Every six hours
   workflow_dispatch:
 jobs:
   auto-merge:
