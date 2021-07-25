@@ -12,7 +12,7 @@
       <div v-shortkey="['ctrl', 'alt', 'n']" @shortkey="showModal('addCrate')"></div>
       <div class="menus">
         <SideBarMenuItem name="Home" icon="home" :selected="currentPage === 'home'" @click.native="changePage('home')" />
-        <SideBarMenuItem name="Inbox" icon="inbox" :selected="currentPage === 'inbox'" @click.native="changePage('inbox')" />
+        <SideBarMenuItem name="Inbox" icon="inbox" :selected="currentPage === 'inbox'" crate-id="null" @click.native="changePage('inbox')" />
         <SideBarMenuItem name="Quick Search" icon="search" @click.native.stop="showModal('search')" />
       </div>
       <div class="section-title">

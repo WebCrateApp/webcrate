@@ -57,9 +57,11 @@ export default {
 		store.commit('SET_CONFIG', config)
 
 		const links = await $api.getRecentLinks()
+		store.commit('SET_CURRENT_CRATE_LINKS', links)
+
 		const crates = await $api.getRecentCrates()
 
-		return { links, crates }
+		return { crates }
 	},
 	data() {
 		return {
@@ -95,6 +97,14 @@ export default {
 		},
 		emptyMessage() {
 			return this.emptyMessages[Math.floor(Math.random() * this.emptyMessages.length)]
+		},
+		links: {
+			set(value) {
+				this.$store.commit('SET_CURRENT_CRATE_LINKS', value)
+			},
+			get() {
+				return this.$store.state.currentCrateLinks
+			}
 		}
 	},
 	methods: {
