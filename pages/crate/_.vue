@@ -216,8 +216,8 @@ export default {
 		showAddModal() {
 			this.$modal.show('copyOutput', {
 				inputValue: `${ location.protocol }//${ location.host }/crate/public/${ this.crate.id }`,
-				title: `Add this crate to your own WebCrate`,
-				message: `Go to your own WebCrate and paste this URL in the "add external crate" field`
+				title: `Add this crate to your own WebCrate instance`,
+				message: `Go to your own WebCrate instance and paste this URL in the "add external crate" field`
 			})
 		},
 		async deleteCrate() {

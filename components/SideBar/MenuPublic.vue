@@ -2,7 +2,7 @@
   <div class="sidemenu">
     <div class="headline">
       <h1>
-        {{ username }}'s WebCrate
+        {{ config && config.name ? config.name : 'WebCrate' }}
       </h1>
     </div>
     <hr>
@@ -25,8 +25,8 @@ export default {
 		}
 	},
 	computed: {
-		username() {
-			return this.$store.state.username
+		config() {
+			return this.$store.state.config
 		}
 	},
 	methods: {
