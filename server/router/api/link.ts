@@ -75,6 +75,19 @@ router.get('/recent', async (req: express.Request, res: express.Response, next: 
 	}
 })
 
+router.get('/orphans', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+	try {
+		const numString = req.query.num as string
+		const num = numString ? parseInt(numString) : 10
+		const links = await Link.find({ crate: 'null' }, num)
+
+		log.debug(links)
+		res.ok(links)
+	} catch (err) {
+		return next(err)
+	}
+})
+
 router.get('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
 		const id = req.params.id as string

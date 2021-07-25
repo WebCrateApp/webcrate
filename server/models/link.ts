@@ -50,7 +50,7 @@ export class Link {
 
 		const toBeCreated = {
 			url: url,
-			crate: crate,
+			crate: crate || 'null',
 			meta: {
 				...(meta && {
 					title: meta.title,

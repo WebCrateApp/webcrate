@@ -10,7 +10,7 @@
     </div>
     <hr>
     <div v-if="links.length > 0" class="section">
-      <h2>Recently added links</h2>
+      <h2>Orphaned links</h2>
       <Grid>
         <LinkItem v-for="link in links" :key="link.id" :link="link" />
       </Grid>
@@ -50,9 +50,10 @@ export default {
 			$modal.show('linkDetails', { link })
 		}
 
-		const links = await $api.getRecentLinks(20)
+		store.commit('SET_CURRENT_CRATE', 'null')
 
-		return { links }
+		const links = await $api.getOrphanedLinks(20)
+		store.commit('SET_CURRENT_CRATE_LINKS', links)
 	},
 	data() {
 		return {
@@ -78,6 +79,14 @@ export default {
 	computed: {
 		emptyMessage() {
 			return this.emptyMessages[Math.floor(Math.random() * this.emptyMessages.length)]
+		},
+		links: {
+			set(value) {
+				this.$store.commit('SET_CURRENT_CRATE_LINKS', value)
+			},
+			get() {
+				return this.$store.state.currentCrateLinks
+			}
 		}
 	},
 	methods: {

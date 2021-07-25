@@ -70,6 +70,14 @@ class API {
 		return res.data
 	}
 
+	async getOrphanedLinks(num = 10) {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.get(`/link/orphans?num=${ num }`)
+
+		return res.data
+	}
+
 	async addLinkToCrate(url, crate) {
 		if (this.publicMode) return undefined
 
