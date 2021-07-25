@@ -1,6 +1,7 @@
 
 class API {
 	constructor(axios, publicMode) {
+		this.axios = axios
 		this.http = axios.create({
 			baseURL: publicMode ? '/api/public' : '/api'
 		})
@@ -55,7 +56,8 @@ class API {
 	}
 
 	async getLinksOfExternalCrate(crate) {
-		const { data: res } = await this.http.get(`/crate/external/${ crate }/links`)
+		console.log(crate)
+		const { data: res } = await this.axios.get(`https://${ crate.endpoint }/api/public/crate/${ crate.id }/links`)
 
 		return res.data
 	}
@@ -87,6 +89,12 @@ class API {
 
 	async getLink(id) {
 		const { data: res } = await this.http.get(`/link/${ id }`)
+
+		return res.data
+	}
+
+	async getExternalLink(id, endpoint) {
+		const { data: res } = await this.axios.get(`https://${ endpoint }/api/public/link/${ id }`)
 
 		return res.data
 	}

@@ -7,7 +7,7 @@
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
       <h4>{{ link.meta && link.meta.title }}</h4>
       <div class="domain-wrapper">
-        <img v-if="link.meta && link.meta.icon" :src="`/img/${ link.id }?type=icon`">
+        <img v-if="link.meta && link.meta.icon" :src="iconUrl">
         <p>{{ domain }}</p>
       </div>
       <span>{{ new Date(link.addedAt).toLocaleString() }}</span>
@@ -29,6 +29,10 @@ export default {
 		editable: {
 			type: Boolean,
 			default: true
+		},
+		endpoint: {
+			type: String,
+			default: undefined
 		}
 	},
 	data() {
@@ -45,13 +49,20 @@ export default {
 				return undefined
 			}
 		},
+		iconUrl() {
+			if (this.endpoint) {
+				return `https://${ this.endpoint }/img/${ this.link.id }?type=icon`
+			} else {
+				return `/img/${ this.link.id }?type=icon`
+			}
+		},
 		dragStartEvent() {
 			return this.editable ? 'dragstart' : null
 		}
 	},
 	methods: {
 		openLinkDetails() {
-			this.$modal.show('linkDetails', { link: this.link.id, editable: this.editable })
+			this.$modal.show('linkDetails', { link: this.link.id, editable: this.editable, endpoint: this.endpoint })
 		},
 		startDrag(e) {
 			this.drag = true

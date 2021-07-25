@@ -7,13 +7,23 @@ const Crates = Base.use('externalCrates')
 export class ExternalCrate {
 
 	id: string
+	name?: string
+	description?: string
+	icon?: string
 	endpoint: string
 	addedAt: Date
 
 	constructor(data: any) {
 		this.id = data.id
+		this.name = data.name
+		this.description = data.description
+		this.icon = data.icon
 		this.endpoint = data.endpoint
 		this.addedAt = data.addedAt
+	}
+
+	async update(changes: any) {
+		await Crates.findByIdAndUpdate(this.id, changes)
 	}
 
 	async delete() {
@@ -23,11 +33,10 @@ export class ExternalCrate {
 	async refresh() {
 		const { data } = await got.get(`https://${ this.endpoint }/api/public/crate/${ this.id }`).json()
 
-		return {
-			...data,
-			endpoint: this.endpoint,
-			addedAt: this.addedAt
-		}
+		this.update({ name: data.name, description: data.description, icon: data.icon })
+		this.name = data.name
+		this.description = data.description
+		this.icon = data.icon
 	}
 
 	static async create(endpoint: string, id: string): Promise<ExternalCrate> {

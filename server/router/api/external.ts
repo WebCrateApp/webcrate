@@ -27,21 +27,19 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 		const existing = await ExternalCrate.findById(id)
 		if (existing) return res.fail(400, 'crate already exists')
 
-		const { data } = await got.get(`https://${ endpoint }/api/public/crate/${ id }`).json()
+		// Check if the endpoint and crateId is valid
+		const data: any = await got.get(`https://${ endpoint }/api/public/crate/${ id }`).json()
+		if (data.status !== 200) return res.fail(400, 'external crate returned error')
 
+		// Add the crate to the database
 		const crate = await ExternalCrate.create(endpoint, id)
+		await crate.refresh()
 
 		// await Stat.addRecentlyUsedCrate(crate.id)
 
-		const result = {
-			...data,
-			endpoint: crate.endpoint,
-			addedAt: crate.addedAt
-		}
-
-		log.debug(result)
+		log.debug(crate)
 		log.info('Crate added')
-		res.ok(result)
+		res.ok(crate)
 	} catch (err) {
 		return next(err)
 	}
@@ -54,21 +52,19 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 			const externalCrates = await ExternalCrate.find({})
 
 			const crates = await Promise.all(externalCrates.map(async (externalCrate: ExternalCrate) => {
-				return await externalCrate.refresh()
+				await externalCrate.refresh()
+				return externalCrate
 			}))
 
 			return res.ok(crates)
 		}
 
-		const externalCrate = await ExternalCrate.findById(id)
-		if (!externalCrate) {
+		const crate = await ExternalCrate.findById(id)
+		if (!crate) {
 			return res.fail(404, 'crate not found')
 		}
 
-		const crate = await externalCrate.refresh()
-		if (!crate) {
-			return res.fail(404, 'external crate not found')
-		}
+		await crate.refresh()
 
 		// await Stat.addRecentlyUsedCrate(crate.id)
 
@@ -86,43 +82,17 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			return res.fail(400, 'no id provided')
 		}
 
-		const externalCrate = await ExternalCrate.findById(id)
-		if (!externalCrate) {
+		const crate = await ExternalCrate.findById(id)
+		if (!crate) {
 			return res.fail(404, 'crate not found')
 		}
 
-		const crate = await externalCrate.refresh()
-		if (!crate) {
-			return res.fail(404, 'external crate not found')
-		}
+		await crate.refresh()
 
 		// await Stat.addRecentlyUsedCrate(crate.id)
 
 		log.debug(crate)
 		res.ok(crate)
-	} catch (err) {
-		return next(err)
-	}
-})
-
-router.get('/:id/links', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-	try {
-		const id = req.params.id as string
-		if (!id) {
-			return res.fail(400, 'no id provided')
-		}
-
-		const externalCrate = await ExternalCrate.findById(id)
-		if (!externalCrate) {
-			return res.fail(404, 'crate not found')
-		}
-
-		const { data: links } = await got.get(`https://${ externalCrate.endpoint }/api/public/crate/${ externalCrate.id }/links`).json()
-
-		// await Stat.addRecentlyUsedCrate(crate.id)
-
-		log.debug(links)
-		res.ok(links)
 	} catch (err) {
 		return next(err)
 	}

@@ -38,8 +38,10 @@ export default {
 			this.$store.dispatch('ADD_EXTERNAL_CRATE', url).then((crate) => {
 				this.url = undefined
 				this.invalidLinkErr = undefined
+
 				this.$store.commit('SET_CURRENT_CRATE', crate.id)
-				this.$router.push(`/crate/${ crate.id }`)
+				this.$router.push(`/crate/external/${ crate.id }`)
+
 				this.close()
 			}).catch((err) => {
 				this.invalidLinkErr = err.message

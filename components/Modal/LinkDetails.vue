@@ -17,7 +17,7 @@
             {{ link.meta && link.meta.title }}
           </h1>
           <div class="url-wrapper">
-            <img v-if="link.meta && link.meta.icon" :src="link.id === 'demo' ? link.meta.icon : `/img/${ link.id }?type=icon`">
+            <img v-if="link.meta && link.meta.icon" :src="iconUrl">
             <a :href="link.url" target="_blank" rel="noopener">
               {{ link.url }}
             </a>
@@ -57,7 +57,7 @@
       </div>
       <div v-if="link.meta && link.meta.image" class="image-wrapper">
         <div class="image">
-          <img :src="link.id === 'demo' ? link.meta.image : `/img/${ link.id }`">
+          <img :src="imageUrl">
         </div>
       </div>
       <textarea-autosize v-if="editable" v-model="linkDescription" class="no-input description" placeholder="Click to add a description for this link" />
@@ -88,7 +88,7 @@ export default {
 			return
 		}
 
-		const link = await this.$api.getLink(this.linkId)
+		const link = this.endpoint ? await this.$api.getExternalLink(this.linkId, this.endpoint) : await this.$api.getLink(this.linkId)
 		this.link = link
 	},
 	computed: {
@@ -100,6 +100,27 @@ export default {
 		},
 		editable() {
 			return this.$store.state.modal.data.editable !== undefined ? this.$store.state.modal.data.editable : true
+		},
+		endpoint() {
+			return this.$store.state.modal.data.endpoint
+		},
+		imageUrl() {
+			if (this.link.id === 'demo') {
+				return this.link.meta.image
+			} else if (this.endpoint) {
+				return `https://${ this.endpoint }/img/${ this.link.id }`
+			} else {
+				return `/img/${ this.link.id }`
+			}
+		},
+		iconUrl() {
+			if (this.link.id === 'demo') {
+				return this.link.meta.icon
+			} else if (this.endpoint) {
+				return `https://${ this.endpoint }/img/${ this.link.id }?type=icon`
+			} else {
+				return `/img/${ this.link.id }?type=icon`
+			}
 		},
 		domain() {
 			try {

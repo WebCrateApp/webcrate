@@ -41,7 +41,7 @@
     <hr>
     <div v-if="links.length > 0" class="links">
       <Grid>
-        <LinkItem v-for="link in links" :key="link.id" :link="link" :editable="editable" />
+        <LinkItem v-for="link in links" :key="link.id" :link="link" :editable="editable" :endpoint="crate.endpoint" />
       </Grid>
     </div>
     <div v-else class="empty-state">
@@ -98,7 +98,7 @@ export default {
 
 		store.commit('SET_CURRENT_CRATE', crate.id)
 
-		const links = isExternal ? await $api.getLinksOfExternalCrate(crate.id) : await $api.getLinksOfCrate(crate.id)
+		const links = isExternal ? await $api.getLinksOfExternalCrate(crate) : await $api.getLinksOfCrate(crate.id)
 		store.commit('SET_CURRENT_CRATE_LINKS', links)
 
 		const link = query.link

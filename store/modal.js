@@ -6,6 +6,7 @@ export const state = () => ({
 		title: undefined,
 		message: undefined,
 		editable: undefined,
+		endpoint: undefined,
 		inputValue: undefined,
 		actionText: undefined,
 		confirmText: undefined,
