@@ -33,6 +33,9 @@
         </button>
       </div>
       <div v-else-if="isExternal" class="actions">
+        <button class="button share-btn" @click.stop="showShareModal">
+          <Icon name="share" />
+        </button>
         <button class="button delete-btn" @click.stop="deleteExternal">
           <Icon name="delete" />
         </button>
@@ -202,9 +205,11 @@ export default {
 			this.$modal.show('addLink')
 		},
 		showShareModal() {
+			const endpoint = this.isExternal ? `https://${ this.crate.endpoint }` : `${ location.protocol }//${ location.host }`
+
 			this.$modal.show('copyOutput', {
-				inputValue: `${ location.protocol }//${ location.host }/crate/public/${ this.crate.id }`,
-				title: `Share: ${ this.emojiIcon } ${ this.crate.name }`,
+				inputValue: `${ endpoint }/crate/public/${ this.crate.id }`,
+				title: `Share "${ this.emojiIcon } ${ this.crate.name }"`,
 				message: `Copy the URL below to share this crate with anyone!`
 			})
 		},
