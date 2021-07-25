@@ -20,7 +20,7 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 		const urlObj = new URL(url)
 
 		const endpoint = urlObj.host
-		const id = urlObj.pathname.split('/crate/public')[1]
+		const id = urlObj.pathname.split('/crate/public/')[1]
 
 		if (!id) return res.fail(400, 'no id provided')
 
