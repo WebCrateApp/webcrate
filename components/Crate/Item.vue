@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="`/crate/${ crate.id }`">
+  <nuxt-link :to="`/crate/${ crate.id }`" @click.native="resetPage">
     <div class="crate-item">
       <h4>{{ emojiIcon }} {{ crate.name }}</h4>
       <span>{{ crate.numLinks }} Links</span>
@@ -16,6 +16,11 @@ export default {
 	computed: {
 		emojiIcon() {
 			return emojis[this.crate.icon]
+		}
+	},
+	methods: {
+		resetPage() {
+			this.$store.commit('SET_CURRENT_PAGE', undefined)
 		}
 	}
 }

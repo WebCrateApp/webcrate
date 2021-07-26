@@ -79,7 +79,6 @@
 export default {
 	data() {
 		return {
-			currentPage: 'Home',
 			moreActions: [
 				{
 					text: 'Create new crate',
@@ -117,6 +116,14 @@ export default {
 		},
 		currentCrate() {
 			return this.$store.state.currentCrate
+		},
+		currentPage: {
+			set(value) {
+				this.$store.commit('SET_CURRENT_PAGE', value)
+			},
+			get() {
+				return this.$store.state.currentPage
+			}
 		},
 		loadingCrates: {
 			set(value) {

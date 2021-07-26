@@ -14,7 +14,8 @@ const defaultState = () => {
 		crates: [],
 		externalCrates: [],
 		currentCrateLinks: [],
-		currentLink: undefined
+		currentLink: undefined,
+		currentPage: 'home'
 	}
 }
 
@@ -77,6 +78,9 @@ export const mutations = {
 	},
 	SET_CONFIG(state, config) {
 		state.config = { ...state.config, ...config }
+	},
+	SET_CURRENT_PAGE(state, value) {
+		state.currentPage = value
 	}
 }
 
