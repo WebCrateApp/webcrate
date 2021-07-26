@@ -37,7 +37,7 @@
         </Grid>
       </div>
     </transition>
-    <div v-if="links.length === 0 && crates.length === 0" class="empty-state">
+    <div v-if="links.length === 0 && crates.length === 0 && !$fetchState.pending" class="empty-state">
       <div class="list">
         <div v-for="i in 3" :key="i" class="empty-link">
           <div class="icon-div"></div>
@@ -95,6 +95,15 @@ export default {
 			crates: []
 		}
 	},
+	async fetch() {
+		const crates = await this.$api.getRecentCrates()
+		this.crates = crates
+		this.loadingCrates = false
+
+		const links = await this.$api.getRecentLinks()
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
+		this.loadingLinks = false
+	},
 	head() {
 		return {
 			title: 'Home | WebCrate',
@@ -118,15 +127,6 @@ export default {
 				return this.$store.state.currentCrateLinks
 			}
 		}
-	},
-	async created() {
-		const crates = await this.$api.getRecentCrates()
-		this.crates = crates
-		this.loadingCrates = false
-
-		const links = await this.$api.getRecentLinks()
-		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
-		this.loadingLinks = false
 	},
 	methods: {
 		addLink() {

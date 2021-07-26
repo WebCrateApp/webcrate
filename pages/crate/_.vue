@@ -42,7 +42,7 @@
       </div>
     </div>
     <hr>
-    <div v-if="loadingLinks" class="links">
+    <div v-if="$fetchState.pending" class="links">
       <Grid>
         <LinkLoadingItem v-for="idx in 6" :key="'i' + idx" />
       </Grid>
@@ -123,9 +123,14 @@ export default {
 				'Nothing In Here',
 				'Add a Link'
 			],
-			showEmojiPicker: false,
-			loadingLinks: true
+			showEmojiPicker: false
 		}
+	},
+	async fetch() {
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', undefined)
+
+		const links = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate) : await this.$api.getLinksOfCrate(this.crate.id)
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
 	},
 	head() {
 		return {
@@ -202,14 +207,6 @@ export default {
 
 			return items
 		}
-	},
-	async created() {
-		this.$store.commit('SET_CURRENT_CRATE_LINKS', undefined)
-
-		const links = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate) : await this.$api.getLinksOfCrate(this.crate.id)
-		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
-
-		this.loadingLinks = false
 	},
 	methods: {
 		showAddLinkModal() {

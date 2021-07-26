@@ -9,7 +9,7 @@
       </button>
     </div>
     <hr>
-    <div v-if="loadingLinks" class="section">
+    <div v-if="$fetchState.pending" class="section">
       <h2>Orphaned links</h2>
       <Grid>
         <LinkLoadingItem v-for="idx in 6" :key="'i' + idx" />
@@ -68,9 +68,12 @@ export default {
 				'*crickets chirping*',
 				'Nothing In Here',
 				'Add a Link'
-			],
-			loadingLinks: true
+			]
 		}
+	},
+	async fetch() {
+		const links = await this.$api.getOrphanedLinks(20)
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
 	},
 	head() {
 		return {
@@ -92,11 +95,6 @@ export default {
 				return this.$store.state.currentCrateLinks
 			}
 		}
-	},
-	async created() {
-		const links = await this.$api.getOrphanedLinks(20)
-		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
-		this.loadingLinks = false
 	},
 	methods: {
 		addLink() {

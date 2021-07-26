@@ -1,6 +1,6 @@
 <template>
   <Modal class="link-details-modal" width="1000px" @close="close">
-    <p v-if="$fetchState.pending ">
+    <p v-if="$fetchState.pending">
       <LoadingItem />
       <LoadingItem height="25px" />
       <LoadingItem height="100px" />
@@ -177,7 +177,7 @@ export default {
 		},
 		linkDescription: {
 			set(value) {
-				if (!value) return
+				if (!value || value === this.linkDescription) return
 
 				this.link.meta = { ...this.link.meta, description: value }
 				this.$store.dispatch('CHANGE_LINK', {
@@ -195,7 +195,7 @@ export default {
 		},
 		linkTitle: {
 			set(value) {
-				if (!value) return
+				if (!value || value === this.linkTitle) return
 
 				this.link.meta = { ...this.link.meta, title: value }
 				this.$store.dispatch('CHANGE_LINK', {
@@ -213,7 +213,7 @@ export default {
 		},
 		linkShortCode: {
 			set(value) {
-				if (!value) return
+				if (!value || value === this.linkShortCode) return
 
 				const parsed = value.split(' ').join('-')
 
