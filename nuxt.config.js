@@ -21,7 +21,7 @@ export default {
 	},
 
 	loading: {
-		color: 'var(--text)'
+		color: 'var(--accent)'
 	},
 
 	loadingIndicator: {
