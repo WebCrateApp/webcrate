@@ -9,18 +9,34 @@
       </button>
     </div>
     <hr>
-    <div v-if="crates.length > 0" class="section">
-      <h2>Recently used Crates</h2>
-      <Grid max-width="300px">
-        <CrateItem v-for="crate in crates" :key="crate.id" :crate="crate" />
-      </Grid>
-    </div>
-    <div v-if="links.length > 0" class="section">
-      <h2>Recently added links</h2>
-      <Grid>
-        <LinkItem v-for="link in links" :key="link.id" :link="link" />
-      </Grid>
-    </div>
+    <transition name="fade">
+      <div v-if="loadingCrates" class="section">
+        <h2>Recently used crates</h2>
+        <Grid>
+          <CrateLoadingItem v-for="idx in 4" :key="'i' + idx" />
+        </Grid>
+      </div>
+      <div v-else-if="crates.length > 0" class="section">
+        <h2>Recently used crates</h2>
+        <Grid max-width="300px">
+          <CrateItem v-for="crate in crates" :key="crate.id" :crate="crate" />
+        </Grid>
+      </div>
+    </transition>
+    <transition name="fade">
+      <div v-if="loadingLinks" class="section">
+        <h2>Recently added links</h2>
+        <Grid>
+          <LinkLoadingItem v-for="idx in 4" :key="'i' + idx" />
+        </Grid>
+      </div>
+      <div v-else-if="links.length > 0" class="section">
+        <h2>Recently added links</h2>
+        <Grid>
+          <LinkItem v-for="link in links" :key="link.id" :link="link" />
+        </Grid>
+      </div>
+    </transition>
     <div v-if="links.length === 0 && crates.length === 0" class="empty-state">
       <div class="list">
         <div v-for="i in 3" :key="i" class="empty-link">
@@ -55,13 +71,6 @@ export default {
 
 		const config = await $api.getConfig()
 		store.commit('SET_CONFIG', config)
-
-		const links = await $api.getRecentLinks()
-		store.commit('SET_CURRENT_CRATE_LINKS', links)
-
-		const crates = await $api.getRecentCrates()
-
-		return { crates }
 	},
 	data() {
 		return {
@@ -80,7 +89,10 @@ export default {
 				'Nothing In Here',
 				'Add a Link'
 			],
-			newUrl: undefined
+			newUrl: undefined,
+			loadingLinks: true,
+			loadingCrates: true,
+			crates: []
 		}
 	},
 	head() {
@@ -106,6 +118,15 @@ export default {
 				return this.$store.state.currentCrateLinks
 			}
 		}
+	},
+	async created() {
+		const crates = await this.$api.getRecentCrates()
+		this.crates = crates
+		this.loadingCrates = false
+
+		const links = await this.$api.getRecentLinks()
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
+		this.loadingLinks = false
 	},
 	methods: {
 		addLink() {
