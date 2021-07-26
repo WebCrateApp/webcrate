@@ -59,17 +59,17 @@
     <!-- Loading state -->
     <div v-else key="loading" class="sidemenu abs">
       <div class="headline">
-        <SideBarLoadingItem height="25px" />
+        <LoadingItem height="25px" />
       </div>
       <hr>
       <div class="menus">
-        <SideBarLoadingItem v-for="i in 2" :key="i" />
+        <LoadingItem v-for="i in 2" :key="i" />
       </div>
       <div class="section-title">
-        <SideBarLoadingItem height="28px" style="margin-top: -2px; margin-bottom: -5px;" />
+        <LoadingItem height="28px" style="margin-top: -2px; margin-bottom: -5px;" />
       </div>
       <div class="menus">
-        <SideBarLoadingItem v-for="i in 5" :key="i" />
+        <LoadingItem v-for="i in 5" :key="i" />
       </div>
     </div>
   </transition>

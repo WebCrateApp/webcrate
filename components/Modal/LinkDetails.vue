@@ -1,9 +1,9 @@
 <template>
   <Modal class="link-details-modal" width="1000px" @close="close">
     <p v-if="$fetchState.pending ">
-      <SideBarLoadingItem />
-      <SideBarLoadingItem height="25px" />
-      <SideBarLoadingItem height="100px" />
+      <LoadingItem />
+      <LoadingItem height="25px" />
+      <LoadingItem height="100px" />
     </p>
     <div v-else-if="link">
       <div v-if="editable" v-shortkey="['ctrl', 'del']" @shortkey="deleteLink"></div>

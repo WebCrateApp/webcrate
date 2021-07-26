@@ -1,5 +1,5 @@
 <template>
-  <div class="loading-item" :class="{ 'loading': loading }" :style="{ '--height': height, '--padding': padding }">
+  <div class="loading-item" :class="{ 'loading': loading }" :style="{ '--height': height, '--width': width, '--padding': padding }">
     <span></span>
   </div>
 </template>
@@ -10,6 +10,10 @@ export default {
 		height: {
 			type: String,
 			default: '40px'
+		},
+		width: {
+			type: String,
+			default: '100%'
 		},
 		padding: {
 			type: String,
@@ -25,7 +29,7 @@ export default {
 
 <style lang="scss" scoped>
     .loading-item {
-		width: 100%;
+		width: var(--width);
 		height: var(--height);
 		display: flex;
 		align-items: center;

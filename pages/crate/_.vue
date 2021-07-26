@@ -42,7 +42,12 @@
       </div>
     </div>
     <hr>
-    <div v-if="links.length > 0" class="links">
+    <div v-if="loadingLinks" class="links">
+      <Grid>
+        <LinkLoadingItem v-for="idx in 6" :key="'i' + idx" />
+      </Grid>
+    </div>
+    <div v-else-if="links.length > 0" class="links">
       <Grid>
         <LinkItem v-for="link in links" :key="link.id" :link="link" :editable="editable" :endpoint="crate.endpoint" />
       </Grid>
@@ -101,9 +106,6 @@ export default {
 
 		store.commit('SET_CURRENT_CRATE', crate.id)
 
-		const links = isExternal ? await $api.getLinksOfExternalCrate(crate) : await $api.getLinksOfCrate(crate.id)
-		store.commit('SET_CURRENT_CRATE_LINKS', links)
-
 		const link = query.link
 		if (link) {
 			$modal.show('linkDetails', { link })
@@ -121,7 +123,8 @@ export default {
 				'Nothing In Here',
 				'Add a Link'
 			],
-			showEmojiPicker: false
+			showEmojiPicker: false,
+			loadingLinks: true
 		}
 	},
 	head() {
@@ -199,6 +202,14 @@ export default {
 
 			return items
 		}
+	},
+	async created() {
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', undefined)
+
+		const links = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate) : await this.$api.getLinksOfCrate(this.crate.id)
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
+
+		this.loadingLinks = false
 	},
 	methods: {
 		showAddLinkModal() {
