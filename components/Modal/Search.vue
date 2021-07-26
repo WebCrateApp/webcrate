@@ -2,25 +2,30 @@
   <Modal class="search-modal" @close="close">
     <h1>Quick Search</h1>
     <input v-model="searchValue" class="input" placeholder="Search for a link or crate by their name, description, icon or URL">
-    <div v-if="crates.length > 0" class="section">
-      <h2>Crates</h2>
-      <CrateListItem v-for="crate in crates" :key="crate.id" :icon="crate.icon" :name="crate.name" @click.native.stop="changeCrate(crate)" />
+    <div v-if="loading">
+      <LoadingItem v-for="idx in 3" :key="'i' + idx" />
     </div>
-    <div v-if="links.length > 0" class="section">
-      <h2>Links</h2>
-      <LinkListItem
-        v-for="link in links"
-        :id="link.id"
-        :key="link.id"
-        :title="link.meta.title"
-        :url="link.url"
-        :icon="link.meta && link.meta.icon"
-        @click.native.stop="openLink(link)"
-      />
+    <div v-else-if="links.length === 0 && crates.length === 0 && searchValue" class="nothing">
+      <p>{{ emptyMessage }}</p>
     </div>
-	<div v-if="links.length === 0 && crates.length === 0 && searchValue" class="nothing">
-	  <p>{{ emptyMessage }}</p>
-	</div>
+    <div v-else-if="searchValue">
+      <div v-if="crates.length > 0" class="section">
+        <h2>Crates</h2>
+        <CrateListItem v-for="crate in crates" :key="crate.id" :icon="crate.icon" :name="crate.name" @click.native.stop="changeCrate(crate)" />
+      </div>
+      <div v-if="links.length > 0" class="section">
+        <h2>Links</h2>
+        <LinkListItem
+          v-for="link in links"
+          :id="link.id"
+          :key="link.id"
+          :title="link.meta.title"
+          :url="link.url"
+          :icon="link.meta && link.meta.icon"
+          @click.native.stop="openLink(link)"
+        />
+      </div>
+    </div>
   </Modal>
 </template>
 
@@ -38,15 +43,14 @@ export default {
 				'*crickets chirping*',
 				'No results',
 				'No links or crates found'
-			]
+			],
+			loading: false,
+			first: true
 		}
 	},
 	computed: {
 		currentCrate() {
 			return this.$store.getters.currentCrate
-		},
-		searchItems() {
-			return this.$api.search(this.searchValue)
 		},
 		emptyMessage() {
 			return this.emptyMessages[Math.floor(Math.random() * this.emptyMessages.length)]
@@ -54,6 +58,7 @@ export default {
 	},
 	watch: {
 		searchValue(value) {
+			if (this.first) this.loading = true
 			this.search(value)
 		}
 	},
@@ -64,10 +69,15 @@ export default {
 		search: debounce(async function(value) {
 			if (!value) return
 
+			this.loading = true
+			this.first = false
+
 			const data = await this.$api.search(value)
 
 			this.links = data.links
 			this.crates = data.crates
+
+			this.loading = false
 		}, 500),
 		changeCrate(crate) {
 			this.$store.commit('SET_CURRENT_CRATE', crate.id)
