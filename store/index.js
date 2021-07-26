@@ -149,6 +149,10 @@ export const actions = {
 
 		context.commit('CHANGE_CRATE', crate)
 	}, debounceThreshold),
+	CHANGE_NAME: debounce(async function(context, name) {
+		await this.$api.setConfig({ name })
+		context.commit('SET_CONFIG', { name })
+	}, debounceThreshold),
 	async CHANGE_CRATE_ICON(context, { crateId, icon }) {
 		const crate = await this.$api.changeCrate(crateId, { icon })
 

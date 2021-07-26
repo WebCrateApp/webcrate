@@ -5,6 +5,7 @@
         <h1>
           {{ config && config.name ? config.name : 'WebCrate' }}
         </h1>
+        <ActionDropdown icon="dotsV" icon-size="18px" :actions="moreActions" />
       </div>
       <hr>
       <div v-shortkey="['ctrl', 's']" @shortkey="showModal('search')"></div>
@@ -78,7 +79,30 @@
 export default {
 	data() {
 		return {
-			currentPage: 'Home'
+			currentPage: 'Home',
+			moreActions: [
+				{
+					text: 'Create new crate',
+					icon: 'add',
+					click: () => {
+						this.showModal('addCrate')
+					}
+				},
+				{
+					text: 'Add external crate',
+					icon: 'cloud',
+					click: () => {
+						this.showModal('addExternalCrate')
+					}
+				},
+				{
+					text: 'Change name',
+					icon: 'edit',
+					click: () => {
+						this.showModal('changeName')
+					}
+				}
+			]
 		}
 	},
 	computed: {
@@ -150,12 +174,20 @@ export default {
 	}
 
 	.headline {
-		text-align: center;
+		display: flex;
+		align-items: center;
 		width: 100%;
 		height: 26px;
+		position: relative;
 
 		& h1 {
-			font-size: 1.2rem;
+			font-size: 1rem;
+			margin: auto;
+		}
+
+		& div {
+			position: absolute;
+			right: 0;
 		}
 	}
 

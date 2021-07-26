@@ -27,13 +27,13 @@
         </div>
         <div v-if="editable">
           <div v-if="windowSize <= 600" class="actions">
-            <ActionDropdown icon="dotsV" :actions="shareActions" />
+            <ActionDropdown class="dropdown-action" icon="dotsV" :actions="shareActions" />
           </div>
           <div v-else-if="windowSize <= 900" class="actions">
             <button class="button" @click.stop="openExternalLink">
               <Icon name="externalLink" />
             </button>
-            <ActionDropdown icon="dotsV" :actions="shareActions" />
+            <ActionDropdown class="dropdown-action" icon="dotsV" :actions="shareActions" />
           </div>
           <div v-else class="actions">
             <button class="button" @click.stop="openExternalLink">
@@ -42,7 +42,7 @@
             <button class="button" @click.stop="deleteLink">
               <Icon name="delete" />
             </button>
-            <ActionDropdown icon="dotsV" :actions="shareActions" />
+            <ActionDropdown class="dropdown-action" icon="dotsV" :actions="shareActions" />
           </div>
         </div>
         <div v-else class="actions">
@@ -481,6 +481,10 @@ export default {
 		hr {
 			margin-top: 0.5rem;
 			margin-bottom: 0.5rem;
+		}
+
+		.dropdown-action {
+			margin-left: auto;
 		}
 	}
 </style>

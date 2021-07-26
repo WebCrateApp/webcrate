@@ -1,7 +1,7 @@
 <template>
   <div class="action-dropdown">
     <button class="button" @click.stop="showMenu = !showMenu">
-      <Icon :name="icon" />
+      <Icon :name="icon" :size="iconSize" />
     </button>
     <div v-if="showMenu" v-click-outside="closeMenu" class="menu">
       <div v-for="action in actions" :key="action.text" class="menu-item" @click.stop="action.click">
@@ -24,6 +24,10 @@ export default {
 			type: String,
 			default: 'dotsV'
 		},
+		iconSize: {
+			type: String,
+			default: undefined
+		},
 		actions: {
 			type: Array,
 			required: true
@@ -45,7 +49,6 @@ export default {
 
 <style lang="scss" scoped>
 	.action-dropdown {
-		margin-left: auto;
 		display: flex;
 		align-items: center;
 		position: relative;

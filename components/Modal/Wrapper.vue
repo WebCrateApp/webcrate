@@ -6,6 +6,7 @@
     <ModalAddExternalCrate v-else-if="showModal === 'addExternalCrate'" />
     <ModalLinkDetails v-else-if="showModal === 'linkDetails'" />
     <ModalCopyOutput v-else-if="showModal === 'copyOutput'" />
+    <ModalChangeName v-else-if="showModal === 'changeName'" />
     <ConfirmModal />
   </div>
 </template>

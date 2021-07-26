@@ -25,7 +25,7 @@
         <button v-if="crate.public" class="button share-btn" @click.stop="showShareModal">
           <Icon name="share" />
         </button>
-        <ActionDropdown icon="dotsV" :actions="crateActions" />
+        <ActionDropdown class="dropdown-action" icon="dotsV" :actions="crateActions" />
       </div>
       <div v-else-if="isPublic" class="actions">
         <button class="button add-btn" @click.stop="showAddModal">
@@ -342,6 +342,10 @@ export default {
 		& button {
 			display: flex;
 			align-items: center;
+		}
+
+		.dropdown-action {
+			margin-left: auto;
 		}
 	}
 
