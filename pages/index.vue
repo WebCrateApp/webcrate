@@ -119,7 +119,6 @@ export default {
 
 			this.$store.dispatch('ADD_LINK', { url }).then((link) => {
 				this.newUrl = undefined
-				this.links.unshift(link)
 				this.$modal.show('linkDetails', { link: link.id })
 			}).catch((err) => {
 				console.log(err)

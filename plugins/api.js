@@ -56,7 +56,6 @@ class API {
 	}
 
 	async getLinksOfExternalCrate(crate) {
-		console.log(crate)
 		const { data: res } = await this.axios.get(`https://${ crate.endpoint }/api/public/crate/${ crate.id }/links`)
 
 		return res.data
