@@ -1,7 +1,7 @@
 import express from 'express'
 
 import log from '../utils/log'
-import { isValidUrl } from '../utils/isValidUrl'
+import { isValidUrl } from '../utils/url'
 import { getLink } from '../utils/getRedirectLink'
 
 export const router = express.Router()

@@ -6,6 +6,7 @@ import { Link } from '../../models/link'
 import { Stat } from '../../models/stats'
 
 import log from '../../utils/log'
+import { parseUrl } from '../../utils/url'
 
 export const router = express.Router()
 
@@ -18,14 +19,16 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 
 		log.debug(url)
 
+		const parsedUrl = parseUrl(url)
+
 		let meta: MetaData | undefined
 		try {
-			meta = await getMetaData(url)
+			meta = await getMetaData(parsedUrl)
 		} catch (err) {
 			log.debug(err)
 		}
 
-		const link = await Link.create(url, meta, crate)
+		const link = await Link.create(parsedUrl, meta, crate)
 
 		await Stat.addRecentlyAddedLink(link.id)
 
