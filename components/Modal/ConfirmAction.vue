@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { events } from './events'
+import { events } from '@/plugins/confirm/events'
 
 export default {
 	name: 'ConfirmModal',

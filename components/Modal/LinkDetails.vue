@@ -54,7 +54,11 @@
       <hr>
       <div v-if="editable && link.redirect && link.redirect.enabled" class="redirect">
         <Icon name="info" />
-        <p>Short link: <span>{{ host }}/r/<input v-model="linkShortCode" class="no-input" placeholder="short-code" /></span></p>
+        <p>Short link:</p>
+        <a v-if="!editShortLink" :href="fullShortLink">{{ fullShortLink }}</a>
+        <p v-else>
+          /r/<input v-model="linkShortCode" class="no-input" placeholder="short-code" />
+        </p>
         <Icon :name="copyIcon" class="copy-short" @click.native.stop="copyShortLink" />
       </div>
       <div v-if="link.meta && link.meta.image" class="image-wrapper">
@@ -81,7 +85,9 @@ export default {
 			canClose: true,
 			showShareMenu: false,
 			windowSize: undefined,
-			copyIcon: 'clipboard'
+			copyIcon: 'clipboard',
+			editShortLink: false,
+			clicks: 0
 		}
 	},
 	async fetch() {
@@ -134,6 +140,9 @@ export default {
 		host() {
 			return `${ window.location.protocol }//${ window.location.host }`
 		},
+		fullShortLink() {
+			return `${ this.host }/r/${ this.linkShortCode }`
+		},
 		shareActions() {
 			const items = [
 				{
@@ -145,14 +154,14 @@ export default {
 
 			if (this.link.redirect && this.link.redirect.enabled) {
 				items.push({
-					text: 'Disable redirection',
-					icon: 'close',
+					text: 'Disable sharing',
+					icon: 'eyeOff',
 					click: this.disableRedirect
 				})
 			} else {
 				items.push({
-					text: 'Enable redirection',
-					icon: 'arrowRight',
+					text: 'Share this link',
+					icon: 'share',
 					click: this.enableRedirect
 				})
 			}
@@ -230,6 +239,21 @@ export default {
 			get() {
 				return this.link && this.link.redirect && this.link.redirect.enabled ? this.link.redirect.shortCode || this.link.id : undefined
 			}
+		},
+		shareLinkModal() {
+			return this.$store.state.modal.show && this.$store.state.modal.show.shareLink
+		}
+	},
+	watch: {
+		// Prevent shareLink modal from closing outer modal
+		shareLinkModal(newValue) {
+			if (newValue === true) {
+				this.canClose = false
+			} else {
+				setTimeout(() => {
+					this.canClose = true
+				}, 500)
+			}
 		}
 	},
 	created() {
@@ -289,7 +313,7 @@ export default {
 			}
 		},
 		copyShortLink() {
-			const link = `${ this.host }/r/${ this.linkShortCode }`
+			const link = this.fullShortLink
 			if (link) {
 				this.copyIcon = 'check'
 				this.$clipboard(link)
@@ -306,7 +330,8 @@ export default {
 			}
 		},
 		enableRedirect() {
-			this.link.redirect = { enabled: true }
+			this.$modal.show('shareLink', { link: this.link })
+			/* this.link.redirect = { enabled: true }
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
@@ -314,7 +339,7 @@ export default {
 						enabled: true
 					}
 				}
-			})
+			}) */
 		},
 		async disableRedirect() {
 			this.canClose = false

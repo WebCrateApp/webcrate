@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import confirmModal from './ConfirmAction.vue'
+import confirmModal from '@/components/Modal/ConfirmAction.vue'
 
 import { events } from './events'
 

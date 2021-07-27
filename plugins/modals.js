@@ -6,8 +6,8 @@ export default ({ store }, inject) => {
 				data: value
 			})
 		},
-		hide: () => {
-			store.commit('modal/hide')
+		hide: (value) => {
+			store.commit('modal/hide', value)
 		},
 		isShown: () => {
 			return store.state.modal.show !== undefined
