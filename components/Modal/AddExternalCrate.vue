@@ -1,13 +1,13 @@
 <template>
   <Modal class="add-modal" @close="close">
-    <h1>Add an external Crate</h1>
-    <p>You can import a external crate, meaning a crate which exists in another WebCrate instance and is set to public.</p>
+    <h1>Subscribe to an external Crate</h1>
+    <p>You can subscribe to any public crate to keep up date with links which are added to it.</p>
     <p>Learn more in the <a href="https://webcrate.app/docs/crates/external-crates" target="_blank" rel="noopener">documentation.</a></p>
     <div class="inputs">
       <input v-model="url" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="URL of external crate">
     </div>
     <button v-shortkey="['enter']" class="primary-button" @click="add" @shortkey="add">
-      <Icon name="add" />Add Crate
+      <Icon name="add" />Subscribe
     </button>
     <p v-if="invalidLinkErr" class="error">
       Error: {{ invalidLinkErr }}
@@ -90,9 +90,10 @@ export default {
 
 		& a {
 			color: var(--text-dark);
+			text-decoration: underline;
 
 			&:hover {
-				text-decoration: underline;
+				color: var(--text);
 			}
 		}
 
