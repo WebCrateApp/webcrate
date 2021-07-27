@@ -67,10 +67,6 @@ export default {
 			}
 
 			const crate = this.currentCrate || this.selectedCrate
-			if (!crate) {
-				this.invalidLinkErr = 'Please select a Crate'
-				return
-			}
 
 			this.$store.dispatch('ADD_LINK', { url, crate }).then((link) => {
 				if (!link.meta || !link.meta.title) {
