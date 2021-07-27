@@ -13,6 +13,7 @@
     "prebuild": "npm run clean",
     "predev": "npm run clean",
     "predeploy": "npm run build",
+    "update": "git pull && npm ci && npm run deploy",
     "dev": "nuxt",
     "build": "npm run build:nuxt && npm run build:server",
     "lint": "npm run lint:js",
