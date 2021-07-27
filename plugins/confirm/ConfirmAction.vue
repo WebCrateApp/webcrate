@@ -3,7 +3,7 @@
     <h1>{{ title }}</h1>
     <p>{{ message }}</p>
     <div class="buttons">
-      <button :class="danger ? 'danger-button' : 'primary-button'" @click="confirm">
+      <button v-shortkey="['enter']" :class="danger ? 'danger-button' : 'primary-button'" @click="confirm" @shortkey="confirm">
         {{ confirmText }}
       </button>
       <button class="button" @click="cancel">

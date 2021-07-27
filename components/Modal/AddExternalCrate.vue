@@ -6,7 +6,7 @@
     <div class="inputs">
       <input v-model="url" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="URL of external crate">
     </div>
-    <button class="primary-button" @click="add">
+    <button v-shortkey="['enter']" class="primary-button" @click="add" @shortkey="add">
       <Icon name="add" />Add Crate
     </button>
     <p v-if="invalidLinkErr" class="error">

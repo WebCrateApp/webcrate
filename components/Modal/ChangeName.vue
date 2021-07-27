@@ -5,7 +5,7 @@
     <div class="inputs">
       <input v-model="name" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="New name">
     </div>
-    <button class="primary-button" @click="add">
+    <button v-shortkey="['enter']" class="primary-button" @click="add" @shortkey="add">
       <Icon name="add" />Change name
     </button>
     <p v-if="invalidLinkErr" class="error">
