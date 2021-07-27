@@ -46,20 +46,28 @@
       <h1>Your own WebCrate</h1>
       <p>This is your own instance of WebCrate. Give it a name to make it yours!</p>
       <hr>
-      <input v-model="name" class="input" placeholder="Maxi's WebCrate" />
+      <input v-model="name" class="input" placeholder="e.g. Maxi's WebCrate" />
       <div class="info">
         <Icon name="info" />
         <p>You can always change this later</p>
       </div>
-      <button class="button" @click="saveName">
+      <button v-if="name" class="button" @click="saveName">
         Next Step
+      </button>
+      <button v-else class="button" @click="saveName">
+        Skip this step
       </button>
     </div>
     <div v-if="state === 'crates'" class="basics">
       <h1>The Basics: Crates</h1>
       <p>In WebCrate you organize links of the same topic into folders or groups called crates. Each crate can contain as many links as you want. You can give each crate a name and assign it an emoji as a icon.</p>
       <hr>
-      <h2>We already created a few crates for you:</h2>
+      <h2 v-if="crates.length <= 2">
+        Default Crates:
+      </h2>
+      <h2 v-else>
+        Your Crates:
+      </h2>
       <CrateListItem v-for="crate in crates" :key="crate.id" :icon="crate.icon" :name="crate.name" style="cursor: initial" />
       <hr>
       <CrateListItem icon="heavy_plus_sign" name="Add your own crate" @click.native.stop="showAddCrateModal" />
@@ -78,7 +86,7 @@
       <h2>Here's how a link will look like (click it to open the details view):</h2>
       <LinkListItem
         id="AWZVIzS9HSVn7Ylv"
-        :title="demoLink.title"
+        :title="demoLink.meta.title"
         :url="demoLink.url"
         :icon="demoLink.meta.icon"
         :load-external-icon="true"
@@ -144,10 +152,10 @@ export default {
 			return this.$modal.getShown()
 		},
 		crates() {
-			return this.$store.state.crates
+			return (this.$store.state.crates || []).slice(0, 6)
 		},
 		links() {
-			return this.$store.state.currentCrateLinks
+			return (this.$store.state.currentCrateLinks || []).slice(0, 6)
 		}
 	},
 	async created() {
@@ -170,13 +178,15 @@ export default {
 			this.$router.push(`/`)
 		},
 		async saveName() {
-			if (!this.name) {
-				return
+			let name = this.name
+			if (!name) {
+				name = 'WebCrate'
 			}
 
-			await this.$api.setConfig({ name: this.name })
-			this.$store.commit('SET_CONFIG', { name: this.name })
+			await this.$api.setConfig({ name })
+			this.$store.commit('SET_CONFIG', { name })
 			this.state = 'crates'
+			this.name = name
 		}
 	}
 }
@@ -210,8 +220,7 @@ export default {
 		}
 	}
 
-	.welcome,
-	.basics {
+	.welcome {
 		position: absolute;
 		top: 40%;
 		left: 50%;
@@ -219,6 +228,13 @@ export default {
 		max-width: 700px;
 		width: 95%;
 		margin: auto;
+	}
+
+	.basics {
+		max-width: 700px;
+		width: 95%;
+		margin: auto;
+		margin-top: 5rem;
 	}
 
 	.welcome {
