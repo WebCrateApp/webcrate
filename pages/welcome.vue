@@ -35,30 +35,12 @@
     <div v-if="state === 'load'" class="welcome">
       <h1>Welcome to WebCrate 👋</h1>
       <p>Organize and share links from around the web.</p>
-      <button class="button" @click="state = 'name'">
+      <button class="primary-button" @click="state = 'name'">
         Start Setup
       </button>
-      <hr>
-      <div class="links">
-        <a href="https://webcrate.app" target="_blank" rel="noopener">
-          <div class="link">
-            <Icon name="website" />
-            <p>Website</p>
-          </div>
-        </a>
-        <a href="https://webcrate.app/docs" target="_blank" rel="noopener">
-          <div class="link">
-            <Icon name="docs" />
-            <p>Documentation</p>
-          </div>
-        </a>
-        <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener">
-          <div class="link">
-            <Icon name="heart" />
-            <p>Feedback</p>
-          </div>
-        </a>
-      </div>
+      <p class="light">
+        It only takes a few seconds!
+      </p>
     </div>
     <div v-if="state === 'name'" class="basics">
       <h1>Your own WebCrate</h1>
@@ -243,11 +225,15 @@ export default {
 		text-align: center;
 
 		& h1 {
-			font-size: 1.5rem;
+			font-size: 1.6rem;
 			font-weight: 600;
 			color: var(--text);
 			margin-top: 2rem;
 			margin-bottom: 1rem;
+		}
+
+		& p {
+			font-size: 1.1rem;
 		}
 
 		& button {
@@ -255,30 +241,10 @@ export default {
 			margin-bottom: 1rem;
 		}
 
-		.links {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-
-			& a {
-				flex-grow: 1;
-			}
-
-			& .link {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				padding: 1rem;
-				border-radius: var(--border-radius);
-
-				& p {
-					margin-left: 0.5rem;
-				}
-
-				&:hover {
-					background: var(--background-2nd);
-				}
-			}
+		.light {
+			color: var(--text-light);
+			font-size: 0.9rem;
+			margin-top: -0.5rem;
 		}
 	}
 
