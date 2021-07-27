@@ -1,6 +1,7 @@
 <template>
   <div
     :draggable="editable"
+    title="Click to open link details"
     @[dragStartEvent].stop="startDrag($event)"
     @[dragStopEvent].stop="stopDrag($event)"
     @click.stop="openLinkDetails"

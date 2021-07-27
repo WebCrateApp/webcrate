@@ -13,7 +13,7 @@
       <div class="top">
         <div class="title">
           <h1 v-if="editable">
-            <input v-model="linkTitle" class="no-input headline" placeholder="Click to add a title for this link" />
+            <input v-model="linkTitle" title="Click to edit title" class="no-input headline" placeholder="Click to add a title for this link" />
           </h1>
           <h1 v-else class="headline">
             {{ link.meta && link.meta.title }}
@@ -27,26 +27,26 @@
         </div>
         <div v-if="editable">
           <div v-if="windowSize <= 600" class="actions">
-            <ActionDropdown class="dropdown-action" icon="dotsV" :actions="shareActions" />
+            <ActionDropdown class="dropdown-action" title="More Actions" icon="dotsV" :actions="shareActions" />
           </div>
           <div v-else-if="windowSize <= 900" class="actions">
-            <button class="button" @click.stop="openExternalLink">
+            <button class="button" title="Open URL in new tab" @click.stop="openExternalLink">
               <Icon name="externalLink" />
             </button>
-            <ActionDropdown class="dropdown-action" icon="dotsV" :actions="shareActions" />
+            <ActionDropdown class="dropdown-action" title="More Actions" icon="dotsV" :actions="shareActions" />
           </div>
           <div v-else class="actions">
-            <button class="button" @click.stop="openExternalLink">
+            <button class="button" title="Open URL in new tab" @click.stop="openExternalLink">
               <Icon name="externalLink" />
             </button>
-            <button class="button" @click.stop="deleteLink">
+            <button class="button" title="Delete this link" @click.stop="deleteLink">
               <Icon name="delete" />
             </button>
-            <ActionDropdown class="dropdown-action" icon="dotsV" :actions="shareActions" />
+            <ActionDropdown class="dropdown-action" title="More Actions" icon="dotsV" :actions="shareActions" />
           </div>
         </div>
         <div v-else class="actions">
-          <button class="button" @click.stop="openExternalLink">
+          <button class="button" title="Open URL in new tab" @click.stop="openExternalLink">
             <Icon name="externalLink" />
           </button>
         </div>
@@ -62,7 +62,7 @@
           <img :src="imageUrl">
         </div>
       </div>
-      <textarea-autosize v-if="editable" v-model="linkDescription" class="no-input description" placeholder="Click to add a description for this link" />
+      <textarea-autosize v-if="editable" v-model="linkDescription" :title="editable && 'Click to edit description'" class="no-input description" placeholder="Click to add a description for this link" />
       <p v-else class="description">
         {{ link.meta && link.meta.description }}
       </p>

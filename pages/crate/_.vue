@@ -3,8 +3,8 @@
     <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
     <div class="top-section">
       <div v-if="editable" class="title">
-        <h1><span class="emoji" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span> <input v-model="crateName" placeholder="Crate Title" class="no-input headline"></h1>
-        <input v-model="crateDescription" class="no-input subtext" placeholder="Click to add a description for this Crate" />
+        <h1><span class="emoji" title="Click to edit icon" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span> <input v-model="crateName" title="Click to edit title" placeholder="Crate Title" class="no-input headline"></h1>
+        <input v-model="crateDescription" title="Click to edit description" class="no-input subtext" placeholder="Click to add a description for this Crate" />
         <div v-if="showEmojiPicker" class="emoji-picker">
           <EmojiPicker @selected="selectEmoji" @close="showEmojiPicker = false" />
         </div>
