@@ -13,7 +13,14 @@
       <div v-shortkey="['ctrl', 'alt', 'n']" @shortkey="showModal('addCrate')"></div>
       <div class="menus">
         <SideBarMenuItem name="Home" icon="home" :selected="currentPage === 'home'" @click.native="changePage('home')" />
-        <SideBarMenuItem name="Inbox" icon="inbox" :selected="currentPage === 'inbox'" crate-id="null" @click.native="changePage('inbox')" />
+        <SideBarMenuItem
+          name="Inbox"
+          icon="inbox"
+          :selected="currentPage === 'inbox'"
+          crate-id="null"
+          :editable="true"
+          @click.native="changePage('inbox')"
+        />
         <SideBarMenuItem name="Quick Search" icon="search" @click.native.stop="showModal('search')" />
       </div>
       <div class="section-title">
@@ -31,6 +38,7 @@
           :emoji="crate.icon"
           :crate-id="crate.id"
           :selected="currentCrate === crate.id"
+          :editable="crate.id !== undefined && crate.endpoint === undefined"
           @click.native="changeCrate(crate)"
           @shortkey.native="changeCrate(crate)"
         />
@@ -50,6 +58,7 @@
           :emoji="crate.icon"
           :crate-id="crate.id"
           :selected="currentCrate === crate.id"
+          :editable="crate.id && !crate.endpoint"
           @click.native="changeCrate(crate)"
           @shortkey.native="changeCrate(crate)"
         />

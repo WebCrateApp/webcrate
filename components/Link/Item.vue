@@ -2,6 +2,7 @@
   <div
     :draggable="editable"
     @[dragStartEvent].stop="startDrag($event)"
+    @[dragStopEvent].stop="stopDrag($event)"
     @click.stop="openLinkDetails"
   >
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
@@ -37,8 +38,7 @@ export default {
 	},
 	data() {
 		return {
-			hover: false,
-			drag: false
+			hover: false
 		}
 	},
 	computed: {
@@ -58,6 +58,17 @@ export default {
 		},
 		dragStartEvent() {
 			return this.editable ? 'dragstart' : null
+		},
+		dragStopEvent() {
+			return this.editable ? 'dragend' : null
+		},
+		drag: {
+			set(value) {
+				this.$store.commit('SET_DRAGGING_LINK', value)
+			},
+			get() {
+				return this.$store.state.draggingLink
+			}
 		}
 	},
 	methods: {
@@ -69,6 +80,9 @@ export default {
 			e.dataTransfer.dropEffect = 'move'
 			e.dataTransfer.effectAllowed = 'move'
 			e.dataTransfer.setData('linkId', this.link.id)
+		},
+		stopDrag() {
+			this.drag = false
 		}
 	}
 }

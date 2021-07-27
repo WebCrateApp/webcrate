@@ -15,7 +15,8 @@ const defaultState = () => {
 		externalCrates: [],
 		currentCrateLinks: [],
 		currentLink: undefined,
-		currentPage: 'home'
+		currentPage: 'home',
+		draggingLink: false
 	}
 }
 
@@ -81,6 +82,9 @@ export const mutations = {
 	},
 	SET_CURRENT_PAGE(state, value) {
 		state.currentPage = value
+	},
+	SET_DRAGGING_LINK(state, value) {
+		state.draggingLink = value
 	}
 }
 

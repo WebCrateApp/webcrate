@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-item" :class="{ 'selected': selected }" @[dropEvent].prevent="onDrop($event)" @[dragoverEvent].prevent @[dragenterEvent].prevent>
+  <div class="menu-item" :class="{ 'selected': selected, 'hover': drag && editable }" @[dropEvent].prevent="onDrop($event)" @[dragoverEvent].prevent @[dragenterEvent].prevent>
     <div class="item-icon-wrapper">
       <div v-if="emoji" class="emoji">
         {{ emojiIcon }}
@@ -26,6 +26,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		editable: {
+			type: Boolean,
+			default: false
+		},
 		count: {
 			type: Number,
 			default: undefined
@@ -48,13 +52,16 @@ export default {
 			return emojis[this.emoji]
 		},
 		dropEvent() {
-			return this.crateId ? 'drop' : null
+			return this.editable ? 'drop' : null
 		},
 		dragoverEvent() {
-			return this.crateId ? 'dragover' : null
+			return this.editable ? 'dragover' : null
 		},
 		dragenterEvent() {
-			return this.crateId ? 'dragenter' : null
+			return this.editable ? 'dragenter' : null
+		},
+		drag() {
+			return this.$store.state.draggingLink
 		}
 	},
 	methods: {
@@ -83,7 +90,8 @@ export default {
 		transition: border .2s ease;
 		cursor: pointer;
 
-		&:hover {
+		&:hover,
+		&.hover {
 			border: 2px solid var(--grey);
 			transition: none;
 		}
