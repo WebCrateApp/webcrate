@@ -1,7 +1,7 @@
 <template>
   <Modal class="search-modal" @close="close">
     <h1>Quick Search</h1>
-    <input v-model="searchValue" class="input" placeholder="Search for a link or crate by their name, description, icon or URL">
+    <input v-model="searchValue" v-focus class="input" placeholder="Search for a link or crate by their name, description, icon or URL">
     <div v-if="loading">
       <LoadingItem v-for="idx in 3" :key="'i' + idx" />
     </div>

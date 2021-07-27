@@ -3,7 +3,7 @@
     <h1>Change your WebCrate's name</h1>
     <p>Make your WebCrate instance your own by giving it a name! The name will be displayed publicly when you share a crate.</p>
     <div class="inputs">
-      <input v-model="name" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="New name">
+      <input v-model="name" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="New name">
     </div>
     <button class="primary-button" @click="add">
       <Icon name="add" />Change name

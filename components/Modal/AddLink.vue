@@ -1,7 +1,7 @@
 <template>
   <Modal class="add-modal" @close="close">
     <h1>Add a new Link</h1>
-    <input v-model="inputValue" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
+    <input v-model="inputValue" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
     <div class="dropdown">
       <v-select
         v-if="!currentCrate"

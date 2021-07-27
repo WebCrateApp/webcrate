@@ -5,7 +5,7 @@
       <button class="button" @click.stop="showEmojiPicker = !showEmojiPicker">
         {{ emojiIcon }}
       </button>
-      <input v-model="name" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="Name">
+      <input v-model="name" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="Name">
       <div v-if="showEmojiPicker" class="add-crate-emoji-picker">
         <EmojiPicker @selected="selectEmoji" @close="showEmojiPicker = false" />
       </div>

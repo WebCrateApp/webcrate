@@ -45,7 +45,8 @@ export default {
 		'~/plugins/version.js',
 		'~/plugins/vue-shortkey.js',
 		'~/plugins/vue-textarea-autosize.js',
-		'~/plugins/clipboard.js'
+		'~/plugins/clipboard.js',
+		'~/plugins/directives.js'
 	],
 
 	modules: [

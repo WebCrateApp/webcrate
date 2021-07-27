@@ -4,7 +4,7 @@
     <p>You can import a external crate, meaning a crate which exists in another WebCrate instance and is set to public.</p>
     <p>Learn more in the <a href="https://webcrate.app/docs/crates/external-crates" target="_blank" rel="noopener">documentation.</a></p>
     <div class="inputs">
-      <input v-model="url" class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="URL of external crate">
+      <input v-model="url" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="URL of external crate">
     </div>
     <button class="primary-button" @click="add">
       <Icon name="add" />Add Crate
