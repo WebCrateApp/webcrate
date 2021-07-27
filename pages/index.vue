@@ -3,7 +3,7 @@
     <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
     <div class="title">
       <h1>{{ welcomeMessage }}</h1>
-      <input v-model="newUrl" v-shortkey="['enter']" class="input" placeholder="Quick add a URL" @shortkey="addLink">
+      <input v-model="newUrl" v-shortkey="shortKey" class="input" placeholder="Quick add a URL" @shortkey="addLink">
       <button class="button add-btn" @click.stop="addLink">
         <Icon name="add" />Add Link
       </button>
@@ -126,6 +126,13 @@ export default {
 			get() {
 				return this.$store.state.currentCrateLinks
 			}
+		},
+		shortKey() {
+			if (this.newUrl) {
+				return [ 'enter' ]
+			}
+
+			return []
 		}
 	},
 	methods: {
@@ -138,9 +145,9 @@ export default {
 
 			const url = this.newUrl
 
-			this.$store.dispatch('ADD_LINK', { url }).then((link) => {
+			this.$store.dispatch('ADD_LINK', { url }).then(() => {
 				this.newUrl = undefined
-				this.$modal.show('linkDetails', { link: link.id })
+				// this.$modal.show('linkDetails', { link: link.id })
 			}).catch((err) => {
 				console.log(err)
 			})
