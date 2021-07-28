@@ -60,7 +60,7 @@ export class Link {
 				})
 			},
 			redirect: {
-				enabled: false
+				enabled: true
 			},
 			addedWith: 'web'
 		}

@@ -1,25 +1,28 @@
 <template>
   <Modal class="add-modal" @close="close">
     <h1>Share this link publicly</h1>
-    <p>The sharing URL will redirect the user to the original URL you added. The link title and description will be shown in link previews.</p>
+    <p>A public link can be shared with anyone using the sharing URL below. When someone visits the URL they are redirected to the original link. Your link title and description will be shown in link previews.</p>
     <div v-if="!edit" class="link">
       <p>{{ fullShortLink }}</p>
       <Icon :name="copyIcon" @click.native.stop="copy" />
     </div>
 
-    <div v-else-if="edit" class="inputs">
-      <input v-model="shortCode" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="New short code">
+    <div v-else class="link">
+      <input v-model="linkShortCode" class="no-input" />
     </div>
 
-    <div class="actions">
-      <button v-if="!edit" class="primary-button" @click="edit = true">
-        <Icon name="edit" />Edit short code
+    <div v-if="!edit" class="actions">
+      <button class="primary-button" @click.stop="close">
+        Okay
       </button>
-      <button v-else class="primary-button" @click="edit = false">
+      <button v-if="!edit" class="button" @click.stop="edit = true">
+        Edit slug
+      </button>
+    </div>
+
+    <div v-else class="actions">
+      <button class="primary-button" @click.stop="edit = false">
         Save
-      </button>
-      <button class="button" @click="close">
-        Close
       </button>
     </div>
   </Modal>
@@ -45,11 +48,32 @@ export default {
 				return this.$store.state.modal.data.link
 			}
 		},
+		linkShortCode: {
+			set(value) {
+				if (!value || value === this.linkShortCode) return
+
+				const parsed = value.split(' ').join('-')
+
+				this.shortCode = parsed
+				this.$store.dispatch('CHANGE_LINK', {
+					linkId: this.link.id,
+					changes: {
+						redirect: {
+							shortCode: parsed
+						}
+					}
+				})
+			},
+			get() {
+				if (this.shortCode) return this.shortCode
+				return this.link.redirect.shortCode ? this.link.redirect.shortCode : this.link.id
+			}
+		},
 		host() {
 			return `${ window.location.protocol }//${ window.location.host }`
 		},
 		fullShortLink() {
-			return `${ this.host }/r/${ this.link.id }`
+			return `${ this.host }/r/${ this.linkShortCode }`
 		}
 	},
 	methods: {
@@ -104,10 +128,6 @@ export default {
 			}
 		}
 
-		.inputs {
-			margin-top: 1rem;
-		}
-
 		& .error {
 			margin-top: 0.5rem;
 			color: var(--text-light);
@@ -128,6 +148,10 @@ export default {
             & div {
                 margin-left: auto;
             }
+
+			& input {
+				height: 20px;
+			}
         }
 	}
 </style>

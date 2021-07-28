@@ -52,15 +52,6 @@
         </div>
       </div>
       <hr>
-      <div v-if="editable && link.redirect && link.redirect.enabled" class="redirect">
-        <Icon name="info" />
-        <p>Short link:</p>
-        <a v-if="!editShortLink" :href="fullShortLink">{{ fullShortLink }}</a>
-        <p v-else>
-          /r/<input v-model="linkShortCode" class="no-input" placeholder="short-code" />
-        </p>
-        <Icon :name="copyIcon" class="copy-short" @click.native.stop="copyShortLink" />
-      </div>
       <div v-if="link.meta && link.meta.image" class="image-wrapper">
         <div class="image">
           <img :src="imageUrl">
@@ -154,14 +145,19 @@ export default {
 
 			if (this.link.redirect && this.link.redirect.enabled) {
 				items.push({
+					text: 'Share this link',
+					icon: 'share',
+					click: this.openShareModal
+				})
+				items.push({
 					text: 'Disable sharing',
 					icon: 'eyeOff',
 					click: this.disableRedirect
 				})
 			} else {
 				items.push({
-					text: 'Share this link',
-					icon: 'share',
+					text: 'Enable sharing',
+					icon: 'eye',
 					click: this.enableRedirect
 				})
 			}
@@ -329,9 +325,14 @@ export default {
 				this.enableRedirect()
 			}
 		},
-		enableRedirect() {
+		openShareModal() {
 			this.$modal.show('shareLink', { link: this.link })
-			/* this.link.redirect = { enabled: true }
+		},
+		enableRedirect() {
+			this.link = {
+				...this.link,
+				redirect: { enabled: true }
+			}
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
@@ -339,14 +340,16 @@ export default {
 						enabled: true
 					}
 				}
-			}) */
+			})
+
+			this.openShareModal()
 		},
 		async disableRedirect() {
 			this.canClose = false
 			const confirm = await this.$confirm({
-				title: `Are you sure you want to disable redirection?`,
-				message: 'The short link will stop working and a 404 error will be shown instead.',
-				confirmText: 'Disable redirection',
+				title: `Are you sure you want to make this link private?`,
+				message: 'The sharing link will stop working and a 404 error will be shown instead.',
+				confirmText: 'Make private',
 				danger: true
 			})
 
@@ -358,7 +361,11 @@ export default {
 				return
 			}
 
-			this.link.redirect = { enabled: false, shortCode: null }
+			this.link = {
+				...this.link,
+				redirect: { enabled: false, shortCode: null }
+			}
+
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
