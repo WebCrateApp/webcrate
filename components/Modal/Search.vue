@@ -88,6 +88,12 @@ export default {
 			const currentCrate = this.currentCrate && this.currentCrate.id
 			if (link.crate && (link.crate !== currentCrate)) {
 				this.$store.commit('SET_CURRENT_CRATE', link.crate)
+
+				if (link.crate === 'null') {
+					this.$router.push(`/inbox?link=${ link.id }`)
+					return
+				}
+
 				this.$router.push(`/crate/${ link.crate }?link=${ link.id }`)
 			} else {
 				this.$modal.show('linkDetails', { link: link.id })
