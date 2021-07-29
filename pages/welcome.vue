@@ -1,8 +1,8 @@
 <template>
   <div class="page-wrapper">
-    <ModalAddCrate v-if="showModal === 'addCrate'" />
-    <ModalLinkDetails v-else-if="showModal === 'linkDetails'" />
-    <ModalAddLink v-else-if="showModal === 'addLink'" />
+    <ModalAddCrate v-if="showModal && showModal.addCrate" />
+    <ModalLinkDetails v-else-if="showModal && showModal.linkDetails" />
+    <ModalAddLink v-else-if="showModal && showModal.addLink" />
     <div v-if="state !== 'load'" class="logo">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="165" height="36" viewBox="0 0 165 36">
         <defs>
