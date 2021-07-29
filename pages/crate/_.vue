@@ -49,7 +49,14 @@
     </div>
     <div v-else-if="links.length > 0" class="links">
       <Grid>
-        <LinkItem v-for="link in links" :key="link.id" :link="link" :editable="editable" :endpoint="crate.endpoint" />
+        <LinkItem
+          v-for="link in links"
+          :key="link.id"
+          :link="link"
+          :editable="editable"
+          :draggable="!isPublic"
+          :endpoint="crate.endpoint"
+        />
       </Grid>
     </div>
     <div v-else class="empty-state">

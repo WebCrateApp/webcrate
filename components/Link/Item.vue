@@ -1,6 +1,6 @@
 <template>
   <div
-    :draggable="editable"
+    :draggable="draggable"
     title="Click to open link details"
     @[dragStartEvent].stop="startDrag($event)"
     @[dragStopEvent].stop="stopDrag($event)"
@@ -27,6 +27,10 @@ export default {
 		link: {
 			type: Object,
 			required: true
+		},
+		draggable: {
+			type: Boolean,
+			default: false
 		},
 		editable: {
 			type: Boolean,
@@ -58,10 +62,10 @@ export default {
 			}
 		},
 		dragStartEvent() {
-			return this.editable ? 'dragstart' : null
+			return this.draggable ? 'dragstart' : null
 		},
 		dragStopEvent() {
-			return this.editable ? 'dragend' : null
+			return this.draggable ? 'dragend' : null
 		},
 		drag: {
 			set(value) {
@@ -81,6 +85,10 @@ export default {
 			e.dataTransfer.dropEffect = 'move'
 			e.dataTransfer.effectAllowed = 'move'
 			e.dataTransfer.setData('linkId', this.link.id)
+
+			if (this.endpoint) {
+				e.dataTransfer.setData('endpoint', this.endpoint)
+			}
 		},
 		stopDrag() {
 			this.drag = false

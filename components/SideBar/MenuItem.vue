@@ -65,9 +65,24 @@ export default {
 		}
 	},
 	methods: {
-		onDrop(e) {
+		async onDrop(e) {
 			if (!this.crateId) return
 			const linkId = e.dataTransfer.getData('linkId')
+			const endpoint = e.dataTransfer.getData('endpoint')
+
+			if (endpoint) {
+				const link = await this.$api.getExternalLink(linkId, endpoint)
+
+				await this.$api.addLinkToCrate(link.url, this.crateId)
+
+				// this.$modal.show('linkDetails', { link: newLink.id })
+
+				/* this.$store.commit('SET_CURRENT_CRATE', this.crateId)
+				this.$router.push(`/crate/${ this.crateId }`)
+ */
+				return
+			}
+
 			this.$store.dispatch('MOVE_LINK', { linkId, crate: this.crateId })
 		}
 	}
