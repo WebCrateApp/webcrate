@@ -93,6 +93,11 @@ export const mutations = {
 }
 
 export const actions = {
+	async GET_CONFIG({ commit }) {
+		const config = await this.$api.getConfig()
+
+		commit('SET_CONFIG', config)
+	},
 	async ADD_LINK({ commit }, { url, crate }) {
 		const link = await this.$api.addLinkToCrate(url, crate)
 

@@ -43,12 +43,9 @@
 */
 export default {
 	layout: 'sidebar',
-	async asyncData({ app: { $api, $modal }, store, query }) {
+	asyncData({ app: { $modal }, store, query }) {
 		const addUrl = query.addUrl
 		const link = query.link
-
-		const config = await $api.getConfig()
-		store.commit('SET_CONFIG', config)
 
 		if (addUrl) {
 			$modal.replace('addLink', { inputValue: addUrl })

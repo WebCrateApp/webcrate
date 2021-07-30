@@ -34,6 +34,8 @@ export default {
 	created() {
 		this.isPublic = this.$route.path.includes('public')
 
+		this.$store.dispatch('GET_CONFIG')
+
 		if (!this.isPublic) {
 			this.loadingCrates = true
 			this.$store.dispatch('GET_CRATES').then(() => {

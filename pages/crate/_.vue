@@ -93,9 +93,6 @@ export default {
 		const isPublic = params.pathMatch.includes('public')
 		const editable = !isExternal && !isPublic
 
-		const config = await $api.getConfig()
-		store.commit('SET_CONFIG', config)
-
 		let crateId
 		if (isExternal) {
 			crateId = params.pathMatch.split('external/')[1]

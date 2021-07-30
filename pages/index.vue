@@ -56,7 +56,7 @@
 <script>
 export default {
 	layout: 'sidebar',
-	async asyncData({ app: { $api, $modal }, store, query }) {
+	asyncData({ app: { $modal }, query }) {
 		const addUrl = query.addUrl
 		const link = query.link
 
@@ -65,9 +65,6 @@ export default {
 		} else if (link) {
 			$modal.replace('linkDetails', { link })
 		}
-
-		const config = await $api.getConfig()
-		store.commit('SET_CONFIG', config)
 	},
 	data() {
 		return {
