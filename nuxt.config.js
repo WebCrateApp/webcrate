@@ -40,11 +40,9 @@ export default {
 			mode: 'client'
 		},
 		'~/plugins/api.js',
-		'~/plugins/vue-select.js',
 		'~/plugins/modals.js',
 		'~/plugins/version.js',
-		'~/plugins/vue-shortkey.js',
-		'~/plugins/vue-textarea-autosize.js',
+		'~/plugins/vue-librarys.js',
 		'~/plugins/clipboard.js',
 		'~/plugins/directives.js'
 	],

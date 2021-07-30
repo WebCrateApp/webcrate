@@ -76,6 +76,7 @@
     "vue-click-outside": "^1.1.0",
     "vue-select": "^3.11.2",
     "vue-shortkey": "^3.1.7",
-    "vue-textarea-autosize": "^1.1.1"
+    "vue-textarea-autosize": "^1.1.1",
+    "vue-toast-notification": "^0.6.2"
   }
 }
