@@ -9,7 +9,7 @@ export const router = express.Router()
 
 router.use('/api', apiRouter)
 router.use('/img', imageRouter)
-router.use('/r', redirectRouter)
+router.use('/s', redirectRouter)
 router.use(wildcardRouter)
 
 export default router

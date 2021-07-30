@@ -52,7 +52,7 @@ export default {
 			return `${ window.location.protocol }//${ window.location.host }`
 		},
 		fullShortLink() {
-			return `${ this.host }/r/${ this.shortCode }`
+			return `${ this.host }/s/${ this.shortCode }`
 		}
 	},
 	created() {
