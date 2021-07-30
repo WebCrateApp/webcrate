@@ -166,13 +166,13 @@ export default {
 	},
 	methods: {
 		showAddCrateModal() {
-			this.$modal.show('addCrate', { changePageOnSuccess: false })
+			this.$modal.replace('addCrate', { changePageOnSuccess: false })
 		},
 		showAddLinkModal() {
-			this.$modal.show('addLink')
+			this.$modal.replace('addLink')
 		},
 		openLink(link) {
-			this.$modal.show('linkDetails', { link, editable: false })
+			this.$modal.replace('linkDetails', { link, editable: false })
 		},
 		done() {
 			this.$router.push(`/`)

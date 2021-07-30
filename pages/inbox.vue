@@ -51,9 +51,9 @@ export default {
 		store.commit('SET_CONFIG', config)
 
 		if (addUrl) {
-			$modal.show('addLink', { inputValue: addUrl })
+			$modal.replace('addLink', { inputValue: addUrl })
 		} else if (link) {
-			$modal.show('linkDetails', { link })
+			$modal.replace('linkDetails', { link })
 		}
 
 		store.commit('SET_CURRENT_CRATE', 'null')

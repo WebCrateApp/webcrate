@@ -61,9 +61,9 @@ export default {
 		const link = query.link
 
 		if (addUrl) {
-			$modal.show('addLink', { inputValue: addUrl })
+			$modal.replace('addLink', { inputValue: addUrl })
 		} else if (link) {
-			$modal.show('linkDetails', { link })
+			$modal.replace('linkDetails', { link })
 		}
 
 		const config = await $api.getConfig()

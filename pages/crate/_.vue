@@ -115,7 +115,7 @@ export default {
 
 		const link = query.link
 		if (link) {
-			$modal.show('linkDetails', { link })
+			$modal.replace('linkDetails', { link })
 		}
 
 		return { crate, isExternal, isPublic, editable }
