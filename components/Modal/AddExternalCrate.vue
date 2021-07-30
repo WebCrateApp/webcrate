@@ -39,8 +39,12 @@ export default {
 				this.url = undefined
 				this.invalidLinkErr = undefined
 
-				this.$store.commit('SET_CURRENT_CRATE', crate.id)
-				this.$router.push(`/crate/external/${ crate.id }`)
+				this.$toast.success('External crate added!', {
+					onClick: () => {
+						this.$store.commit('SET_CURRENT_CRATE', crate.id)
+						this.$router.push(`/crate/external/${ crate.id }`)
+					}
+				})
 
 				this.close()
 			}).catch((err) => {

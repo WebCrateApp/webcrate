@@ -8,7 +8,7 @@
     </div>
 
     <div v-else class="link">
-      <input v-model="linkShortCode" class="no-input" />
+      <input v-model="shortCode" class="no-input" />
     </div>
 
     <div v-if="!edit" class="actions">
@@ -21,7 +21,7 @@
     </div>
 
     <div v-else class="actions">
-      <button class="primary-button" @click.stop="edit = false">
+      <button class="primary-button" @click.stop="save">
         Save
       </button>
     </div>
@@ -41,55 +41,44 @@ export default {
 	},
 	computed: {
 		link: {
-			set(value) {
-				this.$modal.setData({ link: value })
-			},
 			get() {
-				return this.$store.state.modal.data.link
-			}
-		},
-		linkShortCode: {
-			set(value) {
-				if (!value || value === this.linkShortCode) return
-
-				const parsed = value.split(' ').join('-')
-
-				this.shortCode = parsed
-				this.$store.dispatch('CHANGE_LINK', {
-					linkId: this.link.id,
-					changes: {
-						redirect: {
-							shortCode: parsed
-						}
-					}
-				})
+				return this.$store.state.currentLinkData
 			},
-			get() {
-				if (this.shortCode) return this.shortCode
-				return this.link.redirect.shortCode ? this.link.redirect.shortCode : this.link.id
+			set(value) {
+				this.$store.commit('SET_CURRENT_LINK_DATA', value)
 			}
 		},
 		host() {
 			return `${ window.location.protocol }//${ window.location.host }`
 		},
 		fullShortLink() {
-			return `${ this.host }/r/${ this.linkShortCode }`
+			return `${ this.host }/r/${ this.shortCode }`
 		}
 	},
+	created() {
+		this.shortCode = this.link.redirect.shortCode ? this.link.redirect.shortCode : this.link.id
+	},
 	methods: {
-		add() {
-			const name = this.name
-			if (!name) return
+		save() {
+			const parsed = this.shortCode.split(' ').join('-')
 
-			this.$store.dispatch('CHANGE_NAME', name).then(() => {
-				this.name = undefined
-				this.invalidLinkErr = undefined
+			this.link = {
+				...this.link,
+				redirect: { enabled: true, shortCode: parsed }
+			}
 
-				this.close()
-			}).catch((err) => {
-				this.invalidLinkErr = err.message
-				console.log(err)
+			this.$store.dispatch('CHANGE_LINK', {
+				linkId: this.link.id,
+				changes: {
+					redirect: {
+						shortCode: parsed
+					}
+				}
 			})
+
+			this.edit = false
+
+			this.$toast.success('Slug changed!')
 		},
 		close() {
 			this.$modal.hide('shareLink')
@@ -97,6 +86,7 @@ export default {
 		copy() {
 			this.copyIcon = 'check'
 			this.$clipboard(this.fullShortLink)
+			this.$toast.success('URL copied to clipboard!')
 			setTimeout(() => {
 				this.copyIcon = 'clipboard'
 			}, 1000)

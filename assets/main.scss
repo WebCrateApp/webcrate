@@ -11,7 +11,9 @@
 
     --accent: #F5BE6B;
     --red: rgb(197, 63, 63);
+    --red-light: rgb(230, 104, 104);
     --red-dark: rgb(146, 40, 40);
+    --green: rgb(123, 217, 147);
 
     /* Values */
     --border-radius: 8px;
@@ -151,4 +153,156 @@ a {
     .vs__dropdown-option--highlight {
         background: var(--text)
     }
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1
+	}
+
+	to {
+		opacity: 0
+	}
+}
+
+.v-toast--fade-out {
+	animation-name: fadeOut
+}
+
+@keyframes fadeInDown {
+	from {
+		opacity: 0;
+		transform: translate3d(0, -100%, 0)
+	}
+
+	to {
+		opacity: 1;
+		transform: none
+	}
+}
+
+.v-toast--fade-in-down {
+	animation-name: fadeInDown
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 100%, 0)
+	}
+
+	to {
+		opacity: 1;
+		transform: none
+	}
+}
+
+.v-toast--fade-in-up {
+	animation-name: fadeInUp
+}
+
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 150ms ease-out
+}
+
+.fade-enter,
+.fade-leave-to {
+	opacity: 0
+}
+
+.v-toast {
+	position: fixed;
+	display: flex;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 1rem;
+	overflow: hidden;
+	z-index: 1052;
+	pointer-events: none
+}
+
+.v-toast__item {
+	display: inline-flex;
+	align-items: center;
+	animation-duration: 150ms;
+	margin: 0.3rem 0;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+	border-radius: var(--border-radius);
+    background-color: var(--background-2nd);
+	pointer-events: auto;
+	opacity: .92;
+	color: var(--text);
+	cursor: pointer;
+    padding: 0.5rem;
+}
+
+.v-toast__item.v-toast__item--top,
+.v-toast__item.v-toast__item--bottom {
+	align-self: center
+}
+
+.v-toast__item.v-toast__item--top-right,
+.v-toast__item.v-toast__item--bottom-right {
+	align-self: flex-end
+}
+
+.v-toast__item.v-toast__item--top-left,
+.v-toast__item.v-toast__item--bottom-left {
+	align-self: flex-start
+}
+
+.v-toast__text {
+	margin: 0;
+	padding: 0 0.5rem;
+	word-break: break-word
+}
+
+.v-toast__icon {
+	display: none
+}
+
+.v-toast.v-toast--top {
+	flex-direction: column
+}
+
+.v-toast.v-toast--bottom {
+	flex-direction: column-reverse
+}
+
+.v-toast.v-toast--custom-parent {
+	position: absolute
+}
+
+@media screen and (max-width: 768px) {
+	.v-toast {
+		padding: 0;
+		position: fixed !important
+	}
+}
+
+.v-toast__item {
+	opacity: 1;
+}
+
+.v-toast__item .v-toast__icon {
+	display: block;
+	width: 27px;
+	min-width: 27px;
+	height: 27px;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='rgb(123, 217, 147)'%3E%3Cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clip-rule='evenodd' /%3E%3C/svg%3E") no-repeat
+}
+
+.v-toast__item.v-toast__item--success .v-toast__icon {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='rgb(123, 217, 147)'%3E%3Cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z' clip-rule='evenodd' /%3E%3C/svg%3E") no-repeat
+}
+
+.v-toast__item.v-toast__item--error .v-toast__icon {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='rgb(230, 104, 104)'%3E%3Cpath fill-rule='evenodd' d='M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z' clip-rule='evenodd' /%3E%3C/svg%3E") no-repeat
+}
+
+.v-toast__item.v-toast__item--warning .v-toast__icon {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-5 w-5' viewBox='0 0 20 20' fill='%23F5BE6B'%3E%3Cpath fill-rule='evenodd' d='M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z' clip-rule='evenodd' /%3E%3C/svg%3E") no-repeat
 }

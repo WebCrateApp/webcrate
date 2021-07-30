@@ -66,13 +66,24 @@ export default {
 				return
 			}
 
-			const crate = this.currentCrate || this.selectedCrate
+			const crate = this.selectedCrate || this.currentCrate
 
 			this.$store.dispatch('ADD_LINK', { url, crate }).then((link) => {
 				if (!link.meta || !link.meta.title) {
 					this.$modal.show('linkDetails', { link: link.id })
 				} else {
 					this.$modal.hide()
+
+					this.$toast.success('Link added!', {
+						onClick: () => {
+							if (crate !== undefined && crate !== this.currentCrate) {
+								this.$switchToPageOrCrate(crate, { link: link.id })
+								return
+							}
+
+							this.$modal.show('linkDetails', { link: link.id })
+						}
+					})
 				}
 			}).catch((err) => {
 				this.invalidLinkErr = err.message

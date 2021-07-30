@@ -61,10 +61,14 @@ export default {
 				this.name = undefined
 				this.invalidLinkErr = undefined
 
-				if (this.changePageOnSuccess) {
-					this.$store.commit('SET_CURRENT_CRATE', crate.id)
-					this.$router.push(`/crate/${ crate.id }`)
-				}
+				this.$toast.success('Crate added!', {
+					onClick: () => {
+						if (this.changePageOnSuccess) {
+							this.$store.commit('SET_CURRENT_CRATE', crate.id)
+							this.$router.push(`/crate/${ crate.id }`)
+						}
+					}
+				})
 
 				this.close()
 			}).catch((err) => {

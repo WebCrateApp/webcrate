@@ -52,6 +52,7 @@ export default {
 		copy() {
 			this.copyIcon = 'check'
 			this.$clipboard(this.value)
+			this.$toast.success('Copied to clipboard!')
 			setTimeout(() => {
 				this.copyIcon = 'clipboard'
 			}, 1000)

@@ -7,7 +7,6 @@
     </p>
     <div v-else-if="link">
       <div v-if="editable" v-shortkey="['ctrl', 'del']" @shortkey="deleteLink"></div>
-      <div v-if="editable" v-shortkey="['ctrl', 'alt', 'r']" @shortkey="toggleRedirect"></div>
       <div v-shortkey="['ctrl', 'alt', 'c']" @shortkey="copyLink"></div>
       <a ref="externalLink" :href="link.url" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
       <div class="top">
@@ -72,13 +71,8 @@
 export default {
 	data() {
 		return {
-			link: undefined,
-			canClose: true,
-			showShareMenu: false,
-			windowSize: undefined,
-			copyIcon: 'clipboard',
-			editShortLink: false,
-			clicks: 0
+			canClose: false,
+			windowSize: undefined
 		}
 	},
 	async fetch() {
@@ -88,11 +82,16 @@ export default {
 		}
 
 		const link = this.endpoint ? await this.$api.getExternalLink(this.linkId, this.endpoint) : await this.$api.getLink(this.linkId)
-		this.link = link
+		this.$store.commit('SET_CURRENT_LINK_DATA', link)
 	},
 	computed: {
-		currentCrate() {
-			return this.$store.getters.currentCrate
+		link: {
+			get() {
+				return this.$store.state.currentLinkData
+			},
+			set(value) {
+				this.$store.commit('SET_CURRENT_LINK_DATA', value)
+			}
 		},
 		linkId() {
 			return this.$store.state.modal.data.link
@@ -127,12 +126,6 @@ export default {
 			} catch (err) {
 				return undefined
 			}
-		},
-		host() {
-			return `${ window.location.protocol }//${ window.location.host }`
-		},
-		fullShortLink() {
-			return `${ this.host }/r/${ this.linkShortCode }`
 		},
 		shareActions() {
 			const items = [
@@ -216,26 +209,6 @@ export default {
 				return this.link && this.link.meta && this.link.meta.title ? this.link.meta.title : undefined
 			}
 		},
-		linkShortCode: {
-			set(value) {
-				if (!value || value === this.linkShortCode) return
-
-				const parsed = value.split(' ').join('-')
-
-				this.link.redirect = { ...this.link.redirect, shortCode: parsed }
-				this.$store.dispatch('CHANGE_LINK', {
-					linkId: this.link.id,
-					changes: {
-						redirect: {
-							shortCode: parsed
-						}
-					}
-				})
-			},
-			get() {
-				return this.link && this.link.redirect && this.link.redirect.enabled ? this.link.redirect.shortCode || this.link.id : undefined
-			}
-		},
 		shareLinkModal() {
 			return this.$store.state.modal.show && this.$store.state.modal.show.shareLink
 		}
@@ -253,6 +226,11 @@ export default {
 		}
 	},
 	created() {
+		// Prevent other old click events from closing modal
+		setTimeout(() => {
+			this.canClose = true
+		}, 200)
+
 		const query = Object.assign({}, this.$route.query)
 		if (!query.link) {
 			query.link = this.linkId.id || this.linkId
@@ -296,33 +274,16 @@ export default {
 			}
 
 			this.$store.dispatch('DELETE_LINK', this.link.id)
+			this.$toast.success('Link deleted!')
+
 			this.canClose = true
 			this.close()
-		},
-		closeShowMenu() {
-			this.showShareMenu = false
 		},
 		copyLink() {
 			const link = this.link.url
 			if (link) {
 				this.$clipboard(link)
-			}
-		},
-		copyShortLink() {
-			const link = this.fullShortLink
-			if (link) {
-				this.copyIcon = 'check'
-				this.$clipboard(link)
-				setTimeout(() => {
-					this.copyIcon = 'clipboard'
-				}, 1000)
-			}
-		},
-		toggleRedirect() {
-			if (this.link.redirect && this.link.redirect.enabled) {
-				this.disableRedirect()
-			} else {
-				this.enableRedirect()
+				this.$toast.success('URL copied to clipboard!')
 			}
 		},
 		openShareModal() {
@@ -341,6 +302,8 @@ export default {
 					}
 				}
 			})
+
+			this.$toast.success('Link sharing enabled!')
 
 			this.openShareModal()
 		},
@@ -375,6 +338,8 @@ export default {
 					}
 				}
 			})
+
+			this.$toast.success('Link sharing disabled!')
 
 			setTimeout(() => {
 				this.canClose = true

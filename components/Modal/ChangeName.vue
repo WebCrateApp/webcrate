@@ -34,6 +34,8 @@ export default {
 				this.name = undefined
 				this.invalidLinkErr = undefined
 
+				this.$toast.success('Name changed!')
+
 				this.close()
 			}).catch((err) => {
 				this.invalidLinkErr = err.message
