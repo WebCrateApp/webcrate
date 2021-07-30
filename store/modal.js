@@ -15,6 +15,15 @@ export const state = () => ({
 })
 
 export const mutations = {
+	replace(state, { modal, data }) {
+		if (!modals.includes(modal)) throw new Error(`Unknown modal: ${ modal }`)
+
+		state.show = {
+			[modal]: true
+		}
+
+		state.data = { ...state.data, ...data }
+	},
 	show(state, { modal, data }) {
 		if (!modals.includes(modal)) throw new Error(`Unknown modal: ${ modal }`)
 

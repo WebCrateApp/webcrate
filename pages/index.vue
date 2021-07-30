@@ -16,7 +16,7 @@
           <CrateLoadingItem v-for="idx in 4" :key="'i' + idx" />
         </Grid>
       </div>
-      <div v-else-if="crates.length > 0" class="section">
+      <div v-else-if="crates && crates.length > 0" class="section">
         <h2>Recently used crates</h2>
         <Grid max-width="300px">
           <CrateItem v-for="crate in crates" :key="crate.id" :crate="crate" />
@@ -30,14 +30,14 @@
           <LinkLoadingItem v-for="idx in 4" :key="'i' + idx" />
         </Grid>
       </div>
-      <div v-else-if="links.length > 0" class="section">
+      <div v-else-if="links && links.length > 0" class="section">
         <h2>Recently added links</h2>
         <Grid>
           <LinkItem v-for="link in links" :key="link.id" :link="link" :draggable="true" />
         </Grid>
       </div>
     </transition>
-    <div v-if="links.length === 0 && crates.length === 0 && !$fetchState.pending" class="empty-state">
+    <div v-if="!crates && !links && !$fetchState.pending" class="empty-state">
       <div class="list">
         <div v-for="i in 3" :key="i" class="empty-link">
           <div class="icon-div"></div>
@@ -54,9 +54,6 @@
 </template>
 
 <script>
-/*
-	TODO: Refresh recent links when a new link is added
-*/
 export default {
 	layout: 'sidebar',
 	async asyncData({ app: { $api, $modal }, store, query }) {
@@ -145,9 +142,14 @@ export default {
 
 			const url = this.newUrl
 
-			this.$store.dispatch('ADD_LINK', { url }).then(() => {
+			this.$store.dispatch('ADD_LINK', { url }).then((link) => {
 				this.newUrl = undefined
-				// this.$modal.show('linkDetails', { link: link.id })
+
+				this.$toast.success('Link added!', {
+					onClick: () => {
+						this.$modal.show('linkDetails', { link: link.id })
+					}
+				})
 			}).catch((err) => {
 				console.log(err)
 			})

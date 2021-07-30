@@ -80,23 +80,15 @@ export default {
 			this.loading = false
 		}, 500),
 		changeCrate(crate) {
-			this.$store.commit('SET_CURRENT_CRATE', crate.id)
-			this.$router.push(`/crate/${ crate.id }`)
+			this.$switchToPageOrCrate(crate.id)
 			this.close()
 		},
 		openLink(link) {
 			const currentCrate = this.currentCrate && this.currentCrate.id
 			if (link.crate && (link.crate !== currentCrate)) {
-				this.$store.commit('SET_CURRENT_CRATE', link.crate)
-
-				if (link.crate === 'null') {
-					this.$router.push(`/inbox?link=${ link.id }`)
-					return
-				}
-
-				this.$router.push(`/crate/${ link.crate }?link=${ link.id }`)
+				this.$switchToPageOrCrate(link.crate, { link: link.id })
 			} else {
-				this.$modal.show('linkDetails', { link: link.id })
+				this.$modal.replace('linkDetails', { link: link.id })
 			}
 		}
 	}

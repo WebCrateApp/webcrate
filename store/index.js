@@ -15,6 +15,7 @@ const defaultState = () => {
 		externalCrates: [],
 		currentCrateLinks: [],
 		currentLink: undefined,
+		currentLinkData: undefined,
 		currentPage: 'home',
 		draggingLink: false
 	}
@@ -61,6 +62,9 @@ export const mutations = {
 	},
 	SET_CURRENT_LINK(state, value) {
 		state.currentLink = value
+	},
+	SET_CURRENT_LINK_DATA(state, value) {
+		state.currentLinkData = value
 	},
 	CHANGE_LINK(state, link) {
 		const idx = state.currentCrateLinks.findIndex((item) => item.id === link.id)

@@ -37,7 +37,7 @@
           :name="crate.name"
           :emoji="crate.icon"
           :crate-id="crate.id"
-          :selected="currentCrate === crate.id"
+          :selected="currentCrate === crate.id && !currentPage"
           :editable="crate.id !== undefined && crate.endpoint === undefined"
           @click.native="changeCrate(crate)"
           @shortkey.native="changeCrate(crate)"
@@ -51,9 +51,8 @@
       </div>
       <div class="menus">
         <SideBarMenuItem
-          v-for="(crate, idx) in externalCrates"
+          v-for="crate in externalCrates"
           :key="crate.id"
-          v-shortkey="['ctrl', idx + 1]"
           :name="crate.name"
           :emoji="crate.icon"
           :crate-id="crate.id"
@@ -145,26 +144,10 @@ export default {
 	},
 	methods: {
 		changeCrate(crate) {
-			this.$store.commit('SET_CURRENT_CRATE', crate.id)
-			this.currentPage = undefined
-
-			if (crate.endpoint !== undefined) {
-				this.$router.push(`/crate/external/${ crate.id }`)
-				return
-			}
-
-			this.$router.push(`/crate/${ crate.id }`)
+			this.$switchToPageOrCrate(crate.id, { external: crate.endpoint !== undefined })
 		},
 		changePage(page) {
-			this.$store.commit('SET_CURRENT_CRATE', undefined)
-			this.currentPage = page
-
-			if (page === 'home') {
-				this.$router.push(`/`)
-				return
-			}
-
-			this.$router.push(`/${ page }`)
+			this.$switchToPageOrCrate(page)
 		},
 		showModal(value) {
 			this.$modal.show(value)

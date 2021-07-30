@@ -40,10 +40,8 @@ export default {
 			mode: 'client'
 		},
 		'~/plugins/api.js',
-		'~/plugins/modals.js',
-		'~/plugins/version.js',
 		'~/plugins/vue-librarys.js',
-		'~/plugins/clipboard.js',
+		'~/plugins/helpers.js',
 		'~/plugins/directives.js'
 	],
 

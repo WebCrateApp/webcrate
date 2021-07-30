@@ -151,6 +151,9 @@ export default {
 		emojiIcon() {
 			return emojis[this.crate.icon]
 		},
+		currentCrate() {
+			return this.$store.getters.currentCrate
+		},
 		links: {
 			set(value) {
 				this.$store.commit('SET_CURRENT_CRATE_LINKS', value)
@@ -184,6 +187,7 @@ export default {
 			set(value) {
 				this.crate.icon = value
 				this.$store.dispatch('CHANGE_CRATE_ICON', { crateId: this.crate.id, icon: value })
+				this.$toast.success('Icon changed!')
 			},
 			get() {
 				return this.crate.icon
@@ -213,6 +217,22 @@ export default {
 			})
 
 			return items
+		}
+	},
+	watch: {
+		currentCrate(newCrate, oldCrate) {
+			// Only continue if the same crate has changed
+			if (!newCrate || !oldCrate || newCrate.id !== oldCrate.id) {
+				return
+			}
+
+			if (oldCrate.name !== newCrate.name) {
+				this.$toast.success('Name changed!')
+			}
+
+			if (oldCrate.description !== newCrate.description) {
+				this.$toast.success('Description changed!')
+			}
 		}
 	},
 	methods: {
@@ -247,6 +267,8 @@ export default {
 				this.$store.dispatch('DELETE_CRATE', this.crate.id).then(() => {
 					this.$store.commit('SET_CURRENT_CRATE', undefined)
 					this.$router.push(`/`)
+
+					this.$toast.success('Crate deleted!')
 				})
 			}
 		},
@@ -262,6 +284,8 @@ export default {
 				this.$store.dispatch('DELETE_EXTERNAL_CRATE', this.crate.id).then(() => {
 					this.$store.commit('SET_CURRENT_CRATE', undefined)
 					this.$router.push(`/`)
+
+					this.$toast.success('External crate removed!')
 				})
 			}
 		},
@@ -269,6 +293,8 @@ export default {
 			this.$store.dispatch('CHANGE_CRATE_ACCESS', { crateId: this.crate.id, isPublic: true }).then(() => {
 				this.crate.public = true
 				this.showShareModal()
+
+				this.$toast.success('Crate set to public!')
 			})
 		},
 		async makePrivate() {
@@ -282,6 +308,8 @@ export default {
 			if (confirm) {
 				this.$store.dispatch('CHANGE_CRATE_ACCESS', { crateId: this.crate.id, isPublic: false }).then(() => {
 					this.crate.public = false
+
+					this.$toast.success('Crate set to private!')
 				})
 			}
 		},
