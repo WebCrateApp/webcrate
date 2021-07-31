@@ -49,12 +49,12 @@ export class ExternalCrate {
 		return new ExternalCrate(newCrate)
 	}
 
-	static async find(query: any = {}, limit?: number, last?: string): Promise<Array<ExternalCrate>> {
-		const crates = await Crates.find(query, limit, last)
+	static async find(query: any = {}, limit?: number, lastId?: string) {
+		const { items, count, last } = await Crates.find(query, limit, lastId)
 
-		if (!crates) return []
+		if (!items) return { items: [], count: 0, last: undefined }
 
-		return crates.map((crate: ExternalCrate) => new ExternalCrate(crate))
+		return { count, last, items: items.map((crate: ExternalCrate) => new ExternalCrate(crate)) }
 	}
 
 	static async findOne(query: any) {

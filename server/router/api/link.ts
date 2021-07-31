@@ -44,53 +44,6 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 	}
 })
 
-router.get('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-	try {
-		const id = req.query.id as string
-		if (!id) {
-			const links = await Link.find({})
-
-			return res.ok(links)
-		}
-
-		const link = await Link.findById(id)
-		if (!link) {
-			return res.fail(404, 'link not found')
-		}
-
-		log.debug(link)
-		res.ok(link)
-	} catch (err) {
-		return next(err)
-	}
-})
-
-router.get('/recent', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-	try {
-		const numString = req.query.num as string
-		const num = numString ? parseInt(numString) : 10
-		const links = await Link.find({}, num)
-
-		log.debug(links)
-		res.ok(links)
-	} catch (err) {
-		return next(err)
-	}
-})
-
-router.get('/orphans', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-	try {
-		const numString = req.query.num as string
-		const num = numString ? parseInt(numString) : 10
-		const links = await Link.find({ crate: 'null' }, num)
-
-		log.debug(links)
-		res.ok(links)
-	} catch (err) {
-		return next(err)
-	}
-})
-
 router.get('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
 		const id = req.params.id as string
@@ -105,6 +58,33 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 
 		log.debug(link)
 		res.ok(link)
+	} catch (err) {
+		return next(err)
+	}
+})
+
+router.get('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+	try {
+		const limit = req.query.limit as string || '20'
+		const last = req.query.last as string | undefined
+
+		const links = await Link.find({}, parseInt(limit), last)
+
+		return res.ok(links)
+	} catch (err) {
+		return next(err)
+	}
+})
+
+router.get('/orphans', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+	try {
+		const limit = req.query.limit as string || '20'
+		const last = req.query.last as string | undefined
+
+		const links = await Link.find({ crate: 'null' }, parseInt(limit), last)
+
+		log.debug(links)
+		res.ok(links)
 	} catch (err) {
 		return next(err)
 	}

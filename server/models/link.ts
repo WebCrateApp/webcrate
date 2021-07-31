@@ -69,12 +69,12 @@ export class Link {
 		return new Link(newLink)
 	}
 
-	static async find(query: any = {}, limit?: number, last?: string): Promise<Array<Link>> {
-		const links = await Links.find(query, limit, last)
+	static async find(query: any = {}, limit?: number, lastId?: string) {
+		const { items, count, last } = await Links.find(query, limit, lastId)
 
-		if (!links) return []
+		if (!items) return { count: 0, last: undefined, items: [] }
 
-		return links.map((link: Link) => new Link(link))
+		return { count, last, items: items.map((link: Link) => new Link(link)) }
 	}
 
 	static async findOne(query: any) {
@@ -93,12 +93,12 @@ export class Link {
 		return new Link(link)
 	}
 
-	static async findByCrate(crate: string): Promise<Array<Link>> {
-		const links = await Links.find({ crate })
+	static async findByCrate(crate: string, limit?: number, lastId?: string) {
+		const { items, count, last } = await Links.find({ crate }, limit, lastId)
 
-		if (!links) return []
+		if (!items) return { count: 0, last: undefined, items: [] }
 
-		return links.map((link: Link) => new Link(link))
+		return { count, last, items: items.map((link: Link) => new Link(link)) }
 	}
 
 	static async findByShortCode(code: string): Promise<Link | null> {

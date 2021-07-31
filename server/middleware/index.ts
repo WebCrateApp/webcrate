@@ -42,7 +42,7 @@ export async function checkIfSetup(req: express.Request, res: express.Response, 
 
 		// Create default crates if they don't exist
 		const crates = await Crate.find([{ name: 'Read Later' }, { name: 'Archive' }])
-		if (crates.length === 0) {
+		if (crates.count === 0) {
 			log.debug('creating default crates')
 			const crate1 = await Crate.create('Read Later', 'Articles and blog posts I want to read later', 'book', false)
 			const crate2 = await Crate.create('Archive', 'Archive of old links', 'open_file_folder', false)

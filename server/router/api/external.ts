@@ -51,12 +51,17 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 		if (!id) {
 			const externalCrates = await ExternalCrate.find({})
 
-			const crates = await Promise.all(externalCrates.map(async (externalCrate: ExternalCrate) => {
-				await externalCrate.refresh()
-				return externalCrate
-			}))
+			if (externalCrates.count > 0) {
 
-			return res.ok(crates)
+				const crates = await Promise.all(externalCrates.items.map(async (externalCrate: ExternalCrate) => {
+					await externalCrate.refresh()
+					return externalCrate
+				}))
+
+				return res.ok(crates)
+			}
+
+			return { count: 0, items: [], last: undefined }
 		}
 
 		const crate = await ExternalCrate.findById(id)

@@ -4,9 +4,9 @@ import db from './db'
 export default class Base {
 
 	db: any
-	descendingOrder: Boolean
+	descendingOrder: boolean
 
-	constructor(name: string, descendingOrder: Boolean) {
+	constructor(name: string, descendingOrder: boolean) {
 		this.db = db.Base(name)
 		this.descendingOrder = descendingOrder
 	}
@@ -48,12 +48,15 @@ export default class Base {
 		await this.db.delete(item.key)
 	}
 
-	async find(query: any = {}, limit?: number, last?: string) {
+	async find(query: any = {}, limit?: number, lastId?: string) {
+
+		const last = lastId ? (await this.findById(lastId)).key : undefined
+
 		let res = await this.db.fetch(query, limit ? { limit, last } : undefined)
 		let items: Array<any> = res.items
 
 		// We already have enough data
-		if (limit && items.length === limit) return items
+		if (limit && items.length === limit) return { count: items.length, last: items[items.length - 1].id, items }
 
 		// More data available
 		while (res.last) {
@@ -69,7 +72,7 @@ export default class Base {
 		}
 
 		// We have everything
-		return items
+		return { count: items.length, last: items[items.length - 1].id, items }
 	}
 
 	async findOne(query: any) {
@@ -88,7 +91,7 @@ export default class Base {
 		return res.items[0]
 	}
 
-	static use(name: string, descendingOrder: Boolean = false): Base {
+	static use(name: string, descendingOrder = false): Base {
 		return new Base(name, descendingOrder)
 	}
 }

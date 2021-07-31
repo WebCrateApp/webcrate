@@ -47,9 +47,6 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 			return res.fail(404, 'crate not found')
 		}
 
-		const links = await Link.findByCrate(crate.id)
-		crate.numLinks = links.length
-
 		await Stat.addRecentlyUsedCrate(crate.id)
 
 		log.debug(crate)
@@ -73,7 +70,7 @@ router.get('/recent', async (_req: express.Request, res: express.Response, next:
 
 			return {
 				...crate,
-				numLinks: links.length
+				numLinks: links.count
 			}
 		}))
 
@@ -96,9 +93,6 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			return res.fail(404, 'crate not found')
 		}
 
-		const links = await Link.findByCrate(crate.id)
-		crate.numLinks = links.length
-
 		await Stat.addRecentlyUsedCrate(crate.id)
 
 		log.debug(crate)
@@ -120,7 +114,10 @@ router.get('/:id/links', async (req: express.Request, res: express.Response, nex
 			return res.fail(404, 'crate not found')
 		}
 
-		const links = await Link.findByCrate(crate.id)
+		const limit = req.query.limit as string || '20'
+		const last = req.query.last as string | undefined
+
+		const links = await Link.findByCrate(crate.id, parseInt(limit), last)
 
 		await Stat.addRecentlyUsedCrate(crate.id)
 
@@ -176,8 +173,10 @@ router.delete('/', async (req: express.Request, res: express.Response, next: exp
 
 		const links = await Link.findByCrate(crate.id)
 
-		for await (const link of links) {
-			await link.delete()
+		if (links.count > 0) {
+			for await (const link of links.items) {
+				await link.delete()
+			}
 		}
 
 		log.debug('All related links deleted')
