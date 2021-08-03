@@ -106,3 +106,28 @@ export function sendResponse(_req: express.Request, res: express.Response, next:
 
 	next()
 }
+
+export function parsePaginate(req: express.Request, _res: express.Response, next: express.NextFunction) {
+	const rawLimit = req.query.limit as string | undefined
+	const last = req.query.last as string | undefined
+
+	if (!rawLimit) {
+		req.paginate = {
+			last,
+			limit: 20
+		}
+
+		return next()
+	}
+
+	if (rawLimit === '0') {
+		return next()
+	}
+
+	req.paginate = {
+		last,
+		limit: parseInt(rawLimit)
+	}
+
+	next()
+}

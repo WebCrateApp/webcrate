@@ -3,6 +3,7 @@ import got from 'got'
 
 // import { Stat } from '../../models/stats'
 import { ExternalCrate } from '../../models/externalCrate'
+import { parsePaginate } from '../../middleware'
 
 import log from '../../utils/log'
 
@@ -45,36 +46,24 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 	}
 })
 
-router.get('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.get('/', parsePaginate, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const id = req.query.id as string
-		if (!id) {
-			const externalCrates = await ExternalCrate.find({})
+		const limit = req?.paginate?.limit
+		const last = req?.paginate?.last
 
-			if (externalCrates.count > 0) {
+		const externalCrates = await ExternalCrate.find({}, limit, last)
 
-				const crates = await Promise.all(externalCrates.items.map(async (externalCrate: ExternalCrate) => {
-					await externalCrate.refresh()
-					return externalCrate
-				}))
+		if (externalCrates.count > 0) {
 
-				return res.ok(crates)
-			}
+			const crates = await Promise.all(externalCrates.items.map(async (externalCrate: ExternalCrate) => {
+				await externalCrate.refresh()
+				return externalCrate
+			}))
 
-			return { count: 0, items: [], last: undefined }
+			return res.ok(crates)
 		}
 
-		const crate = await ExternalCrate.findById(id)
-		if (!crate) {
-			return res.fail(404, 'crate not found')
-		}
-
-		await crate.refresh()
-
-		// await Stat.addRecentlyUsedCrate(crate.id)
-
-		log.debug(crate)
-		res.ok(crate)
+		res.ok({ count: 0, items: [], last: undefined })
 	} catch (err) {
 		return next(err)
 	}

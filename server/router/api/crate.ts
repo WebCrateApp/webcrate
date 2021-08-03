@@ -5,7 +5,7 @@ import { Link } from '../../models/link'
 import { Stat } from '../../models/stats'
 
 import log from '../../utils/log'
-
+import { parsePaginate } from '../../middleware'
 import externalRouter from './external'
 
 export const router = express.Router()
@@ -33,13 +33,24 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 	}
 })
 
-router.get('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.get('/', parsePaginate, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const id = req.query.id as string
-		if (!id) {
-			const crates = await Crate.find({})
+		const limit = req?.paginate?.limit
+		const last = req?.paginate?.last
 
-			return res.ok(crates)
+		const crates = await Crate.find({}, limit, last)
+
+		return res.ok(crates)
+	} catch (err) {
+		return next(err)
+	}
+})
+
+router.get('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+	try {
+		const id = req.params.id as string
+		if (!id) {
+			return res.fail(400, 'no id provided')
 		}
 
 		const crate = await Crate.findById(id)

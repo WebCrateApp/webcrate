@@ -8,6 +8,7 @@ import { Stat } from '../../models/stats'
 
 import log from '../../utils/log'
 import { parseUrl } from '../../utils/url'
+import { parsePaginate } from '../../middleware'
 
 export const router = express.Router()
 
@@ -45,22 +46,22 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 	}
 })
 
-router.get('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.get('/', parsePaginate, async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const limit = req.query.limit as string || '20'
-		const last = req.query.last as string | undefined
+		const limit = req?.paginate?.limit
+		const last = req?.paginate?.last
 		const crateId = req.query.last as string | undefined
 
 		// Get all links
 		if (!crateId) {
-			const links = await Link.find({}, parseInt(limit), last)
+			const links = await Link.find({}, limit, last)
 
 			return res.ok(links)
 		}
 
 		// Get orphaned links
 		if (crateId === 'null' || crateId === 'inbox') {
-			const links = await Link.find({ crate: 'null' }, parseInt(limit), last)
+			const links = await Link.find({ crate: 'null' }, limit, last)
 
 			log.debug(links)
 			return res.ok(links)
@@ -72,7 +73,7 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 			return res.fail(404, 'crate not found')
 		}
 
-		const links = await Link.findByCrate(foundCrate.id, parseInt(limit), last)
+		const links = await Link.findByCrate(foundCrate.id, limit, last)
 		await Stat.addRecentlyUsedCrate(foundCrate.id)
 
 		log.debug(links)
