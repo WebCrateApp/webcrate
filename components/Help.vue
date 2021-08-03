@@ -11,6 +11,10 @@
         <span>🤔</span>How-to guide
       </a>
       <hr>
+      <a class="no-button" @click="showBookmarkletModal">
+        <span>🔖</span>Add bookmarklet
+      </a>
+      <hr>
       <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener" class="no-button">
         <span>💬</span>Feedback
       </a>
@@ -44,69 +48,72 @@ export default {
 	methods: {
 		close() {
 			this.show = false
+		},
+		showBookmarkletModal() {
+			this.$modal.show('bookmarklet')
 		}
 	}
 }
 </script>
 
 <style lang="scss" scoped>
-    .help-wrapper {
-        position: fixed;
-        z-index: 100;
-        bottom: 2rem;
-        right: 2rem;
+	.help-wrapper {
+		position: fixed;
+		z-index: 100;
+		bottom: 2rem;
+		right: 2rem;
 
-        .help-icon {
-            background: var(--background-2nd);
-            border-radius: 100%;
-            border: 2px solid var(--background-2nd);
-            padding: 0.5rem;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
+		.help-icon {
+			background: var(--background-2nd);
+			border-radius: 100%;
+			border: 2px solid var(--background-2nd);
+			padding: 0.5rem;
+			width: 40px;
+			height: 40px;
+			cursor: pointer;
 
-            &:hover, &:focus {
-                border: 2px solid var(--grey);
-            }
-        }
+			&:hover, &:focus {
+				border: 2px solid var(--grey);
+			}
+		}
 
-        .bottom {
-            display: flex;
-            justify-content: flex-end;
-        }
+		.bottom {
+			display: flex;
+			justify-content: flex-end;
+		}
 
-        .help-widget {
-            background: var(--background-2nd);
-            border-radius: var(--border-radius);
-            border: 2px solid var(--grey);
-            margin-bottom: 1rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            overflow: hidden;
+		.help-widget {
+			background: var(--background-2nd);
+			border-radius: var(--border-radius);
+			border: 2px solid var(--grey);
+			margin-bottom: 1rem;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			overflow: hidden;
 
-            & a {
-                padding: 0.8rem 1rem;
-                text-align: left;
-                font-size: 1rem;
-                transition: background .2s ease;
-                color: var(--text);
-                text-decoration: none;
+			& a {
+				padding: 0.8rem 1rem;
+				text-align: left;
+				font-size: 1rem;
+				transition: background .2s ease;
+				color: var(--text);
+				text-decoration: none;
 
-                &:hover {
-                    background: var(--grey);
-                    transition: none;
-                }
+				&:hover {
+					background: var(--grey);
+					transition: none;
+				}
 
-                & span {
-                    margin-right: 0.5rem;
-                }
-            }
+				& span {
+					margin-right: 0.5rem;
+				}
+			}
 
-            & p {
-                text-align: center;
-                padding: 0.5rem;
-            }
-        }
-    }
+			& p {
+				text-align: center;
+				padding: 0.5rem;
+			}
+		}
+	}
 </style>

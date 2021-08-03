@@ -8,6 +8,7 @@
     <ModalChangeName v-else-if="showModal && showModal.changeName" />
     <ModalCopyOutput v-else-if="showModal && showModal.copyOutput" />
     <ModalShareLink v-if="showModal && showModal.shareLink" />
+    <ModalBookmarklet v-if="showModal && showModal.bookmarklet" />
 
     <ConfirmModal />
   </div>
