@@ -7,25 +7,6 @@ import log from '../../utils/log'
 
 export const router = express.Router()
 
-router.get('/crate', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-	try {
-		const id = req.query.id as string
-		if (!id) {
-			return res.fail(400, 'Missing required parameter: id')
-		}
-
-		const crate = await Crate.findOne({ id: id, public: true })
-		if (!crate) {
-			return res.fail(404, 'crate not found')
-		}
-
-		log.debug(crate)
-		res.ok(crate)
-	} catch (err) {
-		return next(err)
-	}
-})
-
 router.get('/crate/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
 		const id = req.params.id as string

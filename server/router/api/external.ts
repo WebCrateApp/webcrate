@@ -103,9 +103,9 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 	}
 })
 
-router.delete('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.delete('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const id = req.query.id as string
+		const id = req.params.id as string
 		if (!id) {
 			return res.fail(400, 'no id provided')
 		}

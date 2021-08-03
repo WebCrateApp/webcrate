@@ -73,13 +73,29 @@ export function sendResponse(_req: express.Request, res: express.Response, next:
 		res.json({
 			status: 200,
 			message: 'ok',
-			data
+			...(data && data.last && { last: data.last }),
+			...(data && data.count && data.items ? { data: data.items } : { data })
 		})
 	}
 
-	res.fail = (statusCode: number, error?: any, statusMessage?: string) => {
+	res.fail = (statusCode: number, err?: any, statusMessage?: string) => {
 		const status = statusCode || 500
-		const message = statusMessage || messages[statusCode] || 'Unkown error ocurred'
+		const message = messages[statusCode]
+
+		let error
+
+		if (!err) {
+			error = { message: statusMessage || 'Unkown error ocurred' }
+		} else if (typeof err === 'string') {
+			error = { message: err }
+		} else if (!err.message || statusMessage !== undefined) {
+			error = {
+				...err,
+				message: statusMessage || 'Unkown error ocurred'
+			}
+		} else {
+			error = err
+		}
 
 		res.status(status).json({
 			status,

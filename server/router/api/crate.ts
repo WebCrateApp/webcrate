@@ -102,35 +102,9 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 	}
 })
 
-router.get('/:id/links', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.put('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
 		const id = req.params.id as string
-		if (!id) {
-			return res.fail(400, 'no id provided')
-		}
-
-		const crate = await Crate.findById(id)
-		if (!crate) {
-			return res.fail(404, 'crate not found')
-		}
-
-		const limit = req.query.limit as string || '20'
-		const last = req.query.last as string | undefined
-
-		const links = await Link.findByCrate(crate.id, parseInt(limit), last)
-
-		await Stat.addRecentlyUsedCrate(crate.id)
-
-		log.debug(links)
-		res.ok(links)
-	} catch (err) {
-		return next(err)
-	}
-})
-
-router.put('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-	try {
-		const id = req.query.id as string
 		if (!id) {
 			return res.fail(400, 'no id provided')
 		}
@@ -159,9 +133,9 @@ router.put('/', async (req: express.Request, res: express.Response, next: expres
 	}
 })
 
-router.delete('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.delete('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const id = req.query.id as string
+		const id = req.params.id as string
 		if (!id) {
 			return res.fail(400, 'no id provided')
 		}
