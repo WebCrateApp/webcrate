@@ -72,7 +72,7 @@ export default class Base {
 		}
 
 		// We have everything
-		return { count: items.length, last: items[items.length - 1].id, items }
+		return { count: items.length, last: items[items.length - 1]?.id, items }
 	}
 
 	async findOne(query: any) {

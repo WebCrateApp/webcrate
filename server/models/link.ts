@@ -34,7 +34,6 @@ export class Link {
 	}
 
 	async update(changes: any) {
-		console.log(changes)
 		await Links.findByIdAndUpdate(this.id, changes)
 	}
 

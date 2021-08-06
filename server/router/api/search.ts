@@ -40,8 +40,8 @@ router.get('/', async (req: express.Request, res: express.Response, next: expres
 		log.debug(links)
 
 		res.ok({
-			crates,
-			links
+			crates: crates.items,
+			links: links.items
 		})
 	} catch (err) {
 		return next(err)

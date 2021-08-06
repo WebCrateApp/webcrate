@@ -50,7 +50,7 @@ class API {
 	}
 
 	async getLinksOfCrate(crate) {
-		const { data: res } = await this.http.get(`/crate/${ crate }/links`)
+		const { data: res } = await this.http.get(`/link?crate=${ crate }`)
 
 		return res.data
 	}
@@ -64,7 +64,7 @@ class API {
 	async getRecentLinks(num = 10) {
 		if (this.publicMode) return undefined
 
-		const { data: res } = await this.http.get(`/link/recent?num=${ num }`)
+		const { data: res } = await this.http.get(`/link?limit=${ num }`)
 
 		return res.data
 	}
@@ -72,7 +72,7 @@ class API {
 	async getOrphanedLinks(num = 10) {
 		if (this.publicMode) return undefined
 
-		const { data: res } = await this.http.get(`/link/orphans?num=${ num }`)
+		const { data: res } = await this.http.get(`/link?crate=null&limit=${ num }`)
 
 		return res.data
 	}
@@ -109,7 +109,7 @@ class API {
 	async changeLink(link, data) {
 		if (this.publicMode) return undefined
 
-		const { data: res } = await this.http.put(`/link?id=${ link }`, {
+		const { data: res } = await this.http.put(`/link/${ link }`, {
 			...data
 		})
 
@@ -119,19 +119,19 @@ class API {
 	async deleteCrate(id) {
 		if (this.publicMode) return undefined
 
-		await this.http.delete(`/crate?id=${ id }`)
+		await this.http.delete(`/crate/${ id }`)
 	}
 
 	async deleteExternalCrate(id) {
 		if (this.publicMode) return undefined
 
-		await this.http.delete(`/crate/external?id=${ id }`)
+		await this.http.delete(`/crate/external/${ id }`)
 	}
 
 	async moveLinkToCrate(id, crate) {
 		if (this.publicMode) return undefined
 
-		const { data: res } = await this.http.put(`/link?id=${ id }`, {
+		const { data: res } = await this.http.put(`/link/${ id }`, {
 			crate
 		})
 
@@ -174,7 +174,7 @@ class API {
 	async changeCrate(crate, data) {
 		if (this.publicMode) return undefined
 
-		const { data: res } = await this.http.put(`/crate?id=${ crate }`, {
+		const { data: res } = await this.http.put(`/crate/${ crate }`, {
 			...data
 		})
 

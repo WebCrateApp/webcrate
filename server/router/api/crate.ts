@@ -46,27 +46,6 @@ router.get('/', parsePaginate, async (req: express.Request, res: express.Respons
 	}
 })
 
-router.get('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-	try {
-		const id = req.params.id as string
-		if (!id) {
-			return res.fail(400, 'no id provided')
-		}
-
-		const crate = await Crate.findById(id)
-		if (!crate) {
-			return res.fail(404, 'crate not found')
-		}
-
-		await Stat.addRecentlyUsedCrate(crate.id)
-
-		log.debug(crate)
-		res.ok(crate)
-	} catch (err) {
-		return next(err)
-	}
-})
-
 router.get('/recent', async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
 		const crateIds = await Stat.getRecentlyUsedCrateIds()

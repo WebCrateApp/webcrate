@@ -70,9 +70,7 @@ export default {
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
-					redirect: {
-						shortCode: parsed
-					}
+					'redirect.shortCode': parsed
 				}
 			})
 

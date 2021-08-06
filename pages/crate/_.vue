@@ -108,6 +108,7 @@ export default {
 			return redirect('/home')
 		}
 
+		store.commit('SET_CURRENT_PAGE', undefined)
 		store.commit('SET_CURRENT_CRATE', crate.id)
 
 		const link = query.link

@@ -177,13 +177,15 @@ export default {
 			set(value) {
 				if (!value || value === this.linkDescription) return
 
-				this.link.meta = { ...this.link.meta, description: value }
+				this.link = {
+					...this.link,
+					meta: { ...this.link.meta, description: value }
+				}
+
 				this.$store.dispatch('CHANGE_LINK', {
 					linkId: this.link.id,
 					changes: {
-						meta: {
-							description: value
-						}
+						'meta.description': value
 					}
 				})
 			},
@@ -195,13 +197,15 @@ export default {
 			set(value) {
 				if (!value || value === this.linkTitle) return
 
-				this.link.meta = { ...this.link.meta, title: value }
+				this.link = {
+					...this.link,
+					meta: { ...this.link.meta, title: value }
+				}
+
 				this.$store.dispatch('CHANGE_LINK', {
 					linkId: this.link.id,
 					changes: {
-						meta: {
-							title: value
-						}
+						'meta.title': value
 					}
 				})
 			},
@@ -297,9 +301,7 @@ export default {
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
-					redirect: {
-						enabled: true
-					}
+					'redirect.enabled': true
 				}
 			})
 
@@ -332,10 +334,8 @@ export default {
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
-					redirect: {
-						enabled: false,
-						shortCode: ''
-					}
+					'redirect.enabled': false,
+					'redirect.shortCode': ''
 				}
 			})
 

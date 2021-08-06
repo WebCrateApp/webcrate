@@ -53,6 +53,7 @@ export default {
 			$modal.replace('linkDetails', { link })
 		}
 
+		store.commit('SET_CURRENT_PAGE', undefined)
 		store.commit('SET_CURRENT_CRATE', 'null')
 	},
 	data() {

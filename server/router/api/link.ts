@@ -50,7 +50,7 @@ router.get('/', parsePaginate, async (req: express.Request, res: express.Respons
 	try {
 		const limit = req?.paginate?.limit
 		const last = req?.paginate?.last
-		const crateId = req.query.last as string | undefined
+		const crateId = req.query.crate as string | undefined
 
 		// Get all links
 		if (!crateId) {
@@ -72,6 +72,8 @@ router.get('/', parsePaginate, async (req: express.Request, res: express.Respons
 		if (!foundCrate) {
 			return res.fail(404, 'crate not found')
 		}
+
+		log.info(foundCrate.id)
 
 		const links = await Link.findByCrate(foundCrate.id, limit, last)
 		await Stat.addRecentlyUsedCrate(foundCrate.id)

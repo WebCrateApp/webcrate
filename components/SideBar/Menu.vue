@@ -16,10 +16,10 @@
         <SideBarMenuItem
           name="Inbox"
           icon="inbox"
-          :selected="currentPage === 'inbox'"
+          :selected="currentCrate === 'null'"
           crate-id="null"
           :editable="true"
-          @click.native="changePage('inbox')"
+          @click.native="changePage('null')"
         />
         <SideBarMenuItem name="Quick Search" icon="search" @click.native.stop="showModal('search')" />
       </div>
