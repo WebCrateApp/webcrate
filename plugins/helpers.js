@@ -1,3 +1,5 @@
+import Darkmode from 'drkmd-js'
+
 export default ({ env, store, app }, inject) => {
 	inject('clipboard', (value) => {
 		// Create temporary element
@@ -20,6 +22,9 @@ export default ({ env, store, app }, inject) => {
 
 		return copied
 	})
+
+	const darkmode = new Darkmode()
+	inject('darkmode', darkmode)
 
 	inject('version', () => {
 		return env.appVersion

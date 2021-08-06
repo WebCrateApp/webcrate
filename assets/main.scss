@@ -20,6 +20,17 @@
     --click-scale-factor: 0.95;
 }
 
+[data-theme="dark"] {
+    --background: rgba(26,32,44);
+    --background-2nd: rgb(35, 45, 61);
+    --grey: #4a5568;
+    --grey-light: #718096;
+
+    --text: #e2e8f0;
+    --text-light: rgba(203,213,224);
+    --text-dark:#718096;
+}
+
 html,
 body {
     margin: 0;

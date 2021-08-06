@@ -1,22 +1,30 @@
 <template>
   <div v-shortkey="['ctrl', 'h']" class="help-wrapper" @shortkey="show = !show">
     <div v-if="show" v-click-outside="close" class="help-widget">
-      <a href="https://webcrate.app/about" target="_blank" rel="noopener" class="no-button">
-        <span>👨‍💻</span>About
-      </a>
+      <!-- <a href="https://webcrate.app/about" target="_blank" rel="noopener" class="no-button">
+        <Icon name="heart" /><span>About</span>
+      </a> -->
       <a href="https://webcrate.app/releases" target="_blank" rel="noopener" class="no-button">
-        <span>🎁</span>What's new?
+        <Icon name="gift" /><span>What's new?</span>
       </a>
       <a href="https://webcrate.app/docs" target="_blank" rel="noopener" class="no-button">
-        <span>🤔</span>How-to guide
+        <Icon name="docs" /><span>Documentation</span>
+      </a>
+      <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener" class="no-button">
+        <Icon name="feedback" /><span>Feedback</span>
       </a>
       <hr>
       <a class="no-button" @click="showBookmarkletModal">
-        <span>🔖</span>Add bookmarklet
+        <Icon name="bookmark" /><span>Get bookmarklet</span>
+      </a>
+      <a class="no-button" href="https://webcrate.app/docs/links#browser-extension" target="_blank" rel="noopener">
+        <Icon name="desktop" /><span>Browser Extension</span>
       </a>
       <hr>
-      <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener" class="no-button">
-        <span>💬</span>Feedback
+      <a class="no-button" @click="toggleTheme">
+        <Icon v-if="isDark" name="sun" />
+        <Icon v-else name="moon" />
+        <span>Change theme</span>
       </a>
       <hr>
       <p>v{{ version }}</p>
@@ -37,7 +45,8 @@ export default {
 	},
 	data() {
 		return {
-			show: false
+			show: false,
+			isDark: false
 		}
 	},
 	computed: {
@@ -45,12 +54,18 @@ export default {
 			return this.$version()
 		}
 	},
+	created() {
+		this.isDark = this.$darkmode.isDark()
+	},
 	methods: {
 		close() {
 			this.show = false
 		},
 		showBookmarkletModal() {
 			this.$modal.show('bookmarklet')
+		},
+		toggleTheme() {
+			this.isDark = this.$darkmode.toggle()
 		}
 	}
 }
@@ -99,6 +114,8 @@ export default {
 				transition: background .2s ease;
 				color: var(--text);
 				text-decoration: none;
+				display: flex;
+				align-items: center;
 
 				&:hover {
 					background: var(--grey);
@@ -106,6 +123,10 @@ export default {
 				}
 
 				& span {
+					margin-right: 0.5rem;
+				}
+
+				& div {
 					margin-right: 0.5rem;
 				}
 			}
