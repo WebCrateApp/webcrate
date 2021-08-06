@@ -20,6 +20,7 @@
       <Grid>
         <LinkItem v-for="link in links" :key="link.id" :link="link" :draggable="true" />
       </Grid>
+      <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     </div>
     <div v-else class="empty-state">
       <div class="list">
@@ -66,12 +67,18 @@ export default {
 				'*crickets chirping*',
 				'Nothing In Here',
 				'Add a Link'
-			]
+			],
+			lastLink: undefined
 		}
 	},
 	async fetch() {
-		const links = await this.$api.getOrphanedLinks(20)
-		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
+		const res = await this.$api.getOrphanedLinks(20)
+
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', res.data)
+
+		if (res.last) {
+			this.lastLink = res.last
+		}
 	},
 	head() {
 		return {
@@ -119,6 +126,22 @@ export default {
 		},
 		showAddLinkModal() {
 			this.$modal.show('addLink')
+		},
+		async infiniteHandler($state) {
+			if (!this.lastLink) return $state.complete()
+
+			const res = await this.$api.getOrphanedLinks(20, this.lastLink)
+
+			if (res.data && res.data.length > 0) {
+				this.$store.commit('ADD_CURRENT_CRATE_LINKS', res.data)
+			}
+
+			if (res.last) {
+				this.lastLink = res.last
+				$state.loaded()
+			} else {
+				$state.complete()
+			}
 		}
 	}
 }

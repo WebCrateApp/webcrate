@@ -58,6 +58,7 @@
           :endpoint="crate.endpoint"
         />
       </Grid>
+      <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     </div>
     <div v-else class="empty-state">
       <div class="list">
@@ -128,14 +129,20 @@ export default {
 				'Nothing In Here',
 				'Add a Link'
 			],
-			showEmojiPicker: false
+			showEmojiPicker: false,
+			lastLink: undefined
 		}
 	},
 	async fetch() {
 		this.$store.commit('SET_CURRENT_CRATE_LINKS', undefined)
 
-		const links = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate) : await this.$api.getLinksOfCrate(this.crate.id)
-		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
+		const res = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate) : await this.$api.getLinksOfCrate(this.crate.id)
+
+		if (res.last) {
+			this.lastLink = res.last
+		}
+
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', res.data)
 	},
 	head() {
 		return {
@@ -314,6 +321,22 @@ export default {
 		selectEmoji(key) {
 			this.showEmojiPicker = false
 			this.crateIcon = key
+		},
+		async infiniteHandler($state) {
+			if (!this.lastLink) return $state.complete()
+
+			const res = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate) : await this.$api.getLinksOfCrate(this.crate.id, 20, this.lastLink)
+
+			if (res.data && res.data.length > 0) {
+				this.$store.commit('ADD_CURRENT_CRATE_LINKS', res.data)
+			}
+
+			if (res.last) {
+				this.lastLink = res.last
+				$state.loaded()
+			} else {
+				$state.complete()
+			}
 		}
 	}
 }

@@ -56,7 +56,7 @@ export default class Base {
 		let items: Array<any> = res.items
 
 		// We already have enough data
-		if (limit && items.length === limit) return { count: items.length, last: items[items.length - 1].id, items }
+		if (limit && items.length === limit) return { count: items.length, last: items[items.length - 1]?.id, items }
 
 		// More data available
 		while (res.last) {
@@ -72,7 +72,7 @@ export default class Base {
 		}
 
 		// We have everything
-		return { count: items.length, last: items[items.length - 1]?.id, items }
+		return { count: items.length, last: undefined, items }
 	}
 
 	async findOne(query: any) {

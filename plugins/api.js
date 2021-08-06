@@ -49,14 +49,14 @@ class API {
 		return res.data
 	}
 
-	async getLinksOfCrate(crate) {
-		const { data: res } = await this.http.get(`/link?crate=${ crate }`)
+	async getLinksOfCrate(crate, limit = 20, last) {
+		const { data: res } = await this.http.get(`/link?crate=${ crate }&limit=${ limit }&last=${ last || '' }`)
 
-		return res.data
+		return res
 	}
 
-	async getLinksOfExternalCrate(crate) {
-		const { data: res } = await this.axios.get(`https://${ crate.endpoint }/api/public/crate/${ crate.id }/links`)
+	async getLinksOfExternalCrate(crate, limit = 20, last) {
+		const { data: res } = await this.axios.get(`https://${ crate.endpoint }/api/public/link?crate=${ crate.id }&limit=${ limit }&last=${ last || '' }`)
 
 		return res.data
 	}
@@ -69,12 +69,12 @@ class API {
 		return res.data
 	}
 
-	async getOrphanedLinks(num = 10) {
+	async getOrphanedLinks(limit = 20, last) {
 		if (this.publicMode) return undefined
 
-		const { data: res } = await this.http.get(`/link?crate=null&limit=${ num }`)
+		const { data: res } = await this.http.get(`/link?crate=null&limit=${ limit }&last=${ last || '' }`)
 
-		return res.data
+		return res
 	}
 
 	async addLinkToCrate(url, crate) {
