@@ -91,7 +91,7 @@ class API {
 	async deleteLink(id) {
 		if (this.publicMode) return undefined
 
-		await this.http.delete(`/link?id=${ id }`)
+		await this.http.delete(`/link/${ id }`)
 	}
 
 	async getLink(id) {
