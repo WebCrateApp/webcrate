@@ -63,7 +63,7 @@ router.get('/', parsePaginate, async (req: express.Request, res: express.Respons
 			return res.ok(crates)
 		}
 
-		res.ok({ count: 0, items: [], last: undefined })
+		res.ok([])
 	} catch (err) {
 		return next(err)
 	}
