@@ -325,7 +325,7 @@ export default {
 		async infiniteHandler($state) {
 			if (!this.lastLink) return $state.complete()
 
-			const res = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate) : await this.$api.getLinksOfCrate(this.crate.id, 20, this.lastLink)
+			const res = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate, 20, this.lastLink) : await this.$api.getLinksOfCrate(this.crate.id, 20, this.lastLink)
 
 			if (res.data && res.data.length > 0) {
 				this.$store.commit('ADD_CURRENT_CRATE_LINKS', res.data)
