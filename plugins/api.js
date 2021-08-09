@@ -58,7 +58,7 @@ class API {
 	async getLinksOfExternalCrate(crate, limit = 20, last) {
 		const { data: res } = await this.axios.get(`https://${ crate.endpoint }/api/public/link?crate=${ crate.id }&limit=${ limit }&last=${ last || '' }`)
 
-		return res.data
+		return res
 	}
 
 	async getRecentLinks(num = 10) {
