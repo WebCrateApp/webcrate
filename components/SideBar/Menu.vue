@@ -217,6 +217,8 @@ export default {
 
 	hr {
 		margin: 1rem 0;
+		/* Wierd fix: without padding it will disapear when the scroll bar is shown */
+		padding: 1.3px;
 	}
 
 	.menus {

@@ -120,6 +120,7 @@ export default {
 			width: 40px;
 			height: 40px;
 			cursor: pointer;
+			box-shadow: 0 5px 10px 5px rgba(119, 119, 119, 0.12);
 
 			&:hover, &:focus {
 				border: 2px solid var(--grey);
@@ -169,6 +170,13 @@ export default {
 				text-align: center;
 				padding: 0.5rem;
 			}
+		}
+	}
+
+	@media only screen and (max-width: 900px) {
+		.help-wrapper {
+			bottom: 1.5rem;
+			right: 1.5rem;
 		}
 	}
 </style>
