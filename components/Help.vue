@@ -1,6 +1,6 @@
 <template>
   <div v-shortkey="['ctrl', 'h']" class="help-wrapper" @shortkey="show = !show">
-    <div v-if="show" v-click-outside="close" class="help-widget">
+    <div v-if="shouldShow" v-click-outside="close" class="help-widget">
       <!-- <a href="https://webcrate.app/about" target="_blank" rel="noopener" class="no-button">
         <Icon name="heart" /><span>About</span>
       </a> -->
@@ -30,8 +30,8 @@
       <p>v{{ version }}</p>
     </div>
     <div class="bottom">
-      <Icon v-if="!show" name="help" class="help-icon" @click.native.stop="show = true" />
-      <Icon v-else name="close" class="help-icon" @click.native.stop="show = false" />
+      <Icon v-if="!shouldShow" name="help" class="help-icon" @click.native.stop="show" />
+      <Icon v-else name="close" class="help-icon" @click.native.stop="close" />
     </div>
   </div>
 </template>
@@ -45,7 +45,8 @@ export default {
 	},
 	data() {
 		return {
-			show: false,
+			shouldShow: false,
+			canChange: true,
 			isDark: false
 		}
 	},
@@ -59,7 +60,24 @@ export default {
 	},
 	methods: {
 		close() {
-			this.show = false
+			if (this.canChange) {
+				this.shouldShow = false
+
+				this.canChange = false
+				setTimeout(() => {
+					this.canChange = true
+				}, 200)
+			}
+		},
+		show() {
+			if (this.canChange) {
+				this.shouldShow = true
+
+				this.canChange = false
+				setTimeout(() => {
+					this.canChange = true
+				}, 200)
+			}
 		},
 		showBookmarkletModal() {
 			this.$modal.show('bookmarklet')
