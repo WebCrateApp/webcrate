@@ -448,18 +448,18 @@ export default {
 			font-size: 1.3rem;
 			flex-grow: 1;
 
-			& .emoji {
+			.emoji {
 				cursor: pointer;
 			}
 
-			& h1 {
-				font-size: 1.3rem;
+			h1 {
+				font-size: inherit;
 				font-weight: 600;
 				color: var(--text);
 				margin-left: 0.5rem;
 			}
 
-			& .endpoint {
+			.endpoint {
 				font-size: 1.2rem;
 				margin: 0;
 				margin-left: 0.5rem;
@@ -473,6 +473,22 @@ export default {
 
 			&:focus {
 				color: var(--text);
+			}
+		}
+	}
+
+	@media only screen and (max-width: 900px) {
+		.title {
+			.subtext {
+				font-size: 0.9rem;
+			}
+
+			.headline {
+				font-size: 1.1rem;
+
+				.endpoint {
+					font-size: 1rem;
+				}
 			}
 		}
 	}

@@ -362,6 +362,9 @@ export default {
 			color: var(--text-light);
 			margin-top: 0rem;
 			text-decoration: none;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 
 			&:hover {
 				text-decoration: underline;
@@ -399,6 +402,7 @@ export default {
 
 			.title {
 				flex-grow: 1;
+				overflow-x: hidden;
 			}
 
 			.actions {

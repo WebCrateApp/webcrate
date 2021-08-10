@@ -49,7 +49,9 @@ export default {
 		left: 50%;
 		top: 10%; // 5rem
 		transform: translateX(-50%);
-		padding: 1.5rem
+		padding: 1.5rem;
+		overflow-y: auto;
+		max-height: 85%;
 	}
 
 	.close-icon {

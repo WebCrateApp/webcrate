@@ -23,4 +23,10 @@ export default {
 		grid-gap: 1rem;
 	}
 
+	@media only screen and (max-width: 400px) {
+		.grid {
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+		}
+	}
+
 </style>
