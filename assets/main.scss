@@ -129,9 +129,19 @@ body {
     transition: none;
 }
 
-::-webkit-input-placeholder,
-::-moz-placeholder,
-::-ms-placeholder,
+/* Placeholder selectors can't be combined */
+::-webkit-input-placeholder {
+    color: var(--text-dark);
+}
+
+::-moz-placeholder {
+    color: var(--text-dark);
+}
+
+::-ms-placeholder{
+    color: var(--text-dark);
+}
+
 ::placeholder {
     color: var(--text-dark);
 }
