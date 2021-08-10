@@ -16,6 +16,7 @@
 export default {
 	data() {
 		return {
+			canClose: false,
 			isOpen: false,
 			copyIcon: 'clipboard'
 		}
@@ -31,6 +32,12 @@ export default {
 			return code
 		}
 	},
+	created() {
+		// Prevent other old click events from closing modal
+		setTimeout(() => {
+			this.canClose = true
+		}, 200)
+	},
 	methods: {
 		copy() {
 			this.copyIcon = 'check'
@@ -41,7 +48,7 @@ export default {
 			}, 1000)
 		},
 		close() {
-			if (!this.isOpen) {
+			if (!this.isOpen && this.canClose) {
 				this.$modal.hide()
 			}
 		}
