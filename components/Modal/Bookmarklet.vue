@@ -4,7 +4,6 @@
     <p>To add links to your WebCrate instance on mobile, copy the link below and save it as a bookmark. Name it something like "Save to WebCrate" and you're good to go.</p>
     <div class="link">
       <a :href="code">{{ code }}</a>
-      <Icon :name="copyIcon" @click.native.stop="copy" />
     </div>
     <button v-shortkey="['enter']" class="primary-button" @click="copy" @shortkey="copy">
       Copy code
@@ -17,8 +16,7 @@ export default {
 	data() {
 		return {
 			canClose: false,
-			isOpen: false,
-			copyIcon: 'clipboard'
+			isOpen: false
 		}
 	},
 	computed: {
@@ -40,12 +38,8 @@ export default {
 	},
 	methods: {
 		copy() {
-			this.copyIcon = 'check'
 			this.$clipboard(this.code)
 			this.$toast.success('Copied to clipboard!')
-			setTimeout(() => {
-				this.copyIcon = 'clipboard'
-			}, 1000)
 		},
 		close() {
 			if (!this.isOpen && this.canClose) {
@@ -71,16 +65,8 @@ export default {
             border-radius: var(--border-radius);
             margin-top: 1rem;
 			position: relative;
-
-            & p {
-                user-select: all;
-            }
-
-            & div {
-				position: absolute;
-				bottom: 1rem;
-				right: 1rem;
-            }
+			line-break: anywhere;
+			user-select: all;
         }
 
 		& button {
