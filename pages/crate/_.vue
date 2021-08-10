@@ -476,6 +476,7 @@ export default {
 			font-size: 1rem;
 			color: var(--text-light);
 			width: 100%;
+			margin-top: 0.2rem;
 
 			&:focus {
 				color: var(--text);
