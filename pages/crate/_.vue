@@ -424,6 +424,12 @@ export default {
 		}
 	}
 
+	@media only screen and (max-width: 900px) {
+		.crate-wrapper {
+			padding: 1.5rem;
+		}
+	}
+
 	.top-section {
 		display: flex;
 		align-items: center;

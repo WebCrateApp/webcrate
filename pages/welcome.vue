@@ -208,6 +208,12 @@ export default {
 		}
 	}
 
+	@media only screen and (max-width: 900px) {
+		.page-wrapper {
+			padding: 1.5rem;
+		}
+	}
+
 	.title {
 		display: flex;
 		align-items: center;
