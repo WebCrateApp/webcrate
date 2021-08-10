@@ -197,5 +197,11 @@ export const getters = {
 		if (!crate) return state.externalCrates.find((item) => item.id === state.currentCrate)
 
 		return crate
+	},
+	findCrateById: (state) => (id) => {
+		const crate = state.crates.find((item) => item.id === id)
+		if (!crate) return undefined
+
+		return crate
 	}
 }

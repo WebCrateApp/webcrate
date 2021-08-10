@@ -181,10 +181,10 @@ class API {
 		return res.data
 	}
 
-	async search(query) {
+	async search(query, last) {
 		if (this.publicMode) return undefined
 
-		const { data: res } = await this.http.get(`/search?query=${ query }`)
+		const { data: res } = await this.http.get(`/search?query=${ query }&limit=10&last=${ last || '' }`)
 
 		return res.data
 	}

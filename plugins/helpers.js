@@ -78,10 +78,19 @@ export default ({ env, store, app }, inject) => {
 			newPath = `/crate${ external ? '/external' : '' }/${ pageOrCrate }`
 		}
 
+		console.log(newPath)
+
 		if (link !== undefined) {
-			newPath += `?link=${ link }`
+			app.router.push({ path: newPath, query: { link: link } })
+			// newPath += `?link=${ link }`
+		} else {
+			app.router.push({ path: newPath })
 		}
 
-		app.router.push(newPath)
+		/* console.log(newPath)
+
+		console.log(app.router)
+
+		app.router.push(newPath) */
 	})
 }

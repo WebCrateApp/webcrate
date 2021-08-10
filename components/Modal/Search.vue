@@ -13,7 +13,7 @@
         <h2>Crates</h2>
         <CrateListItem v-for="crate in crates" :key="crate.id" :icon="crate.icon" :name="crate.name" @click.native.stop="changeCrate(crate)" />
       </div>
-      <div v-if="links.length > 0" class="section">
+      <div v-if="links.length > 0" class="section" infinite-wrapper="test">
         <h2>Links</h2>
         <LinkListItem
           v-for="link in links"
@@ -22,8 +22,14 @@
           :title="link.meta.title"
           :url="link.url"
           :icon="link.meta && link.meta.icon"
+          :crate="link.crate && getCrate(link.crate)"
           @click.native.stop="openLink(link)"
         />
+        <div v-if="lastLink" class="more">
+          <button class="no-button" @click="loadMore">
+            Load more
+          </button>
+        </div>
       </div>
     </div>
   </Modal>
@@ -45,7 +51,8 @@ export default {
 				'No links or crates found'
 			],
 			loading: false,
-			first: true
+			first: true,
+			lastLink: undefined
 		}
 	},
 	computed: {
@@ -72,7 +79,12 @@ export default {
 			this.loading = true
 			this.first = false
 
-			const data = await this.$api.search(value)
+			const data = await this.$api.search(value, this.lastLink)
+			if (data.last) {
+				this.lastLink = data.last
+			} else {
+				this.lastLink = undefined
+			}
 
 			this.links = data.links
 			this.crates = data.crates
@@ -90,6 +102,24 @@ export default {
 			} else {
 				this.$modal.replace('linkDetails', { link: link.id })
 			}
+		},
+		getCrate(id) {
+			return this.$store.getters.findCrateById(id)
+		},
+		async loadMore() {
+			if (!this.lastLink) return
+
+			const data = await this.$api.search(this.searchValue, this.lastLink)
+
+			if (data.links && data.links.length > 0) {
+				this.links = this.links.concat(data.links)
+			}
+
+			if (data.last) {
+				this.lastLink = data.last
+			} else {
+				this.lastLink = undefined
+			}
 		}
 	}
 }
@@ -97,6 +127,7 @@ export default {
 
 <style lang="scss" scoped>
 	.search-modal {
+		overflow-y: auto;
 		& h1 {
 			font-size: 1.2rem;
 			margin-bottom: 1rem;
@@ -116,6 +147,16 @@ export default {
 				color: var(--text-light);
 				margin-bottom: 0.5rem;
 				margin-top: 0.5rem;
+			}
+		}
+
+		.more {
+			padding: 0.5rem;
+			padding-left: 1rem;
+
+			& button {
+				color: var(--text-light);
+				font-size: 1rem;
 			}
 		}
 

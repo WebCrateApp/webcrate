@@ -6,11 +6,16 @@
       <p class="domain">
         {{ domain }}
       </p>
+      <p v-if="crate" class="crate">
+        - found in {{ emojiIcon }} {{ crate.name }}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
+import emojis from '../../server/utils/emojis'
+
 export default {
 	// eslint-disable-next-line vue/require-prop-types
 	props: {
@@ -30,12 +35,19 @@ export default {
 			type: String,
 			default: undefined
 		},
+		crate: {
+			type: Object,
+			default: undefined
+		},
 		loadExternalIcon: {
 			type: Boolean,
 			default: false
 		}
 	},
 	computed: {
+		emojiIcon() {
+			return emojis[this.crate.icon]
+		},
 		domain() {
 			try {
 				return new URL(this.url).host
@@ -48,31 +60,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .link-item {
-        padding: 0.5rem;
-        border-radius: var(--border-radius);
-        transition: background .2s ease;
-        cursor: pointer;
-        padding-left: 1rem;
+	.link-item {
+		padding: 0.5rem;
+		border-radius: var(--border-radius);
+		transition: background .2s ease;
+		cursor: pointer;
+		padding-left: 1rem;
 
-        .right {
-            display: flex;
-            align-items: center;
-        }
+		.right {
+			display: flex;
+			align-items: center;
+		}
 
-        & img {
-            width: 15px;
-            height: 15px;
-            margin-right: 0.5rem;
-        }
+		& img {
+			width: 15px;
+			height: 15px;
+			margin-right: 0.5rem;
+		}
 
-        .domain {
-            color: var(--text-light);
-        }
+		.domain {
+			color: var(--text-light);
+		}
 
-        &:hover {
-            background: var(--background-2nd);
-            transition: none;
-        }
-    }
+		.crate {
+			color: var(--text-light);
+			margin-left: 0.5rem;
+		}
+
+		&:hover {
+			background: var(--background-2nd);
+			transition: none;
+		}
+	}
 </style>
