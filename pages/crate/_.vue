@@ -1,6 +1,7 @@
 <template>
   <div class="crate-wrapper">
     <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
+    <a ref="homepageLink" href="https://webcrate.app" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
     <div class="top-section">
       <div v-if="editable" class="title">
         <h1>
@@ -21,22 +22,9 @@
           {{ crate.description }}
         </p>
       </div>
-      <div v-if="editable" class="actions">
-        <Actions :actions="crateActions" />
-      </div>
-      <div v-else-if="isPublic" class="actions">
-        <button class="button add-btn" @click.stop="showAddModal">
-          <Icon name="heart" />Save this Crate
-        </button>
-      </div>
-      <div v-else-if="isExternal" class="actions">
-        <button class="button share-btn" @click.stop="showShareModal">
-          <Icon name="share" />
-        </button>
-        <button class="button delete-btn" @click.stop="deleteExternal">
-          <Icon name="delete" />
-        </button>
-      </div>
+      <Actions v-if="editable" :actions="crateActions" />
+      <Actions v-else-if="isPublic" :actions="publicActions" />
+      <Actions v-else-if="isExternal" :actions="externalActions" />
     </div>
     <hr>
     <div v-if="$fetchState.pending" class="links">
@@ -241,6 +229,47 @@ export default {
 					dropdown: true
 				}
 			]
+		},
+		externalActions() {
+			return [
+				{
+					id: 'shareCrate',
+					text: 'Share Crate',
+					icon: 'share',
+					click: this.showShareModal,
+					show: true,
+					dropdown: this.windowSize <= 600
+				},
+				{
+					id: 'deleteCrate',
+					text: 'Delete Crate',
+					icon: 'delete',
+					click: this.deleteExternal,
+					show: true,
+					dropdown: this.windowSize <= 600
+				}
+			]
+		},
+		publicActions() {
+			return [
+				{
+					id: 'saveCrate',
+					text: 'Save this Crate',
+					icon: 'heart',
+					click: this.showAddModal,
+					show: true,
+					showText: this.windowSize >= 600,
+					dropdown: false
+				},
+				{
+					id: 'info',
+					text: 'What\'s WebCrate?',
+					icon: 'info',
+					click: this.openHomepageLink,
+					show: true,
+					dropdown: this.windowSize <= 600
+				}
+			]
 		}
 	},
 	watch: {
@@ -367,6 +396,9 @@ export default {
 			} else {
 				$state.complete()
 			}
+		},
+		openHomepageLink() {
+			this.$refs.homepageLink.click()
 		}
 	}
 }
@@ -392,6 +424,7 @@ export default {
 	.title {
 		flex-grow: 1;
 		position: relative;
+		margin-right: 0.5rem;
 
 		& h1 {
 			display: flex;

@@ -4,7 +4,7 @@
       <Icon :name="button.icon" />
       <span v-if="button.showText">{{ button.text }}</span>
     </button>
-    <ActionDropdown class="dropdown-action" icon="dotsV" :actions="dropdowns" />
+    <ActionDropdown v-if="dropdowns && dropdowns.length > 0" class="dropdown-action" icon="dotsV" :actions="dropdowns" />
   </div>
 </template>
 
@@ -45,6 +45,7 @@ export default {
 			margin-right: 0.5rem;
 			display: flex;
 			align-items: center;
+			flex-shrink: 0;
 
 			& span {
 				margin-left: 0.5rem;
