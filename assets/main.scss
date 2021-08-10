@@ -160,19 +160,39 @@ a {
 }
 
 .dropdown {
+    $vs-dropdown-bg: var(--background-2nd);
+    $vs-selected-bg: var(--background);
+    $vs-state-active-color: var(--background);
+    $vs-controls-color: var(--text-light);
+    $vs-component-placeholder-color: var(--text);
+    $vs-border-radius: var(--border-radius);
     @import "vue-select/src/scss/vue-select.scss";
 
-    .vs__search::placeholder,
+    .vs__search,
     .vs__dropdown-toggle,
     .vs__dropdown-menu {
+        color: var(--text);
         background: var(--background-2nd);
         border-radius: var(--border-radius);
         border: 2px solid var(--background-2nd);
         border-radius: var(--border-radius);
     }
 
+    .vs__selected {
+        color: var(--text);
+    }
+
+    .dropdown .vs__dropdown-toggle {
+        background: var(--text);
+    }
+
+    .vs__dropdown-option {
+        color: var(--text);
+    }
+
     .vs__dropdown-option--highlight {
-        background: var(--text)
+        background: var(--grey-light);
+        color: var(--text);
     }
 }
 
