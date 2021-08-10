@@ -66,7 +66,7 @@ export default {
 				this.canChange = false
 				setTimeout(() => {
 					this.canChange = true
-				}, 200)
+				}, 500)
 			}
 		},
 		show() {
@@ -76,7 +76,7 @@ export default {
 				this.canChange = false
 				setTimeout(() => {
 					this.canChange = true
-				}, 200)
+				}, 500)
 			}
 		},
 		showBookmarkletModal() {
