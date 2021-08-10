@@ -19,13 +19,7 @@
         </p>
       </div>
       <div v-if="editable" class="actions">
-        <button class="button add-btn" @click.stop="showAddLinkModal">
-          <Icon name="add" />Add Link
-        </button>
-        <button v-if="crate.public" class="button share-btn" @click.stop="showShareModal">
-          <Icon name="share" />
-        </button>
-        <ActionDropdown class="dropdown-action" icon="dotsV" :actions="crateActions" />
+        <Actions :actions="crateActions" />
       </div>
       <div v-else-if="isPublic" class="actions">
         <button class="button add-btn" @click.stop="showAddModal">
@@ -130,7 +124,8 @@ export default {
 				'Add a Link'
 			],
 			showEmojiPicker: false,
-			lastLink: undefined
+			lastLink: undefined,
+			windowSize: undefined
 		}
 	},
 	async fetch() {
@@ -199,29 +194,49 @@ export default {
 			}
 		},
 		crateActions() {
-			const items = []
-
-			if (this.crate.public) {
-				items.push({
+			return [
+				{
+					id: 'addLink',
+					text: 'Add Link',
+					icon: 'add',
+					click: this.showAddLinkModal,
+					show: true,
+					showText: this.windowSize >= 600,
+					dropdown: false
+				},
+				{
+					id: 'shareCrate',
+					text: 'Share this Crate',
+					icon: 'share',
+					click: this.showShareModal,
+					show: this.crate.public,
+					dropdown: this.windowSize <= 900
+				},
+				{
+					id: 'makePrivate',
 					text: 'Make Private',
 					icon: 'eyeOff',
-					click: this.makePrivate
-				})
-			} else {
-				items.push({
+					click: this.makePrivate,
+					show: this.crate.public,
+					dropdown: true
+				},
+				{
+					id: 'makePublic',
 					text: 'Make Public',
 					icon: 'eye',
-					click: this.makePublic
-				})
-			}
-
-			items.push({
-				text: 'Delete Crate',
-				icon: 'delete',
-				click: this.deleteCrate
-			})
-
-			return items
+					click: this.makePublic,
+					show: !this.crate.public,
+					dropdown: true
+				},
+				{
+					id: 'deleteCrate',
+					text: 'Delete Crate',
+					icon: 'delete',
+					click: this.deleteCrate,
+					show: true,
+					dropdown: true
+				}
+			]
 		}
 	},
 	watch: {
@@ -240,7 +255,18 @@ export default {
 			}
 		}
 	},
+	mounted() {
+		this.onResize()
+
+		window.addEventListener('resize', this.onResize)
+	},
+	beforeDestroy() {
+		window.removeEventListener('resize', this.onResize)
+	},
 	methods: {
+		onResize() {
+			this.windowSize = window.innerWidth
+		},
 		showAddLinkModal() {
 			this.$modal.show('addLink')
 		},

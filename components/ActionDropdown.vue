@@ -4,7 +4,7 @@
       <Icon :name="icon" :size="iconSize" />
     </button>
     <div v-if="showMenu" v-click-outside="closeMenu" class="menu">
-      <div v-for="action in actions" :key="action.text" class="menu-item" @click.stop="action.click">
+      <div v-for="action in actions" :key="action.id || action.text" class="menu-item" @click.stop="action.click">
         <Icon :name="action.icon" />
         <span>{{ action.text }}</span>
       </div>

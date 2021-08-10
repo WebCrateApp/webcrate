@@ -25,24 +25,7 @@
           </div>
         </div>
         <div v-if="editable">
-          <div v-if="windowSize <= 600" class="actions">
-            <ActionDropdown class="dropdown-action" title="More Actions" icon="dotsV" :actions="shareActions" />
-          </div>
-          <div v-else-if="windowSize <= 900" class="actions">
-            <button class="button" title="Open URL in new tab" @click.stop="openExternalLink">
-              <Icon name="externalLink" />
-            </button>
-            <ActionDropdown class="dropdown-action" title="More Actions" icon="dotsV" :actions="shareActions" />
-          </div>
-          <div v-else class="actions">
-            <button class="button" title="Open URL in new tab" @click.stop="openExternalLink">
-              <Icon name="externalLink" />
-            </button>
-            <button class="button" title="Delete this link" @click.stop="deleteLink">
-              <Icon name="delete" />
-            </button>
-            <ActionDropdown class="dropdown-action" title="More Actions" icon="dotsV" :actions="shareActions" />
-          </div>
+          <Actions :actions="linkActions" />
         </div>
         <div v-else class="actions">
           <button class="button" title="Open URL in new tab" @click.stop="openExternalLink">
@@ -127,51 +110,57 @@ export default {
 				return undefined
 			}
 		},
-		shareActions() {
-			const items = [
+		linkActions() {
+			return [
 				{
-					text: 'Copy link URL',
+					id: 'externalLink',
+					text: 'Open URL',
+					icon: 'externalLink',
+					click: this.openExternalLink,
+					show: true,
+					dropdown: this.windowSize <= 600
+				},
+				{
+					id: 'copyLink',
+					text: 'Copy URL',
 					icon: 'clipboard',
-					click: this.copyLink
-				}
-			]
-
-			if (this.link.redirect && this.link.redirect.enabled) {
-				items.push({
-					text: 'Share this link',
+					click: this.copyLink,
+					show: true,
+					dropdown: true
+				},
+				{
+					id: 'shareLink',
+					text: 'Share link',
 					icon: 'share',
-					click: this.openShareModal
-				})
-				items.push({
+					click: this.openShareModal,
+					show: this.link.redirect && this.link.redirect.enabled,
+					dropdown: true
+				},
+				{
+					id: 'disableSharing',
 					text: 'Disable sharing',
 					icon: 'eyeOff',
-					click: this.disableRedirect
-				})
-			} else {
-				items.push({
+					click: this.disableRedirect,
+					show: this.link.redirect && this.link.redirect.enabled,
+					dropdown: true
+				},
+				{
+					id: 'enableSharing',
 					text: 'Enable sharing',
 					icon: 'eye',
-					click: this.enableRedirect
-				})
-			}
-
-			if (this.windowSize <= 600) {
-				items.push({
-					text: 'Open link',
-					icon: 'externalLink',
-					click: this.openExternalLink
-				})
-			}
-
-			if (this.windowSize <= 900) {
-				items.push({
-					text: 'Delete link',
+					click: this.enableRedirect,
+					show: !this.link.redirect || !this.link.redirect.enabled,
+					dropdown: true
+				},
+				{
+					id: 'deleteLink',
+					text: 'Delete Link',
 					icon: 'delete',
-					click: this.deleteLink
-				})
-			}
-
-			return items
+					click: this.deleteLink,
+					show: true,
+					dropdown: this.windowSize <= 900
+				}
+			]
 		},
 		linkDescription: {
 			set(value) {
@@ -242,20 +231,21 @@ export default {
 		}
 	},
 	mounted() {
-		const onResize = () => {
-			this.windowSize = window.innerWidth
-		}
+		this.onResize()
 
-		onResize()
-
-		window.onresize = onResize
+		window.addEventListener('resize', this.onResize)
 	},
 	beforeDestroy() {
+		window.removeEventListener('resize', this.onResize)
+
 		const query = Object.assign({}, this.$route.query)
 		delete query.link
 		this.$router.push({ query })
 	},
 	methods: {
+		onResize() {
+			this.windowSize = window.innerWidth
+		},
 		close() {
 			if (this.canClose) {
 				this.$modal.hide()
