@@ -61,7 +61,7 @@ export const mutations = {
 		state.currentCrateLinks = [ ...state.currentCrateLinks, ...value ]
 	},
 	ADD_CURRENT_CRATE_LINK(state, value) {
-		state.currentCrateLinks.unshift(value)
+		state.currentCrateLinks = [ value, ...state.currentCrateLinks ]
 	},
 	SET_CURRENT_LINK(state, value) {
 		state.currentLink = value

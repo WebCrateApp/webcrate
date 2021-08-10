@@ -127,7 +127,7 @@ export default {
 		}
 	},
 	async fetch() {
-		this.$store.commit('SET_CURRENT_CRATE_LINKS', undefined)
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', [])
 
 		const res = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate) : await this.$api.getLinksOfCrate(this.crate.id)
 
