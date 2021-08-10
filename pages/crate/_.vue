@@ -3,8 +3,11 @@
     <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
     <div class="top-section">
       <div v-if="editable" class="title">
-        <h1><span class="emoji" title="Click to edit icon" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span> <input v-model="crateName" title="Click to edit title" placeholder="Crate Title" class="no-input headline"></h1>
-        <input v-model="crateDescription" title="Click to edit description" class="no-input subtext" placeholder="Click to add a description for this Crate" />
+        <h1>
+          <span class="emoji" title="Click to edit icon" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span>
+          <EditableText v-model="crateName" elem="span" class="headline" placeholder="Crate Title" title="Click to edit title" />
+        </h1>
+        <EditableText v-model="crateDescription" class="subtext" placeholder="Click to add a description for this Crate" title="Click to edit description" />
         <div v-if="showEmojiPicker" class="emoji-picker">
           <EmojiPicker @selected="selectEmoji" @close="showEmojiPicker = false" />
         </div>
@@ -125,7 +128,8 @@ export default {
 			],
 			showEmojiPicker: false,
 			lastLink: undefined,
-			windowSize: undefined
+			windowSize: undefined,
+			editDescription: false
 		}
 	},
 	async fetch() {
@@ -202,7 +206,7 @@ export default {
 					click: this.showAddLinkModal,
 					show: true,
 					showText: this.windowSize >= 600,
-					dropdown: false
+					dropdown: this.windowSize <= 450
 				},
 				{
 					id: 'shareCrate',

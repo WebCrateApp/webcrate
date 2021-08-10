@@ -11,9 +11,14 @@
       <a ref="externalLink" :href="link.url" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
       <div class="top">
         <div class="title">
-          <h1 v-if="editable">
-            <input v-model="linkTitle" title="Click to edit title" class="no-input headline" placeholder="Click to add a title for this link" />
-          </h1>
+          <EditableText
+            v-if="editable"
+            v-model="linkTitle"
+            elem="h1"
+            class="headline"
+            placeholder="Click to add a title for this link"
+            title="Click to edit title"
+          />
           <h1 v-else class="headline">
             {{ link.meta && link.meta.title }}
           </h1>
