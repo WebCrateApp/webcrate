@@ -4,20 +4,26 @@
     <a ref="homepageLink" href="https://webcrate.app" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
     <div class="top-section">
       <div v-if="editable" class="title">
-        <h1>
+        <div class="headline">
           <span class="emoji" title="Click to edit icon" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span>
-          <EditableText v-model="crateName" elem="span" class="headline" placeholder="Crate Title" title="Click to edit title" />
-        </h1>
+          <EditableText v-model="crateName" elem="h1" placeholder="Crate Title" title="Click to edit title" />
+        </div>
         <EditableText v-model="crateDescription" class="subtext" placeholder="Click to add a description for this Crate" title="Click to edit description" />
         <div v-if="showEmojiPicker" class="emoji-picker">
           <EmojiPicker @selected="selectEmoji" @close="showEmojiPicker = false" />
         </div>
       </div>
       <div v-else class="title">
-        <h1>
+        <div class="headline">
           <span>{{ emojiIcon }}</span>
-          <span class="headline">{{ crate.name }}<span v-if="isExternal" class="endpoint"> @{{ crate.endpoint }}</span></span>
-        </h1>
+          <h1>{{ crate.name }}</h1>
+          <p v-if="(isExternal || isPublic) && windowSize >= 600" class="endpoint">
+            @{{ endpoint }}
+          </p>
+        </div>
+        <p v-if="(isExternal || isPublic) && windowSize < 600" class="endpoint">
+          @{{ endpoint }}
+        </p>
         <p class="subtext">
           {{ crate.description }}
         </p>
@@ -143,6 +149,9 @@ export default {
 		emojiIcon() {
 			return emojis[this.crate.icon]
 		},
+		endpoint() {
+			return this.isExternal ? this.crate.endpoint : location.hostname
+		},
 		currentCrate() {
 			return this.$store.getters.currentCrate
 		},
@@ -258,8 +267,8 @@ export default {
 					icon: 'heart',
 					click: this.showAddModal,
 					show: true,
-					showText: this.windowSize >= 600,
-					dropdown: false
+					showText: this.windowSize >= 750,
+					dropdown: this.windowSize <= 550
 				},
 				{
 					id: 'info',
@@ -267,7 +276,7 @@ export default {
 					icon: 'info',
 					click: this.openHomepageLink,
 					show: true,
-					dropdown: this.windowSize <= 600
+					dropdown: this.windowSize <= 550
 				}
 			]
 		}
@@ -426,37 +435,45 @@ export default {
 		position: relative;
 		margin-right: 0.5rem;
 
-		& h1 {
-			display: flex;
-			align-items: center;
-			font-size: 1.3rem;
+		.endpoint {
+			color: var(--text-light);
+			font-size: 1rem;
+			margin-top: 0.2rem;
+			margin-bottom: 0.5rem;
 		}
 
 		.headline {
+			display: flex;
+			align-items: center;
 			font-size: 1.3rem;
-			font-weight: 600;
-			color: var(--text);
 			flex-grow: 1;
-			margin-left: 0.5rem;
+
+			& .emoji {
+				cursor: pointer;
+			}
+
+			& h1 {
+				font-size: 1.3rem;
+				font-weight: 600;
+				color: var(--text);
+				margin-left: 0.5rem;
+			}
+
+			& .endpoint {
+				font-size: 1.2rem;
+				margin: 0;
+				margin-left: 0.5rem;
+			}
 		}
 
 		.subtext {
-			font-size: 0.9rem;
-			margin-top: 0.3rem;
+			font-size: 1rem;
 			color: var(--text-light);
 			width: 100%;
 
 			&:focus {
 				color: var(--text);
 			}
-		}
-
-		.emoji {
-			cursor: pointer;
-		}
-
-		.endpoint {
-			color: var(--text-light);
 		}
 	}
 

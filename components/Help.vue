@@ -4,22 +4,32 @@
       <!-- <a href="https://webcrate.app/about" target="_blank" rel="noopener" class="no-button">
         <Icon name="heart" /><span>About</span>
       </a> -->
-      <a href="https://webcrate.app/releases" target="_blank" rel="noopener" class="no-button">
-        <Icon name="gift" /><span>What's new?</span>
-      </a>
-      <a href="https://webcrate.app/docs" target="_blank" rel="noopener" class="no-button">
-        <Icon name="docs" /><span>Documentation</span>
-      </a>
-      <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener" class="no-button">
-        <Icon name="feedback" /><span>Feedback</span>
-      </a>
-      <hr>
-      <a class="no-button" @click="showBookmarkletModal">
-        <Icon name="bookmark" /><span>Get bookmarklet</span>
-      </a>
-      <a class="no-button" href="https://webcrate.app/docs/links#browser-extension" target="_blank" rel="noopener">
-        <Icon name="desktop" /><span>Browser Extension</span>
-      </a>
+      <div v-if="!isPublic">
+        <a href="https://webcrate.app/releases" target="_blank" rel="noopener" class="no-button">
+          <Icon name="gift" /><span>What's new?</span>
+        </a>
+        <a href="https://webcrate.app/docs" target="_blank" rel="noopener" class="no-button">
+          <Icon name="docs" /><span>Documentation</span>
+        </a>
+        <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener" class="no-button">
+          <Icon name="feedback" /><span>Feedback</span>
+        </a>
+        <hr>
+        <a class="no-button" @click="showBookmarkletModal">
+          <Icon name="bookmark" /><span>Get bookmarklet</span>
+        </a>
+        <a class="no-button" href="https://webcrate.app/docs/links#browser-extension" target="_blank" rel="noopener">
+          <Icon name="desktop" /><span>Browser Extension</span>
+        </a>
+      </div>
+      <div v-else>
+        <a href="https://webcrate.app" target="_blank" rel="noopener" class="no-button">
+          <Icon name="info" /><span>What's WebCrate?</span>
+        </a>
+        <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener" class="no-button">
+          <Icon name="feedback" /><span>Feedback</span>
+        </a>
+      </div>
       <hr>
       <a class="no-button" @click="toggleTheme">
         <Icon v-if="isDark" name="sun" />
@@ -42,6 +52,12 @@ import ClickOutside from 'vue-click-outside'
 export default {
 	directives: {
 		ClickOutside
+	},
+	props: {
+		isPublic: {
+			type: Boolean,
+			default: false
+		}
 	},
 	data() {
 		return {

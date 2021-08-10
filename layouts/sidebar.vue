@@ -1,16 +1,16 @@
 <template>
   <div>
     <ModalWrapper />
-    <Help />
-    <SideBar>
+    <Help :is-public="isPublic" />
+    <SideBar v-if="!isPublic">
       <template #content>
         <Nuxt />
       </template>
       <template #sidebar>
-        <SideBarMenuPublic v-if="isPublic" />
-        <SideBarMenu v-else />
+        <SideBarMenu />
       </template>
     </SideBar>
+    <Nuxt v-else />
   </div>
 </template>
 
