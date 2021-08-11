@@ -58,10 +58,16 @@ export const mutations = {
 		state.currentCrateLinks = value
 	},
 	ADD_CURRENT_CRATE_LINKS(state, value) {
-		state.currentCrateLinks = [ ...state.currentCrateLinks, ...value ]
+		// Prevent bug where currentCrateLinks is undefined and push fails
+		if (!Array.isArray(state.currentCrateLinks)) state.currentCrateLinks = []
+
+		state.currentCrateLinks = state.currentCrateLinks.concat(value)
 	},
 	ADD_CURRENT_CRATE_LINK(state, value) {
-		state.currentCrateLinks = [ value, ...state.currentCrateLinks ]
+		// Prevent bug where currentCrateLinks is undefined and push fails
+		if (!Array.isArray(state.currentCrateLinks)) state.currentCrateLinks = []
+
+		state.currentCrateLinks.push(value)
 	},
 	SET_CURRENT_LINK(state, value) {
 		state.currentLink = value
