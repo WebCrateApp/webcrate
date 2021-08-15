@@ -123,7 +123,7 @@ export default {
 
 	[contenteditable]:empty:before {
 		content: attr(placeholder);
-		color: rgba(50, 50, 50, 0.5);
+		color: var(--text-light);
 	}
 
 </style>
