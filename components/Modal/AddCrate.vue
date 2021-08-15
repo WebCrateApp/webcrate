@@ -1,5 +1,5 @@
 <template>
-  <Modal class="add-modal" @close="close">
+  <Modal class="add-modal" overflow="visible" @close="close">
     <h1>Add a new Crate</h1>
     <div class="inputs">
       <button class="button" @click.stop="showEmojiPicker = !showEmojiPicker">

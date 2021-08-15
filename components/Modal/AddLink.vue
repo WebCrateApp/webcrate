@@ -1,5 +1,5 @@
 <template>
-  <Modal class="add-modal" @close="close">
+  <Modal class="add-modal" overflow="visible" @close="close">
     <h1>Add a new Link</h1>
     <input v-model="inputValue" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
     <div class="dropdown">

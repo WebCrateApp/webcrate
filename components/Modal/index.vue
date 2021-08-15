@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-wrapper" :style="{ '--width': width }">
+  <div class="modal-wrapper" :style="{ '--width': width, '--overflow': overflow, '--min-height': minHeight }">
     <div v-click-outside="close" v-shortkey="['esc']" class="modal-content" @shortkey="close">
       <Icon name="close" class="close-icon" @click.native="close" />
       <slot></slot>
@@ -18,6 +18,14 @@ export default {
 		width: {
 			type: String,
 			default: '900px'
+		},
+		overflow: {
+			type: String,
+			default: 'auto'
+		},
+		minHeight: {
+			type: String,
+			default: undefined
 		}
 	},
 	methods: {
@@ -50,8 +58,9 @@ export default {
 		top: 10%; // 5rem
 		transform: translateX(-50%);
 		padding: 1.5rem;
-		overflow-y: auto;
+		overflow-y: var(--overflow);
 		max-height: 85%;
+		min-height: var(--min-height);
 	}
 
 	.close-icon {
