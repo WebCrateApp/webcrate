@@ -1,12 +1,13 @@
 <template>
   <div class="menu-item" :class="{ 'selected': selected, 'hover': drag && editable }" @[dropEvent].prevent="onDrop($event)" @[dragoverEvent].prevent @[dragenterEvent].prevent>
     <div class="item-icon-wrapper">
+      <span v-if="selected" class="blurred-icon">{{ emojiIcon }}</span>
       <div v-if="emoji" class="emoji">
         {{ emojiIcon }}
       </div>
       <Icon v-else-if="icon" :name="icon" class="icon" size="20px" />
     </div>
-    <span>{{ name }}</span>
+    <span class="name">{{ name }}</span>
     <div v-if="count" class="count">
       <span>{{ count }}</span>
     </div>
@@ -104,6 +105,8 @@ export default {
 		box-sizing: border-box;
 		transition: border .2s ease;
 		cursor: pointer;
+		position: relative;
+		overflow: hidden;
 
 		&:hover,
 		&.hover {
@@ -114,6 +117,29 @@ export default {
 
 	.selected {
 		background: var(--grey);
+
+		& .name {
+			color: var(--text-dark);
+		}
+	}
+
+	.blurred-icon {
+		position: absolute;
+		left: 1rem;
+		top: 35%;
+		transform: translateY(-50%) scale(3);
+		filter: blur(15px) saturate(4) brightness(2);
+		opacity: 0.4;
+		z-index: 0;
+	}
+
+	.emoji {
+		z-index: 1;
+		position: relative;
+	}
+
+	.name {
+		z-index: 1;
 	}
 
 	.item-icon-wrapper {
