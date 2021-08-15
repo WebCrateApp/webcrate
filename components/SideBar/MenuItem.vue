@@ -1,7 +1,14 @@
 <template>
-  <div class="menu-item" :class="{ 'selected': selected, 'hover': drag && editable }" @[dropEvent].prevent="onDrop($event)" @[dragoverEvent].prevent @[dragenterEvent].prevent>
+  <div
+    class="menu-item"
+    :class="{ 'selected': selected, 'drag': drag, 'hover': hover && drag }"
+    @[dropEvent].prevent="onDrop($event)"
+    @[dragoverEvent].prevent
+    @[dragenterEvent].prevent="hover = true"
+    @[dragleaveEvent].prevent="hover = false"
+  >
     <div class="item-icon-wrapper">
-      <span v-if="selected" class="blurred-icon">{{ emojiIcon }}</span>
+      <span v-if="selected || hover && drag" class="blurred-icon">{{ emojiIcon }}</span>
       <div v-if="emoji" class="emoji">
         {{ emojiIcon }}
       </div>
@@ -48,6 +55,11 @@ export default {
 			default: undefined
 		}
 	},
+	data() {
+		return {
+			hover: false
+		}
+	},
 	computed: {
 		emojiIcon() {
 			return emojis[this.emoji]
@@ -61,8 +73,11 @@ export default {
 		dragenterEvent() {
 			return this.editable ? 'dragenter' : null
 		},
+		dragleaveEvent() {
+			return this.editable ? 'dragleave' : null
+		},
 		drag() {
-			return this.$store.state.draggingLink
+			return this.editable && this.$store.state.draggingLink
 		}
 	},
 	methods: {
@@ -109,10 +124,19 @@ export default {
 		overflow: hidden;
 
 		&:hover,
-		&.hover {
+		&.drag {
 			border: 2px solid var(--grey);
 			transition: none;
 		}
+
+		&.hover {
+			border: 2px solid var(--grey-2nd);
+			transition: none;
+		}
+	}
+
+	.menu-item * {
+		pointer-events: none;
 	}
 
 	.selected {
