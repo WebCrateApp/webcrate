@@ -29,8 +29,18 @@ export default {
 		}
 	},
 	methods: {
-		close() {
+		close(e) {
+			e.stopPropagation()
+
+			// Prevent close click from triggering on another element below the modal
+			document.body.classList.add('no-events')
+
 			this.$emit('close')
+
+			// After the delay, allow events to trigger again
+			setTimeout(() => {
+				document.body.classList.remove('no-events')
+			}, 700)
 		}
 	}
 }

@@ -44,6 +44,10 @@ body {
     touch-action: pan-y; // Disable safari viewport zoom
 }
 
+.no-events {
+    pointer-events: none;
+}
+
 .no-button {
     appearance: none;
     background: none;
