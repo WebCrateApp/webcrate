@@ -131,10 +131,14 @@ export default {
 
             & p {
                 user-select: all;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
             }
 
             & div {
                 margin-left: auto;
+				flex-shrink: 0;
             }
 
 			& input {
