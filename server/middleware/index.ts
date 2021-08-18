@@ -1,8 +1,12 @@
+import fs from 'fs'
+import path from 'path'
 import express from 'express'
+import cheerio from 'cheerio'
 
 import log from '../utils/log'
 import { messages } from '../utils/status'
 import { isSetup } from '../utils/isSetup'
+import emojis from '../utils/emojis'
 
 import { Crate } from '../models/crate'
 import { Stat } from '../models/stats'
@@ -28,6 +32,44 @@ export function routeLog(req: express.Request, _res: express.Response, next: exp
 export function disableCaching(req: express.Request, res: express.Response, next: express.NextFunction) {
 	if (req.originalUrl === '/') {
 		res.set('Cache-control', 'no-store')
+	}
+
+	next()
+}
+
+export async function renderMetaTags(req: express.Request, res: express.Response, next: express.NextFunction) {
+	// Only run on public crates
+	if (req.originalUrl.startsWith('/crate/public')) {
+
+		// Parse the crate id from the URL
+		const id = req.originalUrl.split('/crate/public/')[1]
+
+		// Check if the crate exists
+		const crate = await Crate.findOne({ id, public: true })
+		if (!crate) return next()
+
+		// Read the html file
+		const file = await fs.promises.readFile(path.join(__dirname, '../../dist/200.html'))
+		const html = file.toString()
+
+		// Load the html file into cheerio
+		const $ = cheerio.load(html)
+
+		// New title and description values
+		const title = `${ emojis[crate.icon] } ${ crate.name } | WebCrate`
+		const description = `${ crate.description } - View on WebCrate`
+
+		// Replace title
+		$('title').text(title)
+		$(`meta[name='title']`).attr('content', title)
+		$(`meta[name='og:title']`).attr('content', title)
+
+		// Replace description
+		$(`meta[name='description']`).attr('content', description)
+		$(`meta[name='og:description']`).attr('content', description)
+
+		// Render HTML
+		return res.send($.html())
 	}
 
 	next()
