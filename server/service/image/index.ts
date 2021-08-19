@@ -49,7 +49,7 @@ export const generateSocialImage = async (title: string, description: string, ic
 
 	// Load the template into the page
 	const data = { title, description, icon, domain }
-	const html = await ejs.renderFile(path.join(__dirname, 'template.ejs'), data)
+	const html = await ejs.renderFile(path.join(__dirname, '../../views/', 'image.ejs'), data)
 	await page.setContent(html, { waitUntil: 'domcontentloaded' })
 
 	// Take a screenshot of the page
