@@ -1,8 +1,12 @@
+/* eslint-disable import/first */
 import path from 'path'
 import express from 'express'
 import * as bodyParser from 'body-parser'
 import compression from 'compression'
 import cors from 'cors'
+import * as runningAt from 'running-at'
+import dotenv from 'dotenv'
+dotenv.config()
 
 import routes from './router'
 import { routeLog, sendResponse, disableCaching, checkIfSetup, renderMetaTags } from './middleware'
@@ -61,5 +65,18 @@ app.use((err: any, _req: express.Request, res: express.Response, next: express.N
 
 	res.fail(returnStatus, err.message, message)
 })
+
+// Start the server if file is directly run
+if (require.main === module) {
+	try {
+		const PORT = process.env.PORT || 3000
+
+		app.listen(PORT, () => runningAt.print(PORT))
+	} catch (err) {
+	// eslint-disable-next-line no-console
+		console.log(err)
+		process.exit(1)
+	}
+}
 
 export default app

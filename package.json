@@ -3,7 +3,7 @@
   "version": "0.10.2",
   "private": true,
   "scripts": {
-    "dev:server": "tsc-watch -p ./server/tsconfig.json --onSuccess \"node ./build/run.js\"",
+    "dev:server": "tsc-watch -p ./server/tsconfig.json --onSuccess \"node ./build/index.js\"",
     "build:nuxt": "nuxt generate",
     "build:server": "tsc -p ./server/tsconfig.json",
     "start:test": "node test/run.js",
