@@ -15,8 +15,8 @@
       <Icon v-else-if="icon" :name="icon" class="icon" size="20px" />
     </div>
     <span class="name">{{ name }}</span>
-    <div v-if="count" class="count">
-      <span>{{ count }}</span>
+    <div v-if="error" class="error">
+      <Icon name="error" />
     </div>
   </div>
 </template>
@@ -35,6 +35,10 @@ export default {
 			default: false
 		},
 		editable: {
+			type: Boolean,
+			default: false
+		},
+		error: {
 			type: Boolean,
 			default: false
 		},
@@ -171,14 +175,8 @@ export default {
 		width: 25px;
 	}
 
-	.count {
+	.error {
 		margin-left: auto;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		& span {
-			font-size: 0.8rem;
-		}
+		color: var(--red);
 	}
 </style>

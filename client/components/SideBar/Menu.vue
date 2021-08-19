@@ -39,6 +39,7 @@
           :crate-id="crate.id"
           :selected="currentCrate === crate.id && !currentPage"
           :editable="crate.id !== undefined && crate.endpoint === undefined"
+          :error="crate.deleted"
           @click.native="changeCrate(crate)"
           @shortkey.native="changeCrate(crate)"
         />
@@ -58,6 +59,7 @@
           :crate-id="crate.id"
           :selected="currentCrate === crate.id"
           :editable="crate.id && !crate.endpoint"
+          :error="crate.deleted"
           @click.native="changeCrate(crate)"
           @shortkey.native="changeCrate(crate)"
         />

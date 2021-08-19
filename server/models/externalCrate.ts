@@ -10,6 +10,7 @@ export class ExternalCrate {
 	name?: string
 	description?: string
 	icon?: string
+	deleted?: boolean
 	endpoint: string
 	addedAt: Date
 

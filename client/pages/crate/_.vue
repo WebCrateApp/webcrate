@@ -33,7 +33,15 @@
       <Actions v-else-if="isExternal" :actions="externalActions" />
     </div>
     <hr>
-    <div v-if="$fetchState.pending" class="links">
+    <div v-if="deleted" class="empty-state">
+      <Icon name="error" size="50px" class="deleted" />
+      <h2>Crate unavailable</h2>
+      <p>This external crate was either deleted or set to private by its original owner. <br>You can remove it now or keep it in the case that it's set back to public.</p>
+      <button class="button" @click.stop="deleteExternal">
+        <Icon name="delete" />Delete now
+      </button>
+    </div>
+    <div v-else-if="$fetchState.pending" class="links">
       <Grid>
         <LinkLoadingItem v-for="idx in 6" :key="'i' + idx" />
       </Grid>
@@ -95,7 +103,6 @@ export default {
 		}
 
 		const crate = isExternal ? await $api.getExternalCrate(crateId) : await $api.getCrate(crateId)
-
 		if (!crate) {
 			return redirect('/home')
 		}
@@ -108,7 +115,7 @@ export default {
 			$modal.replace('linkDetails', { link, endpoint: crate.endpoint, editable })
 		}
 
-		return { crate, isExternal, isPublic, editable }
+		return { crate, isExternal, isPublic, editable, deleted: crate.deleted }
 	},
 	data() {
 		return {
@@ -128,6 +135,8 @@ export default {
 	},
 	async fetch() {
 		this.$store.commit('SET_CURRENT_CRATE_LINKS', [])
+
+		if (this.deleted) return
 
 		const res = this.isExternal ? await this.$api.getLinksOfExternalCrate(this.crate) : await this.$api.getLinksOfCrate(this.crate.id)
 
@@ -331,7 +340,7 @@ export default {
 		async deleteCrate() {
 			const confirm = await this.$confirm({
 				title: `Are you sure you want to delete this crate?`,
-				message: 'This will also permanently delete all links belonging to that crate.',
+				message: `This will also permanently delete all links belonging to that crate.${ this.crate.public ? ' All users who are subscribed to this crate or try to access it by its link will see an error.' : '' }`,
 				confirmText: 'Delete Crate',
 				danger: true
 			})
@@ -348,7 +357,7 @@ export default {
 		async deleteExternal() {
 			const confirm = await this.$confirm({
 				title: `Are you sure you want to remove this external crate?`,
-				message: 'You can always readd it later.',
+				...(!this.deleted && { message: 'You can always re-add with its original sharing link later.' }),
 				confirmText: 'Remove Crate',
 				danger: true
 			})
@@ -373,7 +382,7 @@ export default {
 		async makePrivate() {
 			const confirm = await this.$confirm({
 				title: `Are you sure you want to make this crate private?`,
-				message: 'If you have already shared this crate, users will see a 404 error.',
+				message: 'All users who are subscribed to this crate or try to access it by its link will see an error.',
 				confirmText: 'Make Private',
 				danger: true
 			})
@@ -538,6 +547,11 @@ export default {
 		align-items: center;
 		justify-content: center;
 		margin-top: 4rem;
+		text-align: center;
+
+		.deleted {
+			color: var(--red);
+		}
 
 		& .link-icon {
 			color: var(--text-light);

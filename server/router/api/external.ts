@@ -56,8 +56,12 @@ router.get('/', parsePaginate, async (req: express.Request, res: express.Respons
 		if (externalCrates.count > 0) {
 
 			const crates = await Promise.all(externalCrates.items.map(async (externalCrate: ExternalCrate) => {
-				await externalCrate.refresh()
-				return externalCrate
+				try {
+					await externalCrate.refresh()
+					return externalCrate
+				} catch (err) {
+					return { ...externalCrate, deleted: true }
+				}
 			}))
 
 			return res.ok(crates)
@@ -81,7 +85,11 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 			return res.fail(404, 'crate not found')
 		}
 
-		await crate.refresh()
+		try {
+			await crate.refresh()
+		} catch (err) {
+			return res.ok({ ...crate, deleted: true })
+		}
 
 		// await Stat.addRecentlyUsedCrate(crate.id)
 
