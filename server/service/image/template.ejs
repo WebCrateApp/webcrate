@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <main id="wrapper">
+        <div class="content">
+            <h1 class="title"><%= icon %> <%= title %></h1>
+            <p class="description"><%= description %></p>
+            <p class="domain"><%= domain %></p>
+        </div>
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="53" height="53" viewBox="0 0 53 53">
+                <defs>
+                  <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+                    <stop offset="0" stop-color="#f5be6b"/>
+                    <stop offset="1" stop-color="#df9930"/>
+                  </linearGradient>
+                </defs>
+                <g id="Rechteck_532" data-name="Rechteck 532" stroke="#f5be6b" stroke-width="10" fill="url(#linear-gradient)">
+                  <rect width="53" height="53" rx="8" stroke="none"/>
+                  <rect x="5" y="5" width="43" height="43" rx="3" fill="none"/>
+                </g>
+            </svg>
+            <span>WebCrate</span>
+        </div>
+    </main>
+
+    <style>
+        :root {
+            /* Colors */
+            --background: #fff;
+            --background-2nd: #F7F6F4;
+            --grey: #E8E8E8;
+            --grey-light: #EEEEEE;
+            --grey-2nd: #cac9c9;
+
+            --text: #474440;
+            --text-light: #7B7B7B;
+            --text-dark:#242221;
+
+            --accent: #F5BE6B;
+            --accent-dark: #efa83d;
+            --red: rgb(197, 63, 63);
+            --red-light: rgb(230, 104, 104);
+            --red-dark: rgb(146, 40, 40);
+            --green: rgb(123, 217, 147);
+
+            /* Values */
+            --border-radius: 8px;
+            --click-scale-factor: 0.95;
+        }
+
+        #wrapper {
+            font-family: "Source Sans Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+            width: 1200px;
+            height: 628px;
+            background: var(--background-2nd);
+            padding: 10rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            font-size: 20px;
+        }
+
+        .title {
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            color: var(--text-light);
+        }
+
+        .domain {
+            color: var(--accent-dark);
+        }
+
+        .logo {
+            position: absolute;
+            bottom: 5rem;
+            right: 10rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-left: 1rem;
+            color: #474440;
+        }
+    </style>
+</body>
+</html>

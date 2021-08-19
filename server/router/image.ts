@@ -2,9 +2,41 @@ import express from 'express'
 import got from 'got'
 
 import { Link } from '../models/link'
+import { Crate } from '../models/crate'
+
+import { generateSocialImage } from '../service/image'
+
 import log from '../utils/log'
+import emojis from '../utils/emojis'
 
 export const router = express.Router()
+
+router.get('/preview/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+	try {
+		const id = req.params.id as string
+		if (!id) {
+			return res.fail(400, 'Missing crate id')
+		}
+
+		const crate = await Crate.findById(id)
+		if (!crate) {
+			return res.fail(404, 'link not found')
+		}
+
+		log.debug(`Generating preview for crate ${ crate.id }`)
+
+		const image = await generateSocialImage(crate.name, crate.description, emojis[crate.icon])
+
+		/* const sec = 60 * 5 // 5 minutes
+		res.header('Cache-Control', `public, max-age=${ sec }`) */
+
+		res.header('Content-Type', 'image/png')
+		res.send(image)
+	} catch (err) {
+		console.log(err)
+		return next(err)
+	}
+})
 
 router.get('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
@@ -51,10 +83,10 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 
 		// Instruct browser to cache image
 		if (type === 'image') {
-			const sec = 60 * 2 // 2 hours
+			const sec = 60 * 60 * 2 // 2 hours
 			res.header('Cache-Control', `public, max-age=${ sec }`)
 		} else if (type === 'icon') {
-			const sec = 60 * 24 * 7 * 4 // 1 month
+			const sec = 60 * 60 * 24 * 7 * 4 // 1 month
 			res.header('Cache-Control', `public, max-age=${ sec }`)
 		}
 

@@ -7,6 +7,7 @@ import log from '../utils/log'
 import { messages } from '../utils/status'
 import { isSetup } from '../utils/isSetup'
 import emojis from '../utils/emojis'
+import { domain } from '../utils/variables'
 
 import { Crate } from '../models/crate'
 import { Stat } from '../models/stats'
@@ -62,11 +63,14 @@ export async function renderMetaTags(req: express.Request, res: express.Response
 		// Replace title
 		$('title').text(title)
 		$(`meta[name='title']`).attr('content', title)
-		$(`meta[name='og:title']`).attr('content', title)
+		$(`meta[property='og:title']`).attr('content', title)
 
 		// Replace description
 		$(`meta[name='description']`).attr('content', description)
-		$(`meta[name='og:description']`).attr('content', description)
+		$(`meta[property='og:description']`).attr('content', description)
+
+		// Replace image
+		$(`meta[property='og:image']`).attr('content', `https://${ domain }/img/preview/${ crate.id }`)
 
 		// Render HTML
 		return res.send($.html())
