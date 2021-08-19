@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import emojis from '../../server/utils/emojis'
+import emojis from '@/../server/utils/emojis'
 
 export default {
 	// eslint-disable-next-line vue/require-prop-types

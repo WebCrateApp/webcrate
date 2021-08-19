@@ -9,7 +9,7 @@
 
 <script>
 import ClickOutside from 'vue-click-outside'
-import emojis from '../server/utils/emojis'
+import emojis from '@/../server/utils/emojis'
 
 export default {
 	directives: {

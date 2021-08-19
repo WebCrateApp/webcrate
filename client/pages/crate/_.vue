@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import emojis from '../../server/utils/emojis'
+import emojis from '@/../server/utils/emojis'
 
 export default {
 	layout: 'sidebar',

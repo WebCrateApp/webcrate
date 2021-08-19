@@ -1,6 +1,7 @@
 import pkg from './package.json'
 
 export default {
+	srcDir: 'client/',
 	components: true,
 
 	target: 'static',
@@ -13,7 +14,7 @@ export default {
 	},
 
 	serverMiddleware: [
-		'~/server/index.ts'
+		'@/../server/index.ts'
 	],
 
 	env: {
