@@ -1,11 +1,13 @@
 <template>
   <Modal class="add-modal" @close="close">
     <h1>Subscribe to an external Crate</h1>
-    <p>You can subscribe to any public crate to keep up date with links which are added to it.</p>
-    <p>Learn more in the <a href="https://webcrate.app/docs/crates/external-crates" target="_blank" rel="noopener">documentation.</a></p>
+    <p>You can subscribe to any public crate to keep up date with links which are added to it. Learn more in the <a href="https://webcrate.app/docs/crates/external-crates" target="_blank" rel="noopener">documentation.</a></p>
     <div class="inputs">
       <input v-model="url" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="URL of external crate">
     </div>
+    <button v-if="firstExternal && !url" class="no-button example" @click.stop="url = 'https://webcrate.maxs1.deta.app/crate/public/NUjr5C3Nn0Ef0YmM'">
+      <Icon name="info" />Click here to use an example if you don't have a URL ready
+    </button>
     <button v-shortkey="['enter']" class="primary-button" @click="add" @shortkey="add">
       <Icon name="add" />Subscribe
     </button>
@@ -28,6 +30,9 @@ export default {
 	computed: {
 		emojiIcon() {
 			return emojis[this.icon]
+		},
+		firstExternal() {
+			return this.$store.state.modal.data.firstExternal ? this.$store.state.modal.data.firstExternal : false
 		}
 	},
 	methods: {
@@ -86,6 +91,11 @@ export default {
 				margin-right: 0.3rem;
 				margin-left: -3px;
 			}
+		}
+
+		& .example {
+			margin-bottom: 1rem;
+			font-size: 1rem;
 		}
 
 		& p {

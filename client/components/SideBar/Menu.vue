@@ -48,9 +48,9 @@
         <h4>
           External Crates
         </h4>
-        <Icon name="add" @click.native.stop="showModal('addExternalCrate')" />
+        <Icon name="add" @click.native.stop="showAddExternalCrate" />
       </div>
-      <div class="menus">
+      <div v-if="externalCrates && externalCrates.length > 0" class="menus">
         <SideBarMenuItem
           v-for="crate in externalCrates"
           :key="crate.id"
@@ -63,6 +63,10 @@
           @click.native="changeCrate(crate)"
           @shortkey.native="changeCrate(crate)"
         />
+      </div>
+      <div v-else class="empty-external">
+        <h4>What is this?</h4>
+        <p>External crates are crates which exist on another users WebCrate instance. You can subscribe to them to stay up to date with the latest additions.</p>
       </div>
     </div>
 
@@ -89,6 +93,7 @@
 export default {
 	data() {
 		return {
+			externalExplanation: false,
 			moreActions: [
 				{
 					text: 'Create new crate',
@@ -153,6 +158,14 @@ export default {
 		},
 		showModal(value) {
 			this.$modal.show(value)
+		},
+		showAddExternalCrate() {
+			if (!this.externalCrates || this.externalCrates.length === 0) {
+				this.$modal.show('addExternalCrate', { firstExternal: true })
+				return
+			}
+
+			this.$modal.show('addExternalCrate')
 		}
 	}
 }
@@ -247,6 +260,14 @@ export default {
 				transition: none;
 			}
 		}
+	}
+
+	.empty-external {
+		background: var(--grey-light);
+		border-radius: var(--border-radius);
+		padding: 1rem;
+		font-size: 0.9rem;
+		margin-top: 0.5rem;
 	}
 
 	.fade-enter-active, .fade-leave-active {
