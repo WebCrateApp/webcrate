@@ -41,6 +41,13 @@
       <p class="light">
         It only takes a few seconds!
       </p>
+      <div>
+        <div class="features">
+          <WelcomeFeature title="Private" description="This is your own instance of WebCrate" icon="lockClosed" href="https://webcrate.app/docs/faq#space" />
+          <WelcomeFeature title="Controllable" description="You control when you want to update" icon="adjustments" href="https://webcrate.app/docs/faq#updates" />
+          <WelcomeFeature title="Transparent" description="View all of your data at any time" icon="eye" href="https://webcrate.app/docs/faq#data" />
+        </div>
+      </div>
     </div>
     <div v-if="state === 'name'" class="basics">
       <h1>Your own WebCrate</h1>
@@ -51,7 +58,7 @@
         <Icon name="info" />
         <p>You can always change this later</p>
       </div>
-      <button v-if="name" class="button" @click="saveName">
+      <button v-if="name" class="primary-button" @click="saveName">
         Next Step
       </button>
       <button v-else class="button" @click="saveName">
@@ -75,7 +82,7 @@
         <Icon name="info" />
         <p>You can also create a new crate later</p>
       </div>
-      <button class="button" @click="state = 'links'">
+      <button class="primary-button" @click="state = 'links'">
         Next Step
       </button>
     </div>
@@ -107,7 +114,7 @@
         <Icon name="info" />
         <p>You can also add a new link later</p>
       </div>
-      <button class="button" @click="state = 'end'">
+      <button class="primary-button" @click="state = 'end'">
         Next Step
       </button>
     </div>
@@ -119,7 +126,7 @@
         <Icon name="info" />
         <p><a href="https://webcrate.app/docs" target="_blank" rel="noopener">View Documentation</a></p>
       </div>
-      <button class="button" @click="done">
+      <button class="primary-button" @click="done">
         Start using WebCrate
       </button>
     </div>
@@ -229,12 +236,17 @@ export default {
 
 	.welcome {
 		position: absolute;
-		top: 40%;
+		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		max-width: 700px;
+		max-width: 1000px;
 		width: 95%;
 		margin: auto;
+
+		& button {
+			font-size: 1rem;
+			padding: 0.7rem 1.3rem;
+		}
 	}
 
 	.basics {
@@ -268,6 +280,33 @@ export default {
 			color: var(--text-light);
 			font-size: 0.9rem;
 			margin-top: -0.5rem;
+		}
+	}
+
+	.features {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin-top: 3rem;
+
+		& a {
+			margin: 0 0.5rem;
+			margin-bottom: 1rem;
+		}
+	}
+
+	@media screen and (max-width: 1100px) {
+		.welcome {
+			max-width: 1000px;
+			width: 95%;
+			margin: auto;
+			margin-top: 5rem;
+
+			& button {
+				font-size: 1rem;
+				padding: 0.7rem 1.3rem;
+			}
 		}
 	}
 
