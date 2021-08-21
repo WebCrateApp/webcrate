@@ -9,7 +9,7 @@
         :reduce="item => item.id"
         :options="crates"
         label="name"
-        placeholder="Select a Crate"
+        placeholder="Select a crate (optional)"
         @open="isOpen = true"
         @close="closeDropdown"
       ></v-select>

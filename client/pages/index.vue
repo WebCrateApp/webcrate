@@ -37,19 +37,25 @@
         </Grid>
       </div>
     </transition>
-    <div v-if="!crates && !links && !$fetchState.pending" class="empty-state">
-      <div class="list">
-        <div v-for="i in 3" :key="i" class="empty-link">
-          <div class="icon-div"></div>
-          <div class="text-div"></div>
+    <transition name="fade">
+      <div v-if="(!crates || crates.length < 1) && (!links || links.length < 1) && !loadingCrates && !loadingLinks" class="empty-state">
+        <Icon name="book" size="50px" />
+        <h2>Get started with WebCrate</h2>
+        <p>
+          Looks like it's the first time you are using WebCrate, start by adding your first link!
+          <br>If you don't have a link ready, use the example instead.
+        </p>
+        <div class="add-buttons">
+          <button class="primary-button" @click.stop="showAddLinkModal">
+            <Icon name="add" />Add first link
+          </button>
+          <p>or</p>
+          <button class="button" @click.stop="addExampleLink">
+            <Icon name="info" />Use example
+          </button>
         </div>
       </div>
-      <h2>{{ emptyMessage }}</h2>
-      <p>Drag a link into this crate or add a new one</p>
-      <button class="button" @click.stop="showAddLinkModal">
-        <Icon name="add" />Add Link
-      </button>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -153,6 +159,9 @@ export default {
 		},
 		showAddLinkModal() {
 			this.$modal.show('addLink')
+		},
+		addExampleLink() {
+			this.$modal.show('addLink', { inputValue: 'https://www.deta.sh' })
 		}
 	}
 }
@@ -216,16 +225,28 @@ export default {
 		justify-content: center;
 		margin-top: 4rem;
 
-		& .link-icon {
-			color: var(--text-light);
-		}
-
 		& h2 {
 			margin-top: 1rem;
+			font-size: 1.3rem;
+			font-weight: 550;
+			color: var(--text-light);
 		}
 
 		& p {
 			margin-top: 0.5rem;
+			color: var(--text-light);
+			max-width: 600px;
+			text-align: center;
+		}
+
+		.add-buttons {
+			display: flex;
+			align-items: center;
+
+			& p {
+				margin-left: 1rem;
+				margin-right: 1rem;
+			}
 		}
 
 		& button {
@@ -236,38 +257,6 @@ export default {
 
 			& div {
 				margin-right: 0.5rem;
-			}
-		}
-
-		& .list {
-			max-width: 200px;
-			width: 80%;
-		}
-
-		& .empty-link {
-			width: 100%;
-			height: 35px;
-			background: var(--background-2nd);
-			border-radius: var(--border-radius);
-			display: flex;
-			align-items: center;
-			justify-content: flex-start;
-			padding: 0.5rem;
-			margin-bottom: 0.5rem;
-
-			& .icon-div {
-				height: 100%;
-				width: 20px;
-				background: var(--grey-light);
-				border-radius: var(--border-radius);
-			}
-
-			& .text-div {
-				height: 100%;
-				flex-grow: 1;
-				background: var(--grey-light);
-				border-radius: var(--border-radius);
-				margin-left: 0.5rem;
 			}
 		}
 	}

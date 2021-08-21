@@ -10,7 +10,7 @@ import emojis from '../utils/emojis'
 import { domain } from '../utils/variables'
 
 import { Crate } from '../models/crate'
-import { Stat } from '../models/stats'
+// import { Stat } from '../models/stats'
 
 const ignoreRequestStrings: Array<string> = [ 'js/', 'css/', 'img/', 'static/', '_nuxt', 'manifest.json' ] // Don't log request if one of the strings are in URL
 
@@ -90,11 +90,11 @@ export async function checkIfSetup(req: express.Request, res: express.Response, 
 		const crates = await Crate.find([{ name: 'Read Later' }, { name: 'Archive' }])
 		if (crates.count === 0) {
 			log.debug('creating default crates')
-			const crate1 = await Crate.create('Read Later', 'Articles and blog posts I want to read later', 'book', false)
-			const crate2 = await Crate.create('Archive', 'Archive of old links', 'open_file_folder', false)
+			await Crate.create('Read Later', 'Articles and blog posts I want to read later', 'book', false)
+			await Crate.create('Archive', 'Archive of old links', 'open_file_folder', false)
 
-			await Stat.addRecentlyUsedCrate(crate1.id)
-			await Stat.addRecentlyUsedCrate(crate2.id)
+			/* await Stat.addRecentlyUsedCrate(crate1.id)
+			await Stat.addRecentlyUsedCrate(crate2.id) */
 		}
 
 		// Redirect to welcome page
