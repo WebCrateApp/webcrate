@@ -120,7 +120,7 @@ export function sendResponse(_req: express.Request, res: express.Response, next:
 			status: 200,
 			message: 'ok',
 			...(data && data.last && { last: data.last }),
-			...(data && data.count && data.items ? { data: data.items } : { data })
+			...(data && data.count !== undefined && data.items !== undefined ? { data: data.items } : { data })
 		})
 	}
 

@@ -139,6 +139,12 @@ export default {
 			demoLink: { id: 'demo', url: 'https://github.com ', crate: undefined, meta: { description: 'GitHub is where over 65 million developers shape the future of software, together. Contribute to the open source community, manage your Git repositories, review code like a pro, track bugs and feat...', icon: 'https://github.githubassets.com/favicons/favicon.svg', image: 'https://github.githubassets.com/images/modules/site/social-cards/github-social.png', title: 'GitHub: Where the world builds software' }, redirect: { enabled: false }, addedWith: 'web', addedAt: '2021-07-19T17:34:25.671Z' }
 		}
 	},
+	async fetch() {
+		this.$store.dispatch('GET_CRATES')
+
+		const links = await this.$api.getRecentLinks()
+		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
+	},
 	head() {
 		return {
 			title: 'Welcome | WebCrate',
@@ -155,14 +161,9 @@ export default {
 			return (this.$store.state.crates || []).slice(0, 6)
 		},
 		links() {
+			if (!this.$store.state.currentCrateLinks) return []
 			return (this.$store.state.currentCrateLinks || []).slice(0, 6)
 		}
-	},
-	async created() {
-		this.$store.dispatch('GET_CRATES')
-
-		const links = await this.$api.getRecentLinks()
-		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)
 	},
 	methods: {
 		showAddCrateModal() {
