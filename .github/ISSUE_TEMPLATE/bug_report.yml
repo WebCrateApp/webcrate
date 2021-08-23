@@ -1,0 +1,64 @@
+name: 🐛 Bug Report
+description: Create a bug report to report any bugs/problems you encountered.
+labels: [bug, triage]
+assignees:
+  - BetaHuhn
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: version
+    attributes:
+      label: 🏷️ WebCrate Version
+      description: What version of WebCrate did the bug occur on (can be found under `?`)
+      placeholder: v0.11.0
+    validations:
+      required: true
+  - type: dropdown
+    id: browsers
+    attributes:
+      label: ⚙️ Environment
+      description: What browsers are you seeing the problem on?
+      multiple: true
+      options:
+        - Firefox
+        - Chrome
+        - Safari
+        - Microsoft Edge
+        - Mobile
+        - Other (please specify below)
+    validations:
+      required: true
+  - type: textarea
+    id: describe-bug
+    attributes:
+      label: 🐞 Describe the bug
+      description: A clear and concise description of what the bug is
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    id: to-reproduce
+    attributes:
+      label: 📚 To Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: How did you encounter the bug?
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: 💡 Expected behavior
+      description: A clear and concise description of what you expected to happen
+      placeholder: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: 📋 Additional context
+      description: If applicable add any other context or screenshots to help explain your problem
+    validations:
+      required: false
