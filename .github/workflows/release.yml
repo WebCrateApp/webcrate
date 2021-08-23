@@ -43,7 +43,7 @@ jobs:
         run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          GIT_AUTHOR_NAME: "BetaHuhn Bot"
-          GIT_AUTHOR_EMAIL: "bot@mxis.ch"
-          GIT_COMMITTER_NAME: "BetaHuhn Bot"
-          GIT_COMMITTER_EMAIL: "bot@mxis.ch"
+          GIT_AUTHOR_NAME: "WebCrate Bot"
+          GIT_AUTHOR_EMAIL: "89414945+WebCrateBot@users.noreply.github.com"
+          GIT_COMMITTER_NAME: "WebCrate Bot"
+          GIT_COMMITTER_EMAIL: "89414945+WebCrateBot@users.noreply.github.com"
