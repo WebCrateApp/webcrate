@@ -229,7 +229,6 @@ export default {
 			margin-top: 1rem;
 			font-size: 1.3rem;
 			font-weight: 550;
-			color: var(--text-light);
 		}
 
 		& p {
