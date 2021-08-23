@@ -43,9 +43,9 @@
       </p>
       <div>
         <div class="features">
-          <WelcomeFeature title="Private" description="This is your own instance of WebCrate" icon="lockClosed" href="https://webcrate.app/docs/faq#space" />
-          <WelcomeFeature title="Controllable" description="You control when you want to update" icon="adjustments" href="https://webcrate.app/docs/faq#updates" />
-          <WelcomeFeature title="Transparent" description="View all of your data at any time" icon="eye" href="https://webcrate.app/docs/faq#data" />
+          <WelcomeFeature title="Private" description="This is your own instance of WebCrate" icon="lockClosed" href="https://webcrate.app/docs/faq#whats-deta-space" />
+          <WelcomeFeature title="Controllable" description="You control when you want to update" icon="adjustments" href="https://webcrate.app/docs/faq#how-are-updates-handled" />
+          <WelcomeFeature title="Transparent" description="View all of your data at any time" icon="eye" href="https://webcrate.app/docs/faq#how-can-i-view-my-data" />
         </div>
       </div>
     </div>
