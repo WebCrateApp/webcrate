@@ -2,9 +2,9 @@
   
 <img src="https://webcrate.fra1.cdn.digitaloceanspaces.com/static/icon.png" title="logo" alt="logo" width="128">
 
-# WebCrate
+# WebCrate App
 
-Organize links, articles and more from around the web in a central place. Share them as collections and add your own context to each link. All while being private, transparent and controllable thanks to your own personal cloud. It's more than just a bookmarking tool.
+Organize links, articles and more from around the web in a central place. All while being private, transparent and controllable thanks to your own personal cloud. It's more than just a bookmarking tool.
 
 [🔮 Website](https://webcrate.app) - [🚀 Install on Space](https://deta.space/discovery/webcrate) - [📚 Docs](https://webcrate.app/docs)
 
@@ -40,9 +40,9 @@ You can find the documentation and guides on the WebCrate hompage: [webcrate.app
 
 ## 🔨 Contributing
 
-There are several ways to contribute to WebCrate. The easiest is to star this repo and spread the word about WebCrate on different platforms like Twitter (tag @WebCrateApp). This helps to get more people involved and ultimately benefits you as a user!
+There are several ways to contribute to WebCrate. The easiest is to star this repo and spread the word about WebCrate on different platforms like Twitter (tag [@WebCrateApp](https://twitter.com/WebCrateApp)). This helps to get more people involved and ultimately benefits you as a user!
 
-You can also contribute by [reporting any](https://github.com/WebCrateApp/webcrate/issues/new?assignees=BetaHuhn&labels=bug%2Ctriage&template=bug_report.yml) bugs you encounter as an issue and suggesting new features in a [discussion](https://github.com/WebCrateApp/webcrate/discussions/new?category=ideas).
+You can also contribute by [reporting](https://github.com/WebCrateApp/webcrate/issues/new?assignees=BetaHuhn&labels=bug%2Ctriage&template=bug_report.yml) any bugs you encounter as an issue and suggesting new features in a [discussion](https://github.com/WebCrateApp/webcrate/discussions/new?category=ideas).
 
 Finally you can also contribute directly by making a code contribution in the form of a PR. Please open a [discussion](https://github.com/WebCrateApp/webcrate/discussions) and take a look at the [Contributing Guide](https://github.com/WebCrateApp/webcrate/blob/master/CONTRIBUTING.md) before making any changes to the code!
 
