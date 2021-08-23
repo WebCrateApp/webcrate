@@ -18,7 +18,7 @@
     "save": "git push && npm run deploy",
     "dev": "nuxt",
     "build": "npm run build:nuxt && npm run build:server",
-    "lint": "npm run lint:js",
+    "lint": "npm run lint:nuxt && npm run lint:server",
     "start": "NODE_ENV=production node build/index.js",
     "deploy": "deta deploy"
   },
