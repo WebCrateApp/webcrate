@@ -53,7 +53,7 @@
       <h1>Your own WebCrate</h1>
       <p>This is your own instance of WebCrate. Give it a name to make it yours!</p>
       <hr>
-      <input v-model="name" v-focus class="input" placeholder="e.g. Maxi's WebCrate" />
+      <input v-model="name" v-focus class="input" placeholder="Maxi's WebCrate" />
       <div class="info">
         <Icon name="info" />
         <p>You can always change this later</p>
@@ -170,6 +170,13 @@ export default {
 		links() {
 			if (!this.$store.state.currentCrateLinks) return []
 			return (this.$store.state.currentCrateLinks || []).slice(0, 6)
+		}
+	},
+	mounted() {
+		const matched = window.location.hostname.match(/webcrate.(.*).deta.app/)
+
+		if (matched && matched[1]) {
+			this.name = `${ matched[1] }'s WebCrate`
 		}
 	},
 	methods: {
