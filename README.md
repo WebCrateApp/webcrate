@@ -1,14 +1,14 @@
 <div align="center">
   
-<img src="https://webcrate.fra1.cdn.digitaloceanspaces.com/static/logoBig.png" title="logo" alt="logo" width="128" style="border-radius: 15px;">
+<img src="https://webcrate.fra1.cdn.digitaloceanspaces.com/static/icon.png" title="logo" alt="logo" width="128">
 
 # WebCrate
 
-Group, organize and share links from around the web with WebCrate. It's more than just a bookmarking tool.
+Organize links, articles and more from around the web in a central place. Share them as collections and add your own context to each link. All while being private, transparent and controllable thanks to your own personal cloud. It's more than just a bookmarking tool.
+
+[🔮 Website](https://webcrate.app) - [🚀 Install on Space](https://deta.space/discovery/webcrate) - [📚 Docs](https://webcrate.app/docs)
 
 ![preview](https://webcrate.fra1.cdn.digitaloceanspaces.com/static/readme-image.png)
-
-[🔮 Website](https://webcrate.app) - [📚 Docs](https://webcrate.app/docs) - [📧 Contact](mailto:hi@webcrate.app)
 
 <br/>
 
