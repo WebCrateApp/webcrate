@@ -51,12 +51,10 @@ export class Link {
 			url: url,
 			crate: crate || 'null',
 			meta: {
-				...(meta && {
-					title: meta.title,
-					description: meta.description,
-					image: meta.image ? makeAbsoluteUrl(url, meta.image) : undefined,
-					icon: meta.icon ? makeAbsoluteUrl(url, meta.icon) : undefined
-				})
+				title: meta?.title || new URL(url).hostname,
+				description: meta?.description,
+				image: meta?.image ? makeAbsoluteUrl(url, meta.image) : undefined,
+				icon: meta?.icon ? makeAbsoluteUrl(url, meta.icon) : undefined
 			},
 			redirect: {
 				enabled: false

@@ -25,7 +25,12 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 
 		let meta: MetaData | undefined
 		try {
-			meta = await getMetaData(parsedUrl)
+			// Workaround to Twitter to include the right meta tags
+			const useGoogleUa = parsedUrl.includes('twitter.com')
+
+			meta = await getMetaData(parsedUrl, {
+				...(useGoogleUa && { ua: 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' })
+			})
 		} catch (err) {
 			log.debug(err)
 		}
