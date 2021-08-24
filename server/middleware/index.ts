@@ -58,7 +58,7 @@ export async function renderMetaTags(req: express.Request, res: express.Response
 
 		// New title and description values
 		const title = `${ emojis[crate.icon] } ${ crate.name } | WebCrate`
-		const description = `${ crate.description } - View on WebCrate`
+		const description = crate.description ? `${ crate.description } - View on WebCrate` : 'View this crate on WebCrate'
 
 		// Replace title
 		$('title').text(title)
