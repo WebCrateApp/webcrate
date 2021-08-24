@@ -1,11 +1,14 @@
 <template>
   <transition name="fade" mode="in-out">
     <div v-if="!loadingCrates" key="loaded" class="sidemenu">
-      <div class="headline">
+      <div class="logo-title">
+        <a href="/">
+          <img src="/icon.png" />
+        </a>
         <h1>
           {{ config && config.name ? config.name : 'WebCrate' }}
         </h1>
-        <ActionDropdown icon="dotsV" icon-size="18px" :actions="moreActions" />
+        <ActionDropdown icon="dotsV" icon-size="18px" :no-padding="true" :actions="moreActions" />
       </div>
       <hr>
       <div v-shortkey="['ctrl', 's']" @shortkey="showModal('search')"></div>
@@ -212,21 +215,31 @@ export default {
 		}
 	}
 
-	.headline {
+	.logo-title {
 		display: flex;
 		align-items: center;
 		width: 100%;
 		height: 26px;
 		position: relative;
 
+		& img {
+			width: 20px;
+			height: 20px;
+			background: var(--background);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
 		& h1 {
 			font-size: 1rem;
-			margin: auto;
+			font-weight: 600;
+			flex-grow: 1;
+			text-align: center;
 		}
 
 		& div {
-			position: absolute;
-			right: 0;
+			margin-left: auto;
 		}
 	}
 

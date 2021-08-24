@@ -1,6 +1,6 @@
 <template>
   <div class="action-dropdown">
-    <button class="button" @click.stop="showMenu = !showMenu">
+    <button class="button" :class="noPadding && 'no-padding'" @click.stop="showMenu = !showMenu">
       <Icon :name="icon" :size="iconSize" />
     </button>
     <div v-if="showMenu" v-click-outside="closeMenu" class="menu">
@@ -31,6 +31,10 @@ export default {
 		actions: {
 			type: Array,
 			required: true
+		},
+		noPadding: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data() {
@@ -56,6 +60,10 @@ export default {
 		& button {
 			display: flex;
 			align-items: center;
+		}
+
+		.no-padding {
+			padding: 0;
 		}
 	}
 
