@@ -11,14 +11,21 @@
       <a ref="externalLink" :href="link.url" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
       <div class="top">
         <div class="title">
-          <EditableText
+          <input
+            v-if="editable"
+            v-model="linkTitle"
+            class="no-input headline"
+            placeholder="Click to add a title for this link"
+            title="Click to edit title"
+          />
+          <!-- <EditableText
             v-if="editable"
             v-model="linkTitle"
             elem="h1"
             class="headline"
             placeholder="Click to add a title for this link"
             title="Click to edit title"
-          />
+          /> -->
           <h1 v-else class="headline">
             {{ link.meta && link.meta.title }}
           </h1>
@@ -60,7 +67,9 @@ export default {
 	data() {
 		return {
 			canClose: false,
-			windowSize: undefined
+			windowSize: undefined,
+			linkTitle: 'Link title',
+			linkDescription: 'Link description'
 		}
 	},
 	async fetch() {
@@ -71,6 +80,9 @@ export default {
 
 		const link = this.endpoint ? await this.$api.getExternalLink(this.linkId, this.endpoint) : await this.$api.getLink(this.linkId)
 		this.$store.commit('SET_CURRENT_LINK_DATA', link)
+
+		this.linkTitle = link.meta && link.meta.title
+		this.linkDescription = link.meta && link.meta.description
 	},
 	computed: {
 		link: {
@@ -167,46 +179,6 @@ export default {
 				}
 			]
 		},
-		linkDescription: {
-			set(value) {
-				if (!value || value === this.linkDescription) return
-
-				this.link = {
-					...this.link,
-					meta: { ...this.link.meta, description: value }
-				}
-
-				this.$store.dispatch('CHANGE_LINK', {
-					linkId: this.link.id,
-					changes: {
-						'meta.description': value
-					}
-				})
-			},
-			get() {
-				return this.link && this.link.meta && this.link.meta.description ? this.link.meta.description : undefined
-			}
-		},
-		linkTitle: {
-			set(value) {
-				if (!value || value === this.linkTitle) return
-
-				this.link = {
-					...this.link,
-					meta: { ...this.link.meta, title: value }
-				}
-
-				this.$store.dispatch('CHANGE_LINK', {
-					linkId: this.link.id,
-					changes: {
-						'meta.title': value
-					}
-				})
-			},
-			get() {
-				return this.link && this.link.meta && this.link.meta.title ? this.link.meta.title : undefined
-			}
-		},
 		shareLinkModal() {
 			return this.$store.state.modal.show && this.$store.state.modal.show.shareLink
 		}
@@ -221,6 +193,36 @@ export default {
 					this.canClose = true
 				}, 500)
 			}
+		},
+		linkTitle(value, oldValue) {
+			if (!value || value === oldValue) return
+
+			/* this.link = {
+				...this.link,
+				meta: { ...this.link.meta, title: value }
+			} */
+
+			this.$store.dispatch('CHANGE_LINK', {
+				linkId: this.link.id,
+				changes: {
+					'meta.title': value
+				}
+			})
+		},
+		linkDescription(value, oldValue) {
+			if (!value || value === oldValue) return
+
+			/* this.link = {
+				...this.link,
+				meta: { ...this.link.meta, description: value }
+			} */
+
+			this.$store.dispatch('CHANGE_LINK', {
+				linkId: this.link.id,
+				changes: {
+					'meta.description': value
+				}
+			})
 		}
 	},
 	created() {

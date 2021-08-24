@@ -6,9 +6,11 @@
       <div v-if="editable" class="title">
         <div class="headline">
           <span class="emoji" title="Click to edit icon" @click.stop="showEmojiPicker = !showEmojiPicker">{{ emojiIcon }}</span>
-          <EditableText v-model="crateName" elem="h1" placeholder="Crate Title" title="Click to edit title" />
+          <input v-model="crateName" class="no-input" placeholder="Crate Title" title="Click to edit title" />
+          <!-- <EditableText v-model="crateName" elem="h1" placeholder="Crate Title" title="Click to edit title" /> -->
         </div>
-        <EditableText v-model="crateDescription" class="subtext" placeholder="Click to add a description for this Crate" title="Click to edit description" />
+        <input v-model="crateDescription" class="no-input subtext" placeholder="Click to add a description for this Crate" title="Click to edit description" />
+        <!-- <EditableText v-model="crateDescription" class="subtext" placeholder="Click to add a description for this Crate" title="Click to edit description" /> -->
         <div v-if="showEmojiPicker" class="emoji-picker">
           <EmojiPicker @selected="selectEmoji" @close="showEmojiPicker = false" />
         </div>
@@ -467,7 +469,7 @@ export default {
 				cursor: pointer;
 			}
 
-			h1 {
+			h1, input {
 				font-size: inherit;
 				font-weight: 600;
 				color: var(--text);
