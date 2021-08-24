@@ -11,12 +11,13 @@ dotenv.config()
 import routes from './router'
 import { routeLog, sendResponse, disableCaching, checkIfSetup, renderMetaTags } from './middleware'
 import log from './utils/log'
+import { isDev } from './utils/variables'
 
 const app = express()
 
 // Use ejs as view engine
 app.set('view engine', 'ejs')
-app.set('views', 'server/views')
+app.set('views', isDev ? 'server/views' : 'build/views')
 
 app.use(routeLog)
 app.use(sendResponse)
