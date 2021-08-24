@@ -38,7 +38,7 @@ router.get('/preview/:id', async (req: express.Request, res: express.Response, n
 	}
 })
 
-router.get('/:id', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+router.get('/:id', async (req: express.Request, res: express.Response) => {
 	try {
 		const id = req.params.id as string
 		if (!id) {
@@ -78,7 +78,7 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 		stream.on('error', (err) => {
 			log.fatal(err)
 
-			res.fail(500, err.message, `could not get ${ type }`)
+			res.fail(404, err.message, `could not get ${ type }`)
 		})
 
 		// Instruct browser to cache image
@@ -92,7 +92,7 @@ router.get('/:id', async (req: express.Request, res: express.Response, next: exp
 
 		stream.pipe(res)
 	} catch (err) {
-		return next(err)
+		return res.fail(404, err.message, 'image not found')
 	}
 })
 
