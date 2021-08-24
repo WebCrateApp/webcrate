@@ -132,7 +132,7 @@ export default {
 				return [ 'enter' ]
 			}
 
-			return []
+			return undefined
 		}
 	},
 	methods: {
