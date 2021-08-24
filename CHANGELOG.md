@@ -1,3 +1,13 @@
+## [v1.0.1] - 2021-08-24
+
+[Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.0.1) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.0.0...v1.0.1) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.0.1) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.0.1.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.0.1.tar.gz))
+
+### Bug fixes
+
+- [`bd7bc76`](https://github.com/betahuhn/webcrate/commit/bd7bc76)  Use correct path to templates in prod
+- [`0d654ba`](https://github.com/betahuhn/webcrate/commit/0d654ba)  Fix modal being triggered accidentally
+- [`dba570f`](https://github.com/betahuhn/webcrate/commit/dba570f)  Use inputs instead of contenteditable
+
 ## [v1.0.0] - 2021-08-23
 
 [Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.0.0) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.0.0) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.0.0.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.0.0.tar.gz))
