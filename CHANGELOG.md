@@ -1,3 +1,15 @@
+## [v1.0.2] - 2021-08-24
+
+[Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.0.2) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.0.1...v1.0.2) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.0.2) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.0.2.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.0.2.tar.gz))
+
+### Interface changes
+
+- [`3f0cf12`](https://github.com/betahuhn/webcrate/commit/3f0cf12)  Add logo to sidebar
+
+### Bug fixes
+
+- [`7b929cc`](https://github.com/betahuhn/webcrate/commit/7b929cc)  Use different UA when scraping Twitter URL and add title fallback
+
 ## [v1.0.1] - 2021-08-24
 
 [Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.0.1) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.0.0...v1.0.1) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.0.1) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.0.1.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.0.1.tar.gz))
