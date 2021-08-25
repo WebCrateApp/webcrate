@@ -11,6 +11,8 @@ Organize links, articles and more from around the web in a central place. All wh
 ![preview](https://webcrate.fra1.cdn.digitaloceanspaces.com/static/readme-image.png)
 
 <br/>
+	
+<a href="https://www.producthunt.com/posts/webcrate-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-webcrate-2" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=309849&theme=light" alt="WebCrate - Organize links, articles and more from around the web 📦 | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
 </div>
 
@@ -64,4 +66,4 @@ WebCrate is free to use and I ([@BetaHuhn](https://github.com/BetaHuhn)) am curr
 ### Links
 
 - [Follow WebCrate on Twitter](https://twitter.com/WebCrateApp)
-- [Vote for WebCrate on ProductHunt](https://www.producthunt.com/posts/)
+- [Support WebCrate on ProductHunt](https://www.producthunt.com/posts/webcrate-2)
