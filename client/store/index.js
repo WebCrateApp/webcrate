@@ -67,7 +67,7 @@ export const mutations = {
 		// Prevent bug where currentCrateLinks is undefined and push fails
 		if (!Array.isArray(state.currentCrateLinks)) state.currentCrateLinks = []
 
-		state.currentCrateLinks.push(value)
+		state.currentCrateLinks.unshift(value)
 	},
 	SET_CURRENT_LINK(state, value) {
 		state.currentLink = value
