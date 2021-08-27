@@ -8,7 +8,7 @@
         v-model="selectedCrate"
         :reduce="item => item.id"
         :options="crates"
-        label="name"
+        :get-option-label="(crate) => `${ emojiIcon(crate.icon) } ${ crate.name }`"
         placeholder="Select a crate (optional)"
         @open="isOpen = true"
         @close="closeDropdown"
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import emojis from '@/../server/utils/emojis'
+
 export default {
 	data() {
 		return {
@@ -59,6 +61,9 @@ export default {
 		this.inputValue = undefined
 	},
 	methods: {
+		emojiIcon(name) {
+			return emojis[name]
+		},
 		add() {
 			const url = this.inputValue
 			if (!url) {
