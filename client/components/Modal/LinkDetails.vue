@@ -14,7 +14,7 @@
           <input
             v-if="editable"
             v-model="linkTitle"
-            class="no-input headline"
+            class="input headline"
             placeholder="Click to add a title for this link"
             title="Click to edit title"
           />
@@ -398,8 +398,9 @@ export default {
 		}
 
 		.top {
+            align-items: flex-start;
 			display: flex;
-			align-items: center;
+            column-gap: 25px;
 			margin-bottom: 0.5rem;
 
 			.title {
@@ -418,9 +419,10 @@ export default {
 		}
 
 		.headline {
+            color: var(--text);
 			font-size: inherit;
 			font-weight: 600;
-			color: var(--text);
+            margin-bottom: 10px;
 			width: 100%;
 		}
 
