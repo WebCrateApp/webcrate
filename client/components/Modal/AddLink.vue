@@ -1,6 +1,11 @@
 <template>
   <Modal class="add-modal" overflow="visible" @close="close">
-    <h1>Add a new Link</h1>
+    <input
+      v-model="linkTitle"
+      class="no-input headline"
+      placeholder="Link Name (optional)"
+      title="Click to edit title"
+    />
     <input v-model="inputValue" v-focus class="input" :class="{ 'input-invalid': invalidLinkErr }" placeholder="https://piedpiper.com">
     <div class="dropdown">
       <v-select
@@ -29,7 +34,8 @@ export default {
 		return {
 			selectedCrate: undefined,
 			invalidLinkErr: undefined,
-			isOpen: false
+			isOpen: false,
+			linkTitle: ''
 		}
 	},
 	computed: {
@@ -65,10 +71,11 @@ export default {
 				this.invalidLinkErr = 'Please enter a valid URL'
 				return
 			}
+			const title = this.linkTitle
 
 			const crate = this.selectedCrate || this.currentCrate
 
-			this.$store.dispatch('ADD_LINK', { url, crate }).then((link) => {
+			this.$store.dispatch('ADD_LINK', { title, url, crate }).then((link) => {
 				this.$toast.success('Link added!', {
 					onClick: () => {
 						if (crate !== undefined && crate !== this.currentCrate) {
@@ -129,5 +136,13 @@ export default {
 			margin-bottom: 1rem;
 			font-size: 0.9rem;
 		}
+        .no-input {
+            width: 100%;
+        }
+        .headline {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
 	}
 </style>

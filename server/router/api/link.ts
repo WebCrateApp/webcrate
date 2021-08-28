@@ -14,7 +14,7 @@ export const router = express.Router()
 
 router.post('/', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const { url, crate } = req.body
+		const { title, url, crate } = req.body
 		if (!url) {
 			return res.fail(400, 'no url provided')
 		}
@@ -31,6 +31,9 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 			meta = await getMetaData(parsedUrl, {
 				...(useGoogleUa && { ua: 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' })
 			})
+
+			// Add title to meta object
+			if (title) meta.title = title
 		} catch (err) {
 			log.debug(err)
 		}

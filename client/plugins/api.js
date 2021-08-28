@@ -77,10 +77,11 @@ class API {
 		return res
 	}
 
-	async addLinkToCrate(url, crate) {
+	async addLinkToCrate(title, url, crate) {
 		if (this.publicMode) return undefined
 
 		const { data: res } = await this.http.post(`/link`, {
+			title,
 			url,
 			crate
 		})
