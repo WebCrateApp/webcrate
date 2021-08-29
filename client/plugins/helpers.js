@@ -84,4 +84,7 @@ export default ({ env, store, app }, inject) => {
 
 		app.router.push(newPath)
 	})
+
+	console.log('Looks like you are pretty curious, check out the code here: https://github.com/WebCrateApp/webcrate')
+	console.log('Have a great day! 👨‍💻🦄')
 }

@@ -73,6 +73,7 @@ dist
 
 # Typescript output
 build
+tsconfig.tsbuildinfo
 
 # vuepress build output
 .vuepress/dist

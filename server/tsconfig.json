@@ -12,5 +12,8 @@
     "strict": true, /* Enable all strict type-checking options. */
     "resolveJsonModule": true,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-  }
+  },
+  "references": [      // this is how we declare a dependency from
+    { "path": "../" }  // this project to the one at the root dir`
+  ]
 }

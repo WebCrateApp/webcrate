@@ -106,6 +106,8 @@ export const actions = {
 		const config = await this.$api.getConfig()
 
 		commit('SET_CONFIG', config)
+
+		return config
 	},
 	async ADD_LINK({ commit }, { url, crate }) {
 		const link = await this.$api.addLinkToCrate(url, crate)

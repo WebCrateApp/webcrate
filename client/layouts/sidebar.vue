@@ -34,7 +34,11 @@ export default {
 	created() {
 		this.isPublic = this.$route.path.includes('public')
 
-		this.$store.dispatch('GET_CONFIG')
+		this.$store.dispatch('GET_CONFIG').then((config) => {
+			if (config && config.didUpdate) {
+				this.$modal.show('changelog')
+			}
+		})
 
 		if (!this.isPublic) {
 			this.loadingCrates = true

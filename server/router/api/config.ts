@@ -34,4 +34,18 @@ router.get('/', async (_req: express.Request, res: express.Response, next: expre
 	}
 })
 
+router.get('/saw-update', async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+	try {
+		const config = await Config.get()
+
+		// Update stored version with current one
+		await Config.set({ version: config.version })
+
+		log.debug(config.version)
+		res.ok()
+	} catch (err) {
+		return next(err)
+	}
+})
+
 export default router

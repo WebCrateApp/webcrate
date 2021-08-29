@@ -17,6 +17,26 @@ class API {
 		return res.data
 	}
 
+	async sawConfig() {
+		if (this.publicMode) return undefined
+
+		const { data: res } = await this.http.get(`/config/saw-update`)
+
+		return res.data
+	}
+
+	async getGitHubRelease(version) {
+		const { data: release } = await this.axios.get(`https://api.github.com/repos/WebCrateApp/webcrate/releases/tags/${ version }`)
+
+		const body = release.body.split('.tar.gz))')[1]
+
+		const { data: html } = await this.axios.post(`https://api.github.com/markdown`, {
+			text: body
+		})
+
+		return { ...release, body, html }
+	}
+
 	async setConfig(config) {
 		if (this.publicMode) return undefined
 

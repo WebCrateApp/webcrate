@@ -1,4 +1,4 @@
-const modals = [ 'search', 'addLink', 'addCrate', 'addExternalCrate', 'linkDetails', 'confirm', 'copyOutput', 'changeName', 'shareLink', 'bookmarklet' ]
+const modals = [ 'search', 'addLink', 'addCrate', 'addExternalCrate', 'linkDetails', 'confirm', 'copyOutput', 'changeName', 'shareLink', 'bookmarklet', 'changelog' ]
 
 export const state = () => ({
 	show: undefined,
