@@ -1,11 +1,8 @@
 <template>
   <div v-shortkey="['ctrl', 'h']" class="help-wrapper" @shortkey="show = !show">
     <div v-if="shouldShow" v-click-outside="close" class="help-widget">
-      <!-- <a href="https://webcrate.app/about" target="_blank" rel="noopener" class="no-button">
-        <Icon name="heart" /><span>About</span>
-      </a> -->
       <div v-if="!isPublic">
-        <a href="https://webcrate.app/releases" target="_blank" rel="noopener" class="no-button">
+        <a href="https://github.com/WebCrateApp/webcrate/releases" target="_blank" rel="noopener" class="no-button">
           <Icon name="gift" /><span>What's new?</span>
         </a>
         <a href="https://webcrate.app/docs" target="_blank" rel="noopener" class="no-button">
