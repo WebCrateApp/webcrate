@@ -26,10 +26,16 @@ export default {
 		minHeight: {
 			type: String,
 			default: undefined
+		},
+		canClose: {
+			type: Boolean,
+			default: true
 		}
 	},
 	methods: {
 		close(e) {
+			if (!this.canClose) return
+
 			e.stopPropagation()
 
 			// Prevent close click from triggering on another element below the modal

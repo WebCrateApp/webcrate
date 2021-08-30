@@ -1,5 +1,5 @@
 <template>
-  <Modal class="link-details-modal" width="1000px" min-height="250px" @close="close">
+  <Modal class="link-details-modal" width="1000px" min-height="250px" :can-close="canClose" @close="close">
     <p v-if="$fetchState.pending">
       <LoadingItem />
       <LoadingItem height="25px" />
@@ -344,10 +344,6 @@ export default {
 		},
 		openExternalLink() {
 			this.$refs.externalLink.click()
-		}
-	}
-}
-</script>
 		}
 	}
 }
