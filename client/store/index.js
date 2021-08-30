@@ -109,8 +109,8 @@ export const actions = {
 
 		return config
 	},
-	async ADD_LINK({ commit }, { url, crate }) {
-		const link = await this.$api.addLinkToCrate(url, crate)
+	async ADD_LINK({ commit }, { title, url, crate }) {
+		const link = await this.$api.addLinkToCrate(title, url, crate)
 
 		commit('ADD_CURRENT_CRATE_LINK', link)
 
