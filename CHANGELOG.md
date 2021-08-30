@@ -1,3 +1,21 @@
+## [v1.1.0] - 2021-08-30
+
+[Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.1.0) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.0.2...v1.1.0) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.1.0) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.1.0.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.1.0.tar.gz))
+
+### New features
+
+- [`3c1884a`](https://github.com/betahuhn/webcrate/commit/3c1884a)  Optionally add a custom title during link creation #27
+(Issues: [`#27`](https://github.com/betahuhn/webcrate/issues/27))
+
+### Interface changes
+
+- [`edb91e8`](https://github.com/betahuhn/webcrate/commit/edb91e8)  Show emoji in crate dropdown
+
+### Bug fixes
+
+- [`9bb1dc8`](https://github.com/betahuhn/webcrate/commit/9bb1dc8)  Add links to the top of a crate
+- [`dcd9e6d`](https://github.com/betahuhn/webcrate/commit/dcd9e6d)  Prevent share modal from closing itself accidentally
+
 ## [v1.0.2] - 2021-08-24
 
 [Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.0.2) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.0.1...v1.0.2) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.0.2) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.0.2.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.0.2.tar.gz))
