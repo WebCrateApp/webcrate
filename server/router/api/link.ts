@@ -8,6 +8,8 @@ import { Stat } from '../../models/stats'
 
 import log from '../../utils/log'
 import { parseUrl } from '../../utils/url'
+import emojis from '../../utils/emojis'
+
 import { parsePaginate } from '../../middleware'
 
 export const router = express.Router()
@@ -49,6 +51,54 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 		log.debug(link)
 		log.info('Link added')
 		res.ok(link)
+	} catch (err) {
+		return next(err)
+	}
+})
+
+router.post('/bulk', async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+	try {
+		type Bookmark = {
+			url: string,
+			title?: string,
+			crate?: string
+		}
+
+		const bookmarks: Bookmark[] | undefined = req.body
+		if (!bookmarks) return res.fail(400, 'No bookmarks provided')
+
+		const links: Link[] = []
+		for await (const bookmark of bookmarks) {
+
+			if (!bookmark.url) continue
+
+			let crate
+			if (bookmark.crate !== undefined) {
+				crate = await Crate.findOne({ name: bookmark.crate })
+				if (!crate) {
+					const emojiKeys = Object.keys(emojis)
+
+					// Try to find a matching emoji based on the bookmark folder name (not very accurate but better than random)
+					const icon =
+						// See if any icon includes the name
+						emojiKeys.find((icon) => icon.includes(bookmark.crate?.toLowerCase() as string)) ||
+						// See if the name includes any icon
+						emojiKeys.find((icon) => (bookmark.crate?.toLowerCase() as string).includes(icon)) ||
+						undefined
+
+					log.debug(icon)
+					crate = await Crate.create(bookmark.crate, undefined, icon || undefined)
+				}
+			}
+
+			const parsedUrl = parseUrl(bookmark.url)
+			const favicon = new URL(parsedUrl).origin + '/favicon.ico'
+
+			const link = await Link.create(parsedUrl, { title: bookmark.title, icon: favicon }, crate && crate.id)
+			links.push(link)
+		}
+
+		res.ok(links)
 	} catch (err) {
 		return next(err)
 	}
