@@ -2,7 +2,7 @@
   <div class="link-item">
     <p>{{ title }}</p>
     <div class="right">
-      <img v-if="icon" :src="loadExternalIcon ? icon : `/img/${ id }?type=icon`">
+      <Img v-if="icon" :src="loadExternalIcon ? icon : `/img/${ id }?type=icon`" />
       <p class="domain">
         {{ domain }}
       </p>

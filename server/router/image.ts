@@ -76,9 +76,9 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
 		})
 
 		stream.on('error', (err) => {
-			log.fatal(err)
+			log.debug(err)
 
-			res.fail(404, err.message, `could not get ${ type }`)
+			return res.redirect('/missingFavicon.png')
 		})
 
 		// Instruct browser to cache image
@@ -92,7 +92,8 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
 
 		stream.pipe(res)
 	} catch (err) {
-		return res.fail(404, err.message, 'image not found')
+		log.debug(err)
+		res.redirect('/missingFavicon.png')
 	}
 })
 

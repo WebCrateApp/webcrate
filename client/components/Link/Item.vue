@@ -9,7 +9,7 @@
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
       <h4>{{ link.meta && link.meta.title }}</h4>
       <div class="domain-wrapper">
-        <img v-if="link.meta && link.meta.icon" :src="iconUrl">
+        <Img v-if="link.meta && link.meta.icon" :src="iconUrl" />
         <p>{{ domain }}</p>
       </div>
       <span>{{ new Date(link.addedAt).toLocaleString() }}</span>
@@ -43,7 +43,8 @@ export default {
 	},
 	data() {
 		return {
-			hover: false
+			hover: false,
+			imageError: false
 		}
 	},
 	computed: {

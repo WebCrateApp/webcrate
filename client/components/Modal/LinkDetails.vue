@@ -30,7 +30,7 @@
             {{ link.meta && link.meta.title }}
           </h1>
           <div class="url-wrapper">
-            <img v-if="link.meta && link.meta.icon" :src="iconUrl">
+            <Img v-if="link.meta && link.meta.icon" :src="iconUrl" />
             <a :href="link.url" target="_blank" rel="noopener">
               {{ link.url }}
             </a>
