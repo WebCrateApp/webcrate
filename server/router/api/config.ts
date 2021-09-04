@@ -1,4 +1,5 @@
 import express from 'express'
+import got from 'got'
 
 import { Config } from '../../models/config'
 import log from '../../utils/log'
@@ -27,8 +28,25 @@ router.get('/', async (_req: express.Request, res: express.Response, next: expre
 	try {
 		const config = await Config.get()
 
-		log.debug(config)
-		res.ok(config)
+		// Get latest version up on Space and fail gracefully
+		let latestVersion = config.version
+		try {
+			const spaceApp: any = await got.get('https://v1.deta.sh/discovery/apps/webcrate').json()
+			if (spaceApp.version) {
+				latestVersion = spaceApp.version.slice(1)
+			}
+		} catch (err) {
+			log.fatal(err)
+		}
+
+		const result = {
+			...config,
+			hasUpdate: latestVersion !== config.version,
+			latestVersion
+		}
+
+		log.debug(result)
+		res.ok(result)
 	} catch (err) {
 		return next(err)
 	}

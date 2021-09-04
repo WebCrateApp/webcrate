@@ -2,9 +2,6 @@
   <div v-shortkey="['ctrl', 'h']" class="help-wrapper" @shortkey="show = !show">
     <div v-if="shouldShow" v-click-outside="close" class="help-widget">
       <div v-if="!isPublic">
-        <a href="https://github.com/WebCrateApp/webcrate/releases" target="_blank" rel="noopener" class="no-button">
-          <Icon name="gift" /><span>What's new?</span>
-        </a>
         <a href="https://webcrate.app/docs" target="_blank" rel="noopener" class="no-button">
           <Icon name="docs" /><span>Documentation</span>
         </a>
@@ -13,7 +10,7 @@
         </a>
         <hr>
         <a class="no-button" @click="showBookmarkletModal">
-          <Icon name="bookmark" /><span>Get bookmarklet</span>
+          <Icon name="bookmark" /><span>Get Bookmarklet</span>
         </a>
         <a class="no-button" href="https://webcrate.app/docs/links#browser-extension" target="_blank" rel="noopener">
           <Icon name="desktop" /><span>Browser Extension</span>
@@ -28,17 +25,25 @@
         </a>
       </div>
       <hr>
+      <a v-if="!updateAvailable" href="https://github.com/WebCrateApp/webcrate/releases" target="_blank" rel="noopener" class="no-button">
+        <Icon name="gift" /><span>What's new?</span>
+      </a>
+      <a v-if="updateAvailable" href="https://deta.space/library" target="_blank" rel="noopener" class="no-button">
+        <div class="indicator"></div>
+        <Icon name="gift" /><span>Update Available</span>
+      </a>
       <a class="no-button" @click="toggleTheme">
         <Icon v-if="isDark" name="sun" />
         <Icon v-else name="moon" />
         <span>Change theme</span>
       </a>
       <hr>
-      <p>v{{ version }}</p>
+      <p>v{{ config.version }}</p>
     </div>
     <div class="bottom">
       <Icon v-if="!shouldShow" name="help" class="help-icon" @click.native.stop="show" />
       <Icon v-else name="close" class="help-icon" @click.native.stop="close" />
+      <div v-if="updateAvailable && !shouldShow" class="indicator"></div>
     </div>
   </div>
 </template>
@@ -64,8 +69,11 @@ export default {
 		}
 	},
 	computed: {
-		version() {
-			return this.$version()
+		config() {
+			return this.$store.state.config
+		},
+		updateAvailable() {
+			return this.config.hasUpdate
 		}
 	},
 	created() {
@@ -127,6 +135,35 @@ export default {
 		.bottom {
 			display: flex;
 			justify-content: flex-end;
+			position: relative;
+		}
+
+		.indicator {
+			position: absolute;
+			right: 0;
+			width: 12px;
+			height: 12px;
+			background: var(--accent);
+			border-radius: 100%;
+			box-shadow: 0 0 0 0 rgb(217, 159, 51);
+			animation: pulse-green 3s infinite;
+		}
+
+		@keyframes pulse-green {
+			0% {
+				transform: scale(0.95);
+				box-shadow: 0 0 0 0 rgba(217, 159, 51, 0.7);
+			}
+
+			30% {
+				transform: scale(1);
+				box-shadow: 0 0 0 10px rgba(217, 159, 51, 0);
+			}
+
+			100% {
+				transform: scale(0.95);
+				box-shadow: 0 0 0 0 rgba(217, 159, 51, 0);
+			}
 		}
 
 		.help-widget {
