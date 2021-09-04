@@ -92,18 +92,23 @@ export default {
 
 			if (endpoint) {
 				const link = await this.$api.getExternalLink(linkId, endpoint)
+				const newLink = await this.$api.addLinkToCrate(link.meta && link.meta.title, link.url, this.crateId)
 
-				await this.$api.addLinkToCrate(link.url, this.crateId)
+				this.$toast.success('Copied external link!', {
+					onClick: () => {
+						this.$switchToPageOrCrate(this.crateId, { link: newLink.id })
+					}
+				})
 
-				// this.$modal.show('linkDetails', { link: newLink.id })
-
-				/* this.$store.commit('SET_CURRENT_CRATE', this.crateId)
-				this.$router.push(`/crate/${ this.crateId }`)
- */
 				return
 			}
 
 			this.$store.dispatch('MOVE_LINK', { linkId, crate: this.crateId })
+			this.$toast.success('Link moved!', {
+				onClick: () => {
+					this.$switchToPageOrCrate(this.crateId, { link: linkId })
+				}
+			})
 		}
 	}
 }
