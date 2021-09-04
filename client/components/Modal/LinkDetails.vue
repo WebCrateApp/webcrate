@@ -195,12 +195,7 @@ export default {
 			}
 		},
 		linkTitle(value, oldValue) {
-			if (!value || value === oldValue) return
-
-			/* this.link = {
-				...this.link,
-				meta: { ...this.link.meta, title: value }
-			} */
+			if (!value || value === oldValue || !this.editable) return
 
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
@@ -210,12 +205,7 @@ export default {
 			})
 		},
 		linkDescription(value, oldValue) {
-			if (!value || value === oldValue) return
-
-			/* this.link = {
-				...this.link,
-				meta: { ...this.link.meta, description: value }
-			} */
+			if (!value || value === oldValue || !this.editable) return
 
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
