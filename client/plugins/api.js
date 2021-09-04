@@ -1,9 +1,24 @@
 
 class API {
-	constructor(axios, publicMode) {
+	constructor(axios, publicMode, redirect) {
 		this.axios = axios
 		this.http = axios.create({
 			baseURL: publicMode ? '/api/public' : '/api'
+		})
+
+		// Not in use right now since Space doesn't return auth errors yet
+		const loginUrl = process.client ? `https://deta.space/auth?redirect_uri=${ window.location.toString() }` : `https://deta.space/library?open=webcrate`
+		this.http.onError((error) => {
+			if (error && error.response && error.response.status === 403) {
+				return redirect(loginUrl)
+			}
+		})
+
+		// Workaround to catch Space auth errors by checking if the request got redirected and then follow the redirect
+		this.http.onResponse((res) => {
+			if (res.request.responseURL.startsWith('https://deta.space/login')) {
+				return redirect(res.request.responseURL)
+			}
 		})
 
 		this.publicMode = publicMode
@@ -211,14 +226,14 @@ class API {
 	}
 }
 
-export default ({ app: { $axios }, store, params }, inject) => {
+export default ({ app: { $axios }, store, params, redirect }, inject) => {
 	const isPublic = params.pathMatch && params.pathMatch.includes('public')
 
 	if (isPublic) {
 		store.commit('SET_PUBLIC_MODE', true)
 	}
 
-	const api = new API($axios, isPublic)
+	const api = new API($axios, isPublic, redirect)
 
 	inject('api', api)
 }
