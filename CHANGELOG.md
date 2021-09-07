@@ -1,3 +1,20 @@
+## [v1.2.0] - 2021-09-07
+
+[Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.2.0) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.1.0...v1.2.0) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.2.0) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.2.0.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.2.0.tar.gz))
+
+### New features
+
+- [`2645bd5`](https://github.com/betahuhn/webcrate/commit/2645bd5)  Support bulk importing of existing links via API
+
+### Interface changes
+
+- [`4486035`](https://github.com/betahuhn/webcrate/commit/4486035)  Check if update available and show indicator in help menu
+
+### Bug fixes
+
+- [`3c875df`](https://github.com/betahuhn/webcrate/commit/3c875df)  Prevent edit request for link details in external crate
+- [`5de5423`](https://github.com/betahuhn/webcrate/commit/5de5423)  Fix moving links between crates and add success notification
+
 ## [v1.1.0] - 2021-08-30
 
 [Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.1.0) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.0.2...v1.1.0) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.1.0) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.1.0.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.1.0.tar.gz))
