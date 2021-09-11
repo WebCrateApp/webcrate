@@ -29,10 +29,10 @@ router.get('/*', async (req: express.Request, res: express.Response, next: expre
 			url: link.url,
 			code: link.id,
 			metaAvailable: link.meta?.title !== undefined,
-			title: link.meta?.title ? `${ link.meta.title }` : 'Short URL by QrGen.cc',
+			title: link.meta?.title ? `${ link.meta.title }` : 'WebCrate Bookmarking Tool',
 			provider: link.url,
 			image: link.meta?.image || '/banner.png',
-			description: link.meta?.description ? link.meta.description : 'This URL was shortened by WebCrate, a bookmarking application which let\'s you organize the web.'
+			description: 'This URL was shortened by WebCrate, a bookmarking application which let\'s you organize the web.'
 		}
 
 		return res.render('redirect.ejs', data)

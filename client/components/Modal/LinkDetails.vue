@@ -18,14 +18,6 @@
             placeholder="Click to add a title for this link"
             title="Click to edit title"
           />
-          <!-- <EditableText
-            v-if="editable"
-            v-model="linkTitle"
-            elem="h1"
-            class="headline"
-            placeholder="Click to add a title for this link"
-            title="Click to edit title"
-          /> -->
           <h1 v-else class="headline">
             {{ link.meta && link.meta.title }}
           </h1>
@@ -51,10 +43,7 @@
           <img :src="imageUrl">
         </div>
       </div>
-      <textarea-autosize v-if="editable" v-model="linkDescription" :title="editable && 'Click to edit description'" class="no-input description" placeholder="Click to add a description for this link" />
-      <p v-else class="description">
-        {{ link.meta && link.meta.description }}
-      </p>
+      <LinkEditor v-model="linkDescription" :editable="editable" placeholder="Add a description …" />
     </div>
     <p v-else>
       Error
