@@ -60,10 +60,10 @@ class API {
 		return res.data
 	}
 
-	async getCrates() {
+	async getCrates(limit = 20) {
 		if (this.publicMode) return undefined
 
-		const { data: res } = await this.http.get(`/crate`)
+		const { data: res } = await this.http.get(`/crate?limit=${ limit }`)
 
 		return res.data
 	}

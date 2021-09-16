@@ -147,7 +147,7 @@ export default {
 		}
 	},
 	async fetch() {
-		this.$store.dispatch('GET_CRATES')
+		this.$store.dispatch('GET_CRATES', 5)
 
 		const links = await this.$api.getRecentLinks()
 		this.$store.commit('SET_CURRENT_CRATE_LINKS', links)

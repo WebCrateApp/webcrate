@@ -162,8 +162,8 @@ export const actions = {
 
 		commit('STORE_EXTERNAL_CRATES', crates)
 	},
-	async GET_CRATES({ commit }) {
-		const crates = await this.$api.getCrates()
+	async GET_CRATES({ commit }, limit) {
+		const crates = await this.$api.getCrates(limit)
 
 		commit('STORE_CRATES', crates)
 	},

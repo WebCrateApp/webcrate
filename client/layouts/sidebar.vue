@@ -42,7 +42,7 @@ export default {
 
 		if (!this.isPublic) {
 			this.loadingCrates = true
-			this.$store.dispatch('GET_CRATES').then(() => {
+			this.$store.dispatch('GET_CRATES', 0).then(() => {
 				setTimeout(() => {
 					this.loadingCrates = false
 				}, 500)
