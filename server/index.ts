@@ -32,8 +32,10 @@ app.use(disableCaching)
 
 app.use(renderMetaTags)
 
-// Serve Nuxt static files
-app.use(express.static(path.join(__dirname, '../dist')))
+// Serve Nuxt static files during production
+if (process.env.NODE_ENV !== 'development') {
+	app.use(express.static(path.join(__dirname, '../dist')))
+}
 
 // Use router
 app.use(routes)
