@@ -50,6 +50,10 @@ export default {
 			src: '~/plugins/confirm/index.js',
 			mode: 'client'
 		},
+		{
+			src: '~/plugins/localConfig.js',
+			mode: 'client'
+		},
 		'~/plugins/api.js',
 		'~/plugins/vue-librarys.js',
 		'~/plugins/helpers.js',

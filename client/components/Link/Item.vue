@@ -7,6 +7,7 @@
     @click.stop="openLinkDetails"
   >
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
+      <Img v-if="showImage && link.meta && link.meta.image" :src="imageUrl" class="image" @loaded="imageLoaded" />
       <h4>{{ link.meta && link.meta.title }}</h4>
       <div class="domain-wrapper">
         <Img v-if="link.meta && link.meta.icon" :src="iconUrl" />
@@ -36,6 +37,10 @@ export default {
 			type: Boolean,
 			default: true
 		},
+		showImage: {
+			type: Boolean,
+			default: false
+		},
 		endpoint: {
 			type: String,
 			default: undefined
@@ -60,6 +65,13 @@ export default {
 				return `https://${ this.endpoint }/img/${ this.link.id }?type=icon`
 			} else {
 				return `/img/${ this.link.id }?type=icon`
+			}
+		},
+		imageUrl() {
+			if (this.endpoint) {
+				return `https://${ this.endpoint }/img/${ this.link.id }?type=image`
+			} else {
+				return `/img/${ this.link.id }?type=image`
 			}
 		},
 		dragStartEvent() {
@@ -93,6 +105,10 @@ export default {
 		},
 		stopDrag() {
 			this.drag = false
+		},
+		// When the image is loaded we need to reflow the grid
+		imageLoaded() {
+			this.$emit('imageLoaded')
 		}
 	}
 }
@@ -128,6 +144,12 @@ export default {
 				height: 15px;
 				margin-right: 0.3rem;
 			}
+		}
+
+		.image {
+			width: 100%;
+			border-radius: var(--border-radius);
+			margin-bottom: 0.5rem;
 		}
 	}
 

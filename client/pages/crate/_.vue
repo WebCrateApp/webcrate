@@ -49,7 +49,7 @@
       </Grid>
     </div>
     <div v-else-if="links.length > 0" class="links">
-      <Grid>
+      <GridStack v-if="links && links.length" ref="linkGrid" :column-min-width="350" :monitor-images-loaded="true">
         <LinkItem
           v-for="link in links"
           :key="link.id"
@@ -57,8 +57,10 @@
           :editable="editable"
           :draggable="!isPublic"
           :endpoint="crate.endpoint"
+          :show-image="showImages"
+          @imageLoaded="reflowGrid"
         />
-      </Grid>
+      </GridStack>
       <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     </div>
     <div v-else class="empty-state">
@@ -132,7 +134,8 @@ export default {
 			showEmojiPicker: false,
 			lastLink: undefined,
 			windowSize: undefined,
-			editDescription: false
+			editDescription: false,
+			showImages: false
 		}
 	},
 	async fetch() {
@@ -225,6 +228,22 @@ export default {
 					dropdown: this.windowSize <= 900
 				},
 				{
+					id: 'changeView',
+					text: 'Show images',
+					icon: 'image',
+					click: this.changeGridView,
+					show: !this.showImages,
+					dropdown: true
+				},
+				{
+					id: 'changeView',
+					text: 'Hide images',
+					icon: 'image',
+					click: this.changeGridView,
+					show: this.showImages,
+					dropdown: true
+				},
+				{
 					id: 'makePrivate',
 					text: 'Make Private',
 					icon: 'eyeOff',
@@ -306,17 +325,25 @@ export default {
 			if (oldCrate.description !== newCrate.description) {
 				this.$toast.success('Description changed!')
 			}
+		},
+		showImages(newValue) {
+			this.$storage.set(this.$storage.types.SHOW_IMAGES_IN_LIST, newValue)
 		}
 	},
 	mounted() {
 		this.onResize()
-
 		window.addEventListener('resize', this.onResize)
+
+		const showImages = this.$storage.get(this.$storage.types.SHOW_IMAGES_IN_LIST, true)
+		this.showImages = showImages
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.onResize)
 	},
 	methods: {
+		reflowGrid() {
+			this.$refs.linkGrid.update()
+		},
 		onResize() {
 			this.windowSize = window.innerWidth
 		},
@@ -396,6 +423,9 @@ export default {
 					this.$toast.success('Crate set to private!')
 				})
 			}
+		},
+		changeGridView() {
+			this.showImages = !this.showImages
 		},
 		selectEmoji(key) {
 			this.showEmojiPicker = false

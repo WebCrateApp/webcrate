@@ -32,9 +32,9 @@
       </div>
       <div v-else-if="links && links.length > 0" class="section">
         <h2>Recently added links</h2>
-        <Grid>
+        <GridStack ref="linkGrid" :column-min-width="350" :monitor-images-loaded="true">
           <LinkItem v-for="link in links" :key="link.id" :link="link" :draggable="true" />
-        </Grid>
+        </GridStack>
       </div>
     </transition>
     <transition name="fade">

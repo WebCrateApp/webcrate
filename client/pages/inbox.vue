@@ -4,9 +4,7 @@
     <div class="title">
       <h1>Inbox</h1>
       <input v-model="newUrl" v-shortkey="['enter']" class="input" placeholder="Quick add a URL" @shortkey="addLink">
-      <button class="button add-btn" @click.stop="addLink">
-        <Icon name="add" />Add Link
-      </button>
+      <Actions :actions="actions" />
     </div>
     <hr>
     <div v-if="$fetchState.pending" class="section">
@@ -17,9 +15,16 @@
     </div>
     <div v-else-if="links.length > 0" class="section">
       <h2>Orphaned links</h2>
-      <Grid>
-        <LinkItem v-for="link in links" :key="link.id" :link="link" :draggable="true" />
-      </Grid>
+      <GridStack ref="linkGrid" :column-min-width="350" :monitor-images-loaded="true">
+        <LinkItem
+          v-for="link in links"
+          :key="link.id"
+          :link="link"
+          :draggable="true"
+          :show-image="showImages"
+          @imageLoaded="reflowGrid"
+        />
+      </GridStack>
       <infinite-loading @infinite="infiniteHandler"></infinite-loading>
     </div>
     <div v-else class="empty-state">
@@ -68,7 +73,9 @@ export default {
 				'Nothing In Here',
 				'Add a Link'
 			],
-			lastLink: undefined
+			windowSize: undefined,
+			lastLink: undefined,
+			showImages: false
 		}
 	},
 	async fetch() {
@@ -99,7 +106,51 @@ export default {
 			get() {
 				return this.$store.state.currentCrateLinks
 			}
+		},
+		actions() {
+			return [
+				{
+					id: 'addLink',
+					text: 'Add Link',
+					icon: 'add',
+					click: this.addLink,
+					show: true,
+					showText: this.windowSize >= 600,
+					dropdown: this.windowSize <= 450
+				},
+				{
+					id: 'changeView',
+					text: 'Show images',
+					icon: 'image',
+					click: this.changeGridView,
+					show: !this.showImages,
+					dropdown: true
+				},
+				{
+					id: 'changeView',
+					text: 'Hide images',
+					icon: 'image',
+					click: this.changeGridView,
+					show: this.showImages,
+					dropdown: true
+				}
+			]
 		}
+	},
+	watch: {
+		showImages(newValue) {
+			this.$storage.set(this.$storage.types.SHOW_IMAGES_IN_LIST, newValue)
+		}
+	},
+	mounted() {
+		this.onResize()
+		window.addEventListener('resize', this.onResize)
+
+		const showImages = this.$storage.get(this.$storage.types.SHOW_IMAGES_IN_LIST, true)
+		this.showImages = showImages
+	},
+	beforeDestroy() {
+		window.removeEventListener('resize', this.onResize)
 	},
 	methods: {
 		addLink() {
@@ -142,6 +193,15 @@ export default {
 			} else {
 				$state.complete()
 			}
+		},
+		onResize() {
+			this.windowSize = window.innerWidth
+		},
+		reflowGrid() {
+			this.$refs.linkGrid.update()
+		},
+		changeGridView() {
+			this.showImages = !this.showImages
 		}
 	}
 }
