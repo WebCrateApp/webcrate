@@ -135,11 +135,20 @@ export default {
 					dropdown: true
 				}
 			]
+		},
+		numLinks() {
+			return this.links.length
 		}
 	},
 	watch: {
 		showImages(newValue) {
 			this.$storage.set(this.$storage.types.SHOW_IMAGES_IN_LIST, newValue)
+		},
+		// Try to catch edge case where links are added/removed but the grid doesn't detect it
+		numLinks(newValue, oldValue) {
+			if (newValue && newValue !== oldValue && this.$refs.linkGrid) {
+				this.reflowGrid()
+			}
 		}
 	},
 	mounted() {
