@@ -19,8 +19,11 @@
         @close="closeDropdown"
       ></v-select>
     </div>
-    <button v-shortkey="['enter']" class="primary-button" @click="add" @shortkey="add">
+    <button v-if="!isLoading" v-shortkey="['enter']" class="primary-button" @click="add" @shortkey="add">
       <Icon name="add" />Add Link
+    </button>
+    <button v-else class="primary-button">
+      <Icon name="loadingAnimated" />Adding Link...
     </button>
     <p v-if="invalidLinkErr" class="error">
       Error: {{ invalidLinkErr }}
@@ -54,6 +57,9 @@ export default {
 		},
 		crates() {
 			return this.$store.state.crates
+		},
+		isLoading() {
+			return this.$nuxt.$loading.show
 		}
 	},
 	beforeDestroy() {
