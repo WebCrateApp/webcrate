@@ -1,3 +1,24 @@
+## [v1.3.0] - 2021-09-21
+
+[Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.3.0) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.2.0...v1.3.0) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.3.0) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.3.0.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.3.0.tar.gz))
+
+### New features
+
+- [`e58f99e`](https://github.com/betahuhn/webcrate/commit/e58f99e)  Add rich text editor to customize the link description
+- [`3dc77db`](https://github.com/betahuhn/webcrate/commit/3dc77db)  Add image list view and stack items #31
+(Issues: [`#31`](https://github.com/betahuhn/webcrate/issues/31))
+
+### Interface changes
+
+- [`1d7c7f8`](https://github.com/betahuhn/webcrate/commit/1d7c7f8)  Use check icon for change name button (#40)
+(Issues: [`#40`](https://github.com/betahuhn/webcrate/issues/40) [`#38`](https://github.com/betahuhn/webcrate/issues/38))- [`4dffb1d`](https://github.com/betahuhn/webcrate/commit/4dffb1d)  Add custom error page
+- [`0bbd802`](https://github.com/betahuhn/webcrate/commit/0bbd802)  Show loading indicator while adding link
+
+### Bug fixes
+
+- [`facd658`](https://github.com/betahuhn/webcrate/commit/facd658)  Display all crates in the sidebar (closes #39)
+(Issues: [`#39`](https://github.com/betahuhn/webcrate/issues/39))
+
 ## [v1.2.0] - 2021-09-07
 
 [Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.2.0) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.1.0...v1.2.0) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.2.0) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.2.0.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.2.0.tar.gz))
