@@ -1,19 +1,23 @@
 export default (_context, inject) => {
 	inject('storage', {
 		get: (key, parse = false) => {
-			const item = localStorage.getItem(key)
+			try {
+				const item = localStorage.getItem(key)
 
-			if (item === null) {
+				if (item === null) {
+					return undefined
+				}
+
+				if (parse) {
+					return JSON.parse(item)
+				}
+
+				return item
+			} catch (err) {
 				return undefined
 			}
-
-			if (parse) {
-				return JSON.parse(item)
-			}
-
-			return item
 		},
-		set: (key, value) => {
+		set: (key, value = false) => {
 			localStorage.setItem(key, value)
 		},
 		unset: (key) => {

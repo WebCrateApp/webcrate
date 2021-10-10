@@ -285,7 +285,23 @@ export default {
 					icon: 'delete',
 					click: this.deleteExternal,
 					show: true,
-					dropdown: this.windowSize <= 600
+					dropdown: true
+				},
+				{
+					id: 'changeView',
+					text: 'Show images',
+					icon: 'image',
+					click: this.changeGridView,
+					show: !this.showImages,
+					dropdown: true
+				},
+				{
+					id: 'changeView',
+					text: 'Hide images',
+					icon: 'image',
+					click: this.changeGridView,
+					show: this.showImages,
+					dropdown: true
 				}
 			]
 		},
@@ -307,6 +323,22 @@ export default {
 					click: this.openHomepageLink,
 					show: true,
 					dropdown: this.windowSize <= 550
+				},
+				{
+					id: 'changeView',
+					text: 'Show images',
+					icon: 'image',
+					click: this.changeGridView,
+					show: !this.showImages,
+					dropdown: true
+				},
+				{
+					id: 'changeView',
+					text: 'Hide images',
+					icon: 'image',
+					click: this.changeGridView,
+					show: this.showImages,
+					dropdown: true
 				}
 			]
 		},
@@ -330,6 +362,8 @@ export default {
 			}
 		},
 		showImages(newValue) {
+			if (typeof newValue !== 'boolean') return
+
 			this.$storage.set(this.$storage.types.SHOW_IMAGES_IN_LIST, newValue)
 		},
 		// Try to catch edge case where links are added/removed but the grid doesn't detect it
