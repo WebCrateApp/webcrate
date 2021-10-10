@@ -1,5 +1,5 @@
 <template>
-  <div class="loading-item" :class="{ 'loading': loading }" :style="{ '--height': height, '--width': width, '--padding': padding }">
+  <div class="loading-item" :class="{ 'loading': loading }" :style="{ '--height': height, '--width': width, '--padding': padding, '--background-color': background }">
     <span></span>
   </div>
 </template>
@@ -14,6 +14,10 @@ export default {
 		width: {
 			type: String,
 			default: '100%'
+		},
+		background: {
+			type: String,
+			default: 'var(--grey)'
 		},
 		padding: {
 			type: String,
@@ -38,7 +42,7 @@ export default {
         margin-top: var(--padding);
 
 		& span {
-			background: var(--grey);
+			background: var(--background-color);
 			border-radius: var(--border-radius);
 			width: 100%;
 			height: 100%;

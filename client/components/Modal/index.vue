@@ -1,7 +1,13 @@
 <template>
   <div class="modal-wrapper" :style="{ '--width': width, '--overflow': overflow, '--min-height': minHeight }">
     <div v-click-outside="close" v-shortkey="['esc']" class="modal-content" @shortkey="close">
-      <Icon name="close" class="close-icon" @click.native="close" />
+      <div v-if="canExpand" class="action-bar">
+        <p class="hover-button" @click.stop="expand">
+          <Icon name="expand" size="18px" />Open as page
+        </p>
+        <Icon name="close" @click.native="close" />
+      </div>
+      <Icon v-else name="close" class="close-icon" @click.native="close" />
       <slot></slot>
     </div>
   </div>
@@ -30,6 +36,10 @@ export default {
 		canClose: {
 			type: Boolean,
 			default: true
+		},
+		canExpand: {
+			type: Boolean,
+			default: false
 		}
 	},
 	methods: {
@@ -47,6 +57,9 @@ export default {
 			setTimeout(() => {
 				document.body.classList.remove('no-events')
 			}, 700)
+		},
+		expand() {
+			this.$emit('expand')
 		}
 	}
 }
@@ -64,6 +77,21 @@ export default {
 		z-index: 1000;
 	}
 
+	::-webkit-scrollbar {
+		width: 0.7rem;
+	}
+
+	::-webkit-scrollbar-thumb {
+		background-color: var(--grey);
+		border-radius: var(--border-radius);
+		border: 0;
+	}
+
+	::-webkit-scrollbar-track {
+		box-shadow: inset 0 0 4px var(--background-2nd);
+		border-radius: var(--border-radius);
+	}
+
 	.modal-content {
 		background: var(--background);
 		border-radius: var(--border-radius);
@@ -75,6 +103,8 @@ export default {
 		transform: translateX(-50%);
 		padding: 1.5rem;
 		overflow-y: var(--overflow);
+		scrollbar-width: thin;
+		scrollbar-color: var(--grey) var(--background-2nd);
 		max-height: 85%;
 		min-height: var(--min-height);
 	}
@@ -86,4 +116,34 @@ export default {
 		color: var(--text-light);
 	}
 
+	.expand-icon {
+		position: absolute;
+		top: 0.5rem;
+		left: 0.5rem;
+		color: var(--text-light);
+	}
+
+	.action-bar {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: -0.7rem;
+		margin-bottom: 0.3rem;
+
+		& p {
+			display: flex;
+			align-items: center;
+			color: var(--text-light);
+			cursor: pointer;
+
+			& div {
+				margin-right: 0.3rem;
+			}
+		}
+
+		& div {
+			color: var(--text-light);
+			cursor: pointer;
+		}
+	}
 </style>

@@ -61,7 +61,7 @@ export default ({ env, store, app }, inject) => {
 	})
 
 	inject('switchToPageOrCrate', (pageOrCrate, opts = {}) => {
-		const { link, external } = opts
+		const { link, external, fullPage, crate, isPublic } = opts
 
 		let newPath
 		if (pageOrCrate === undefined || pageOrCrate === 'home') {
@@ -72,10 +72,28 @@ export default ({ env, store, app }, inject) => {
 			store.commit('SET_CURRENT_PAGE', undefined)
 			store.commit('SET_CURRENT_CRATE', 'null')
 			newPath = `/inbox`
+		} else if (fullPage) {
+			store.commit('SET_CURRENT_PAGE', undefined)
+			store.commit('SET_CURRENT_CRATE', crate || undefined)
+
+			if (isPublic) {
+				newPath = `/link/public/${ pageOrCrate }`
+			} else if (external) {
+				newPath = `/link/${ pageOrCrate }?externalCrate=${ external }`
+			} else {
+				newPath = `/link/${ pageOrCrate }`
+			}
 		} else {
 			store.commit('SET_CURRENT_PAGE', undefined)
 			store.commit('SET_CURRENT_CRATE', pageOrCrate)
-			newPath = `/crate${ external ? '/external' : '' }/${ pageOrCrate }`
+
+			if (isPublic) {
+				newPath = `/crate/public/${ pageOrCrate }`
+			} else if (external) {
+				newPath = `/crate/external/${ pageOrCrate }`
+			} else {
+				newPath = `/crate/${ pageOrCrate }`
+			}
 		}
 
 		if (link !== undefined) {

@@ -63,6 +63,20 @@ body {
     }
 }
 
+.hover-button {
+    @extend .no-button;
+
+    border-radius: var(--border-radius);
+    transition: background-color .2s ease;
+    padding: 0.4rem 0.5rem;
+    margin: -0.4rem -0.5rem;
+
+    &:hover {
+        background: var(--background-2nd);
+        transition: none;
+    }
+}
+
 .button {
     @extend .no-button;
 

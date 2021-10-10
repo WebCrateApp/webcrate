@@ -1,5 +1,13 @@
 <template>
-  <Modal class="link-details-modal" width="1000px" min-height="250px" :can-close="canClose" @close="close">
+  <Modal
+    class="link-details-modal"
+    width="1000px"
+    min-height="250px"
+    :can-close="canClose"
+    :can-expand="!$fetchState.pending && link"
+    @close="close"
+    @expand="expand"
+  >
     <p v-if="$fetchState.pending">
       <LoadingItem />
       <LoadingItem height="25px" />
@@ -58,7 +66,8 @@ export default {
 			canClose: false,
 			windowSize: undefined,
 			linkTitle: 'Link title',
-			linkDescription: 'Link description'
+			linkDescription: 'Link description',
+			cleanupPath: true
 		}
 	},
 	async fetch() {
@@ -90,6 +99,10 @@ export default {
 		},
 		endpoint() {
 			return this.$store.state.modal.data.endpoint
+		},
+		isPublic() {
+			// If the link is not editable and no endpoint is specified, assume it is from a public crate
+			return !this.editable && !this.endpoint
 		},
 		imageUrl() {
 			if (this.link.id === 'demo') {
@@ -224,9 +237,11 @@ export default {
 	beforeDestroy() {
 		window.removeEventListener('resize', this.onResize)
 
-		const query = Object.assign({}, this.$route.query)
-		delete query.link
-		this.$router.push({ query })
+		if (this.cleanupPath) {
+			const query = Object.assign({}, this.$route.query)
+			delete query.link
+			this.$router.push({ query })
+		}
 	},
 	methods: {
 		onResize() {
@@ -236,6 +251,16 @@ export default {
 			if (this.canClose) {
 				this.$modal.hide()
 			}
+		},
+		expand() {
+			this.cleanupPath = false
+
+			this.$switchToPageOrCrate(this.link.id, {
+				fullPage: true,
+				...(this.endpoint && { external: this.link.crate }),
+				isPublic: this.isPublic
+			})
+			this.$modal.hide()
 		},
 		async deleteLink() {
 			this.canClose = false

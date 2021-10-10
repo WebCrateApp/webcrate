@@ -175,27 +175,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+	::-webkit-scrollbar {
+		width: 0.7rem;
+	}
 
-		::-webkit-scrollbar {
-			width: 0.7rem;
-		}
+	::-webkit-scrollbar-thumb {
+		background-color: var(--grey);
+		border-radius: var(--border-radius);
+		border: 0;
+	}
 
-		::-webkit-scrollbar-thumb {
-			background-color: var(--grey);
-			border-radius: var(--border-radius);
-			border: 0;
-		}
+	::-webkit-scrollbar-track {
+		box-shadow: inset 0 0 4px var(--background-2nd);
+	}
 
-		::-webkit-scrollbar-track {
-			box-shadow: inset 0 0 4px var(--background-2nd);
+	@-moz-document url-prefix() {
+		.scroller {
+			scrollbar-width: thin;
+			scrollbar-color: #1e202a;
 		}
+	}
 
-		@-moz-document url-prefix() {
-			.scroller {
-				scrollbar-width: thin;
-				scrollbar-color: #1e202a;
-			}
-		}
 	.sidemenu {
 		display: flex;
 		flex-direction: column;

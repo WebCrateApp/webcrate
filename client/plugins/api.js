@@ -137,7 +137,7 @@ class API {
 	}
 
 	async getExternalLink(id, endpoint) {
-		const { data: res } = await this.axios.get(`https://${ endpoint }/api/public/link/${ id }`)
+		const { data: res } = await this.axios.get(`${ endpoint ? `https://${ endpoint }` : '' }/api/public/link/${ id }`)
 
 		return res.data
 	}

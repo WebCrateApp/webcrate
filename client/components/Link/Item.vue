@@ -91,6 +91,11 @@ export default {
 	},
 	methods: {
 		openLinkDetails() {
+			if (window.innerWidth < 500) {
+				this.$switchToPageOrCrate(this.link.id, { fullPage: true, isPublic: !this.endpoint && !this.editable })
+				return
+			}
+
 			this.$modal.show('linkDetails', { link: this.link.id, editable: this.editable, endpoint: this.endpoint })
 		},
 		startDrag(e) {
