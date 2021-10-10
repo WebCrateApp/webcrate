@@ -38,7 +38,7 @@
         <span>Change theme</span>
       </a>
       <hr>
-      <p>v{{ config.version }}</p>
+      <p>v{{ version }}</p>
     </div>
     <div class="bottom">
       <Icon v-if="!shouldShow" name="help" class="help-icon" @click.native.stop="show" />
@@ -71,6 +71,9 @@ export default {
 	computed: {
 		config() {
 			return this.$store.state.config
+		},
+		version() {
+			return this.$version()
 		},
 		updateAvailable() {
 			return this.config.hasUpdate
