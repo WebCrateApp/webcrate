@@ -5,14 +5,14 @@
         <a href="https://webcrate.app/docs" target="_blank" rel="noopener" class="no-button">
           <Icon name="docs" /><span>Documentation</span>
         </a>
-        <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener" class="no-button">
+        <a href="https://github.com/WebCrateApp/webcrate/issues/new/choose" target="_blank" rel="noopener" class="no-button">
           <Icon name="feedback" /><span>Feedback</span>
         </a>
         <hr>
         <a class="no-button" @click="showBookmarkletModal">
           <Icon name="bookmark" /><span>Get Bookmarklet</span>
         </a>
-        <a class="no-button" href="https://webcrate.app/docs/links#browser-extension" target="_blank" rel="noopener">
+        <a class="no-button" href="https://webcrate.app/docs/browser-extension" target="_blank" rel="noopener">
           <Icon name="desktop" /><span>Browser Extension</span>
         </a>
       </div>
@@ -20,7 +20,7 @@
         <a href="https://webcrate.app" target="_blank" rel="noopener" class="no-button">
           <Icon name="info" /><span>What's WebCrate?</span>
         </a>
-        <a href="https://github.com/WebCrateApp/feedback" target="_blank" rel="noopener" class="no-button">
+        <a href="https://github.com/WebCrateApp/webcrate/issues/new/choose" target="_blank" rel="noopener" class="no-button">
           <Icon name="feedback" /><span>Feedback</span>
         </a>
       </div>

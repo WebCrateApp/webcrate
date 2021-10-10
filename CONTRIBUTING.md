@@ -16,7 +16,7 @@ In order to make a code contribution, create a fork of WebCrate by clicking the 
 
 Please use the `develop` branch as a base for your contribution and make your changes on a new branch.
 
-**Ensure that you [open a discussion](https://github.com/WebCrateApp/feedback/discussions/new?category=ideas) to discuss the changes before submitting a PR.**
+**Ensure that you [open a discussion](https://github.com/WebCrateApp/webcrate/discussions/new?category=ideas) to discuss the changes before submitting a PR.**
 
 Once you're finished, push your branch to your repo and create a [pull request](https://docs.github.com/en/github/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)!
 

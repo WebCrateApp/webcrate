@@ -1,10 +1,10 @@
 blank_issues_enabled: false
 contact_links:
   - name: 🚀 Feature Request
-    url: https://github.com/WebCrateApp/feedback/discussions/new?category=ideas
+    url: https://github.com/WebCrateApp/webcrate/discussions/new?category=ideas
     about: Share ideas for new features
   - name: ❓ Ask a Question
-    url: https://github.com/WebCrateApp/feedback/discussions/new?category=q-a
+    url: https://github.com/WebCrateApp/webcrate/discussions/new?category=q-a
     about: Ask the community for help
   - name: 📚 Docs
     url: https://webcrate.app/docs
