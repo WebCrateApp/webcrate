@@ -4,7 +4,7 @@
     width="1000px"
     min-height="250px"
     :can-close="canClose"
-    :can-expand="!$fetchState.pending && link"
+    :can-expand="!$fetchState.pending && link !== undefined"
     @close="close"
     @expand="expand"
   >

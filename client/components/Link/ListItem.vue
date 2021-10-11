@@ -7,7 +7,7 @@
         {{ domain }}
       </p>
       <p v-if="crate" class="crate">
-        - found in {{ emojiIcon }} {{ crate.name }}
+        - {{ emojiIcon }} {{ crate.name }}
       </p>
     </div>
   </div>

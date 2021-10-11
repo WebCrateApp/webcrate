@@ -5,7 +5,9 @@
         <p class="hover-button" @click.stop="expand">
           <Icon name="expand" size="18px" />Open as page
         </p>
-        <Icon name="close" @click.native="close" />
+        <div class="hover-icon">
+          <Icon name="close" @click.native="close" />
+        </div>
       </div>
       <Icon v-else name="close" class="close-icon" @click.native="close" />
       <slot></slot>

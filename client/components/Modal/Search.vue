@@ -46,7 +46,6 @@ export default {
 			crates: [],
 			emptyMessages: [
 				'Nothing found',
-				'*crickets chirping*',
 				'No results',
 				'No links or crates found'
 			],
@@ -97,7 +96,11 @@ export default {
 		},
 		openLink(link) {
 			const currentCrate = this.currentCrate && this.currentCrate.id
-			if (link.crate && (link.crate !== currentCrate)) {
+
+			if (window.innerWidth < 500) {
+				this.$switchToPageOrCrate(link.id, { fullPage: true })
+				this.$modal.hide()
+			} else if (link.crate && (link.crate !== currentCrate)) {
 				this.$switchToPageOrCrate(link.crate, { link: link.id })
 			} else {
 				this.$modal.replace('linkDetails', { link: link.id })
