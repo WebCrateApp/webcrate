@@ -5,6 +5,7 @@
     @[dragStartEvent].stop="startDrag($event)"
     @[dragStopEvent].stop="stopDrag($event)"
     @click.stop="openLinkDetails"
+    @click.middle="openLinkPage"
   >
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
       <Img v-if="showImage && link.meta && link.meta.image" :src="imageUrl" class="image" @loaded="imageLoaded" />
@@ -92,11 +93,14 @@ export default {
 	methods: {
 		openLinkDetails() {
 			if (window.innerWidth < 500) {
-				this.$switchToPageOrCrate(this.link.id, { fullPage: true, isPublic: !this.endpoint && !this.editable })
+				this.openLinkPage()
 				return
 			}
 
 			this.$modal.show('linkDetails', { link: this.link.id, editable: this.editable, endpoint: this.endpoint })
+		},
+		openLinkPage() {
+			this.$switchToPageOrCrate(this.link.id, { fullPage: true, isPublic: !this.endpoint && !this.editable, newTab: true })
 		},
 		startDrag(e) {
 			this.drag = true

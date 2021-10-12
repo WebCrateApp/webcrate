@@ -11,7 +11,14 @@
     <div v-else-if="searchValue">
       <div v-if="crates.length > 0" class="section">
         <h2>Crates</h2>
-        <CrateListItem v-for="crate in crates" :key="crate.id" :icon="crate.icon" :name="crate.name" @click.native.stop="changeCrate(crate)" />
+        <CrateListItem
+          v-for="crate in crates"
+          :key="crate.id"
+          :icon="crate.icon"
+          :name="crate.name"
+          @click.native.stop="changeCrate(crate)"
+          @click.middle.native.stop="changeCrate(crate, true)"
+        />
       </div>
       <div v-if="links.length > 0" class="section" infinite-wrapper="test">
         <h2>Links</h2>
@@ -24,6 +31,7 @@
           :icon="link.meta && link.meta.icon"
           :crate="link.crate && getCrate(link.crate)"
           @click.native.stop="openLink(link)"
+          @click.middle.native.stop="openLink(link, true)"
         />
         <div v-if="lastLink" class="more">
           <button class="no-button" @click="loadMore">
@@ -90,18 +98,23 @@ export default {
 
 			this.loading = false
 		}, 500),
-		changeCrate(crate) {
-			this.$switchToPageOrCrate(crate.id)
-			this.close()
+		changeCrate(crate, newTab = false) {
+			this.$switchToPageOrCrate(crate.id, { newTab })
+
+			if (!newTab) {
+				this.close()
+			}
 		},
-		openLink(link) {
+		openLink(link, newTab = false) {
 			const currentCrate = this.currentCrate && this.currentCrate.id
 
-			if (window.innerWidth < 500) {
-				this.$switchToPageOrCrate(link.id, { fullPage: true })
+			if (newTab) {
+				this.$switchToPageOrCrate(link.id, { fullPage: true, newTab: true })
+			} else if (window.innerWidth < 500) {
+				this.$switchToPageOrCrate(link.id, { fullPage: true, newTab })
 				this.$modal.hide()
 			} else if (link.crate && (link.crate !== currentCrate)) {
-				this.$switchToPageOrCrate(link.crate, { link: link.id })
+				this.$switchToPageOrCrate(link.crate, { link: link.id, newTab })
 			} else {
 				this.$modal.replace('linkDetails', { link: link.id })
 			}

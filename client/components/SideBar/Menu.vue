@@ -15,7 +15,7 @@
       <div v-shortkey="['ctrl', 'h']" @shortkey="changePage('home')"></div>
       <div v-shortkey="['ctrl', 'alt', 'n']" @shortkey="showModal('addCrate')"></div>
       <div class="menus">
-        <SideBarMenuItem name="Home" icon="home" :selected="currentPage === 'home'" @click.native="changePage('home')" />
+        <SideBarMenuItem name="Home" icon="home" :selected="currentPage === 'home'" @click.native="changePage('home')" @click.middle.native.stop="changePage('home', true)" />
         <SideBarMenuItem
           name="Inbox"
           icon="inbox"
@@ -23,6 +23,7 @@
           crate-id="null"
           :editable="true"
           @click.native="changePage('null')"
+          @click.middle.native.stop="changePage('inbox', true)"
         />
         <SideBarMenuItem name="Quick Search" icon="search" @click.native.stop="showModal('search')" />
       </div>
@@ -44,6 +45,7 @@
           :editable="crate.id !== undefined && crate.endpoint === undefined"
           :error="crate.deleted"
           @click.native="changeCrate(crate)"
+          @click.middle.native.stop="changeCrate(crate, true)"
           @shortkey.native="changeCrate(crate)"
         />
       </div>
@@ -64,6 +66,7 @@
           :editable="crate.id && !crate.endpoint"
           :error="crate.deleted"
           @click.native="changeCrate(crate)"
+          @click.middle.native.stop="changeCrate(crate, true)"
           @shortkey.native="changeCrate(crate)"
         />
       </div>
@@ -153,11 +156,11 @@ export default {
 		}
 	},
 	methods: {
-		changeCrate(crate) {
-			this.$switchToPageOrCrate(crate.id, { external: crate.endpoint !== undefined })
+		changeCrate(crate, newTab = false) {
+			this.$switchToPageOrCrate(crate.id, { external: crate.endpoint !== undefined, newTab })
 		},
-		changePage(page) {
-			this.$switchToPageOrCrate(page)
+		changePage(page, newTab = false) {
+			this.$switchToPageOrCrate(page, { newTab })
 		},
 		showModal(value) {
 			this.$modal.show(value)

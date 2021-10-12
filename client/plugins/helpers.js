@@ -61,21 +61,30 @@ export default ({ env, store, app }, inject) => {
 	})
 
 	inject('switchToPageOrCrate', (pageOrCrate, opts = {}) => {
-		const { link, external, fullPage, crate, isPublic } = opts
+		const { link, external, fullPage, crate, isPublic, newTab } = opts
 
 		let newPath
-		if (pageOrCrate === undefined || pageOrCrate === 'home') {
-			store.commit('SET_CURRENT_PAGE', 'home')
-			store.commit('SET_CURRENT_CRATE', undefined)
-			newPath = '/'
-		} else if (pageOrCrate === 'inbox' || pageOrCrate === 'null') {
-			store.commit('SET_CURRENT_PAGE', undefined)
-			store.commit('SET_CURRENT_CRATE', 'null')
-			newPath = `/inbox`
-		} else if (fullPage) {
-			store.commit('SET_CURRENT_PAGE', undefined)
-			store.commit('SET_CURRENT_CRATE', crate || undefined)
+		let newPage
+		let newCrate
 
+		// Switch to home page
+		if (pageOrCrate === undefined || pageOrCrate === 'home') {
+			newPage = 'home'
+			newCrate = undefined
+			newPath = '/'
+
+		// Switch to inbox page
+		} else if (pageOrCrate === 'inbox' || pageOrCrate === 'null') {
+			newPage = undefined
+			newCrate = 'null'
+			newPath = `/inbox`
+
+		// Open the link page
+		} else if (fullPage) {
+			newPage = undefined
+			newCrate = crate || undefined
+
+			// Use different path depending on the type of link
 			if (isPublic) {
 				newPath = `/link/public/${ pageOrCrate }`
 			} else if (external) {
@@ -83,10 +92,13 @@ export default ({ env, store, app }, inject) => {
 			} else {
 				newPath = `/link/${ pageOrCrate }`
 			}
-		} else {
-			store.commit('SET_CURRENT_PAGE', undefined)
-			store.commit('SET_CURRENT_CRATE', pageOrCrate)
 
+		// Open a crate
+		} else {
+			newPage = undefined
+			newCrate = pageOrCrate
+
+			// Use different path depending on the type of crate
 			if (isPublic) {
 				newPath = `/crate/public/${ pageOrCrate }`
 			} else if (external) {
@@ -96,9 +108,19 @@ export default ({ env, store, app }, inject) => {
 			}
 		}
 
+		// Open the link modal
 		if (link !== undefined) {
 			newPath += `/?link=${ link }`
 		}
+
+		// Open in new tab
+		if (newTab) {
+			window.open(newPath, '_blank')
+			return
+		}
+
+		store.commit('SET_CURRENT_PAGE', newPage)
+		store.commit('SET_CURRENT_CRATE', newCrate)
 
 		app.router.push(newPath)
 	})
