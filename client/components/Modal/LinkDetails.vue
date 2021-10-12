@@ -152,23 +152,23 @@ export default {
 					text: 'Share link',
 					icon: 'share',
 					click: this.openShareModal,
-					show: this.link.redirect && this.link.redirect.enabled,
+					show: this.link.public,
 					dropdown: true
 				},
 				{
 					id: 'disableSharing',
 					text: 'Disable sharing',
 					icon: 'eyeOff',
-					click: this.disableRedirect,
-					show: this.link.redirect && this.link.redirect.enabled,
+					click: this.makePrivate,
+					show: this.link.public,
 					dropdown: true
 				},
 				{
 					id: 'enableSharing',
 					text: 'Enable sharing',
 					icon: 'eye',
-					click: this.enableRedirect,
-					show: !this.link.redirect || !this.link.redirect.enabled,
+					click: this.makePublic,
+					show: !this.link.public,
 					dropdown: true
 				},
 				{
@@ -294,15 +294,15 @@ export default {
 		openShareModal() {
 			this.$modal.show('shareLink', { link: this.link })
 		},
-		enableRedirect() {
+		makePublic() {
 			this.link = {
 				...this.link,
-				redirect: { enabled: true }
+				public: true
 			}
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
-					'redirect.enabled': true
+					public: true
 				}
 			})
 
@@ -310,7 +310,7 @@ export default {
 
 			this.openShareModal()
 		},
-		async disableRedirect() {
+		async makePrivate() {
 			this.canClose = false
 			const confirm = await this.$confirm({
 				title: `Are you sure you want to make this link private?`,
@@ -329,14 +329,13 @@ export default {
 
 			this.link = {
 				...this.link,
-				redirect: { enabled: false, shortCode: null }
+				public: false
 			}
 
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
-					'redirect.enabled': false,
-					'redirect.shortCode': ''
+					public: false
 				}
 			})
 
@@ -418,7 +417,7 @@ export default {
 		}
 
 		.headline {
-			font-size: inherit;
+			font-size: 1.1rem;
 			font-weight: 600;
 			color: var(--text);
 			width: 100%;
@@ -432,36 +431,6 @@ export default {
 
 			&:focus {
 				color: var(--text);
-			}
-		}
-
-		.redirect {
-			display: flex;
-			align-items: center;
-			margin-bottom: 0.5rem;
-			background: var(--background-2nd);
-			padding: 0.5rem;
-			border-radius: var(--border-radius);
-			color: var(--text-light);
-
-			& p {
-				margin-left: 0.5rem;
-			}
-
-			& input {
-				font-size: 1rem;
-				color: var(--text-light);
-				flex-grow: 1;
-
-				&:focus {
-					color: var(--text);
-				}
-			}
-
-			& .copy-short{
-				margin-left: auto;
-				margin-right: 0.5rem;
-				cursor: pointer;
 			}
 		}
 

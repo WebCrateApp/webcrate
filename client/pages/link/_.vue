@@ -3,6 +3,7 @@
     <div v-if="editable" v-shortkey="['ctrl', 'del']" @shortkey="deleteLink"></div>
     <div v-shortkey="['ctrl', 'alt', 'c']" @shortkey="copyLink"></div>
     <a ref="externalLink" :href="link.url" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
+    <a ref="homepageLink" href="https://webcrate.app" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
     <div v-if="crateId" class="crate-backlink-wrapper">
       <div v-if="$fetchState.pending" class="crate-backlink">
         <LoadingItem width="150px" height="24px" background="var(--background-2nd)" />
@@ -14,7 +15,7 @@
           {{ crate.name }}
         </p>
       </div>
-      <div v-else class="crate-backlink hover-button" @click.stop="openCrate">
+      <div v-else-if="crate === 'null'" class="crate-backlink hover-button" @click.stop="openCrate">
         <Icon name="arrowLeft" />
         <span>📭</span>
         <p>
@@ -95,6 +96,8 @@ export default {
 				return redirect(`/crate/external/${ crate.id }`)
 			}
 
+			store.commit('SET_CURRENT_LINK_DATA', link)
+
 			return {
 				crateId: link.crate,
 				crate,
@@ -112,6 +115,8 @@ export default {
 		if (!link) {
 			return redirect('/home')
 		}
+
+		store.commit('SET_CURRENT_LINK_DATA', link)
 
 		store.commit('SET_CURRENT_PAGE', undefined)
 		if (link.crate) {
@@ -189,7 +194,7 @@ export default {
 					icon: 'externalLink',
 					click: this.openExternalLink,
 					show: true,
-					dropdown: this.windowSize <= 600
+					dropdown: this.windowSize <= 550
 				},
 				{
 					id: 'copyLink',
@@ -200,27 +205,35 @@ export default {
 					dropdown: true
 				},
 				{
+					id: 'info',
+					text: 'What\'s WebCrate?',
+					icon: 'info',
+					click: this.openHomepageLink,
+					show: this.isPublic,
+					dropdown: this.windowSize <= 600
+				},
+				{
 					id: 'shareLink',
 					text: 'Share link',
 					icon: 'share',
 					click: this.openShareModal,
-					show: this.editable && this.link.redirect && this.link.redirect.enabled,
+					show: this.editable && this.link.public,
 					dropdown: true
 				},
 				{
 					id: 'disableSharing',
 					text: 'Disable sharing',
 					icon: 'eyeOff',
-					click: this.disableRedirect,
-					show: this.editable && this.link.redirect && this.link.redirect.enabled,
+					click: this.makePrivate,
+					show: this.editable && this.link.public,
 					dropdown: true
 				},
 				{
 					id: 'enableSharing',
 					text: 'Enable sharing',
 					icon: 'eye',
-					click: this.enableRedirect,
-					show: this.editable && (!this.link.redirect || !this.link.redirect.enabled),
+					click: this.makePublic,
+					show: this.editable && !this.link.public,
 					dropdown: true
 				},
 				{
@@ -296,15 +309,15 @@ export default {
 		openShareModal() {
 			this.$modal.show('shareLink', { link: this.link })
 		},
-		enableRedirect() {
+		makePublic() {
 			this.link = {
 				...this.link,
-				redirect: { enabled: true }
+				public: true
 			}
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
-					'redirect.enabled': true
+					public: true
 				}
 			})
 
@@ -312,7 +325,7 @@ export default {
 
 			this.openShareModal()
 		},
-		async disableRedirect() {
+		async makePrivate() {
 			this.canClose = false
 			const confirm = await this.$confirm({
 				title: `Are you sure you want to make this link private?`,
@@ -327,14 +340,13 @@ export default {
 
 			this.link = {
 				...this.link,
-				redirect: { enabled: false, shortCode: null }
+				public: false
 			}
 
 			this.$store.dispatch('CHANGE_LINK', {
 				linkId: this.link.id,
 				changes: {
-					'redirect.enabled': false,
-					'redirect.shortCode': ''
+					public: false
 				}
 			})
 
@@ -342,6 +354,9 @@ export default {
 		},
 		openExternalLink() {
 			this.$refs.externalLink.click()
+		},
+		openHomepageLink() {
+			this.$refs.homepageLink.click()
 		}
 	}
 }

@@ -15,10 +15,7 @@ export class Link {
 		icon?: string
 	}
 
-	redirect: {
-		enabled: boolean,
-		shortCode?: string
-	}
+	public?: boolean
 
 	addedWith: string
 	addedAt: Date
@@ -28,7 +25,7 @@ export class Link {
 		this.url = data.url
 		this.crate = data.crate
 		this.meta = data.meta
-		this.redirect = data.redirect
+		this.public = data.public
 		this.addedWith = data.addedWith
 		this.addedAt = data.addedAt
 	}
@@ -56,9 +53,7 @@ export class Link {
 				image: meta?.image ? makeAbsoluteUrl(url, meta.image) : undefined,
 				icon: meta?.icon ? makeAbsoluteUrl(url, meta.icon) : undefined
 			},
-			redirect: {
-				enabled: false
-			},
+			public: false,
 			addedWith: 'web'
 		}
 
@@ -96,14 +91,6 @@ export class Link {
 		if (!items) return { count: 0, last: undefined, items: [] }
 
 		return { count, last, items: items.map((link: Link) => new Link(link)) }
-	}
-
-	static async findByShortCode(code: string): Promise<Link | null> {
-		const link = await Links.findOne({ 'redirect.shortCode': code })
-
-		if (!link) return null
-
-		return new Link(link)
 	}
 
 	static async findByIds(ids: Array<string>) {

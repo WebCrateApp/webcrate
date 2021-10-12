@@ -1,29 +1,10 @@
 <template>
   <Modal class="add-modal" @close="close">
     <h1>Share this link publicly</h1>
-    <p>A public link can be shared with anyone using the sharing URL below. When someone visits the URL they are redirected to the original link. Your link title and description will be shown in link previews.</p>
-    <div v-if="!edit" class="link">
+    <p>A public link can be accessed by anyone who uses the sharing URL below. They will be able to see the link URL and your notes.</p>
+    <div class="link">
       <p>{{ fullShortLink }}</p>
       <Icon :name="copyIcon" @click.native.stop="copy" />
-    </div>
-
-    <div v-else class="link">
-      <input v-model="shortCode" class="no-input" />
-    </div>
-
-    <div v-if="!edit" class="actions">
-      <button class="primary-button" @click.stop="close">
-        Okay
-      </button>
-      <button v-if="!edit" class="button" @click.stop="edit = true">
-        Edit slug
-      </button>
-    </div>
-
-    <div v-else class="actions">
-      <button class="primary-button" @click.stop="save">
-        Save
-      </button>
     </div>
   </Modal>
 </template>
@@ -34,7 +15,6 @@ export default {
 		return {
 			name: undefined,
 			edit: false,
-			shortCode: undefined,
 			invalidLinkErr: undefined,
 			copyIcon: 'clipboard'
 		}
@@ -52,32 +32,10 @@ export default {
 			return `${ window.location.protocol }//${ window.location.host }`
 		},
 		fullShortLink() {
-			return `${ this.host }/s/${ this.shortCode }`
+			return `${ this.host }/link/public/${ this.link.id }`
 		}
 	},
-	created() {
-		this.shortCode = this.link.redirect.shortCode ? this.link.redirect.shortCode : this.link.id
-	},
 	methods: {
-		save() {
-			const parsed = this.shortCode.split(' ').join('-')
-
-			this.link = {
-				...this.link,
-				redirect: { enabled: true, shortCode: parsed }
-			}
-
-			this.$store.dispatch('CHANGE_LINK', {
-				linkId: this.link.id,
-				changes: {
-					'redirect.shortCode': parsed
-				}
-			})
-
-			this.edit = false
-
-			this.$toast.success('Slug changed!')
-		},
 		close() {
 			this.$modal.hide('shareLink')
 		},

@@ -63,17 +63,18 @@ router.get('/link/:id', async (req: express.Request, res: express.Response, next
 			return res.fail(404, 'link not found')
 		}
 
-		if (!link.crate) {
-			return res.fail(404, 'link not found')
-		}
-
-		const crate = await Crate.findById(link.crate)
-		if (!crate || crate.public !== true) {
-			return res.fail(404, 'link not found')
-		}
-
 		log.debug(link)
-		res.ok(link)
+
+		// Get the crate if the link belongs to one
+		const crate = link.crate ? await Crate.findById(link.crate) : null
+
+		// Check if the link is set to public or if it belongs to a public crate
+		if (link.public || (crate && crate.public)) {
+			return res.ok(link)
+		}
+
+		// Return 404 in every case as to not disclose the existence of the link
+		return res.fail(404, 'link not found')
 	} catch (err) {
 		return next(err)
 	}

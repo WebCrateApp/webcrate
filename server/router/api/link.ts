@@ -177,7 +177,7 @@ router.put('/:id', async (req: express.Request, res: express.Response, next: exp
 
 		log.debug(link)
 
-		const allowedChanges = [ 'redirect.enabled', 'redirect.shortCode', 'meta.title', 'meta.description', 'meta.icon', 'meta.image', 'crate', 'addedWith' ]
+		const allowedChanges = [ 'public', 'meta.title', 'meta.description', 'meta.icon', 'meta.image', 'crate', 'addedWith' ]
 		const changes = req.body
 
 		Object.keys(changes).forEach((key) => {
