@@ -51,7 +51,7 @@
           <img :src="imageUrl">
         </div>
       </div>
-      <LinkEditor v-model="linkDescription" :editable="editable" placeholder="Add a description …" />
+      <LinkEditor v-model="linkDescription" :editable="editable" placeholder="Add some notes …" />
     </div>
   </div>
 </template>
