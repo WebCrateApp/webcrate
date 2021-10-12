@@ -45,12 +45,9 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
 			return res.fail(400, 'Missing link id')
 		}
 
-		let link = await Link.findById(id)
+		const link = await Link.findById(id)
 		if (!link) {
-			link = await Link.findByShortCode(id)
-			if (!link) {
-				return res.fail(404, 'link not found')
-			}
+			return res.fail(404, 'link not found')
 		}
 
 		const type = req.query.type || 'image'
