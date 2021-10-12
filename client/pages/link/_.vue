@@ -15,7 +15,7 @@
           {{ crate.name }}
         </p>
       </div>
-      <div v-else-if="crateId === 'null'" class="crate-backlink hover-button" @click.stop="openCrate">
+      <div v-else-if="crateId === 'null' && !isPublic" class="crate-backlink hover-button" @click.stop="openCrate">
         <Icon name="arrowLeft" />
         <span>📭</span>
         <p>
