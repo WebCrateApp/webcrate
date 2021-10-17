@@ -9,6 +9,7 @@
       <Icon name="h1" :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }" @click.native="editor.chain().focus().toggleHeading({ level: 1 }).run()" />
       <Icon name="h2" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }" @click.native="editor.chain().focus().toggleHeading({ level: 2 }).run()" />
       <Icon name="paragraph" :class="{ 'is-active': editor.isActive('paragraph') }" @click.native="editor.chain().focus().setParagraph().run()" />
+      <Icon name="link" :class="{ 'is-active': editor.isActive('link') }" @click.native="setLink" />
       <div class="divider"></div>
       <Icon name="listUnordered" :class="{ 'is-active': editor.isActive('bulletList') }" @click.native="editor.chain().focus().toggleBulletList().run()" />
       <Icon name="listOrdered" :class="{ 'is-active': editor.isActive('orderedList') }" @click.native="editor.chain().focus().toggleOrderedList().run()" />
@@ -25,6 +26,7 @@ import StarterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
+import Link from '@tiptap/extension-link'
 
 export default {
 	components: {
@@ -72,6 +74,9 @@ export default {
 				StarterKit,
 				TaskList,
 				TaskItem,
+				Link.configure({
+					linkOnPaste: true
+				}),
 				Placeholder.configure({
 					placeholder: this.placeholder
 				})
@@ -90,6 +95,46 @@ export default {
 
 	beforeUnmount() {
 		this.editor.destroy()
+	},
+
+	methods: {
+		async setLink() {
+			const previousUrl = this.editor.getAttributes('link').href
+			console.log(previousUrl)
+			const url = await this.$prompt({
+				title: previousUrl ? 'Change the URL' : `Enter a URL`,
+				confirmText: 'Save URL',
+				placeholder: 'https://',
+				value: previousUrl
+			})
+
+			console.log(url)
+
+			// cancelled
+			if (url === null) {
+				return
+			}
+
+			// empty
+			if (url === '') {
+				this.editor
+					.chain()
+					.focus()
+					.extendMarkRange('link')
+					.unsetLink()
+					.run()
+
+				return
+			}
+
+			// update link
+			this.editor
+				.chain()
+				.focus()
+				.extendMarkRange('link')
+				.setLink({ href: url })
+				.run()
+		}
 	}
 }
 </script>
@@ -124,6 +169,15 @@ export default {
 
 		h2 {
 			font-size: 21px;
+		}
+
+		a {
+			color: var(--accent);
+			cursor: pointer;
+
+			&:hover {
+				text-decoration: underline;
+			}
 		}
 
 		code {

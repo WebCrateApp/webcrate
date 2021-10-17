@@ -51,6 +51,10 @@ export default {
 			mode: 'client'
 		},
 		{
+			src: '~/plugins/prompt/index.js',
+			mode: 'client'
+		},
+		{
 			src: '~/plugins/localConfig.js',
 			mode: 'client'
 		},

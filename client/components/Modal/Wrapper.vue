@@ -13,6 +13,7 @@
     <ModalViewImage v-if="showModal && showModal.viewImage" />
 
     <ConfirmModal />
+    <PromptModal />
   </div>
 </template>
 
