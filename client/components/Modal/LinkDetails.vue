@@ -1,7 +1,7 @@
 <template>
   <Modal
     class="link-details-modal"
-    width="1000px"
+    max-width="1000px"
     min-height="250px"
     :can-close="canClose"
     :can-expand="!$fetchState.pending && link !== undefined"
@@ -46,11 +46,7 @@
         </div>
       </div>
       <hr>
-      <div v-if="link.meta && link.meta.image" class="image-wrapper">
-        <div class="image">
-          <img :src="imageUrl">
-        </div>
-      </div>
+      <ImageDisplay v-if="link.meta && link.meta.image" :src="imageUrl" />
       <LinkEditor v-model="linkDescription" :editable="editable" placeholder="Add some notes …" />
     </div>
     <p v-else>
@@ -183,11 +179,23 @@ export default {
 		},
 		shareLinkModal() {
 			return this.$store.state.modal.show && this.$store.state.modal.show.shareLink
+		},
+		viewImageModal() {
+			return this.$store.state.modal.show && this.$store.state.modal.show.viewImage
 		}
 	},
 	watch: {
 		// Prevent shareLink modal from closing outer modal
 		shareLinkModal(newValue) {
+			if (newValue === true) {
+				this.canClose = false
+			} else {
+				setTimeout(() => {
+					this.canClose = true
+				}, 500)
+			}
+		},
+		viewImageModal(newValue) {
 			if (newValue === true) {
 				this.canClose = false
 			} else {
@@ -369,30 +377,6 @@ export default {
 
 			&:hover {
 				text-decoration: underline;
-			}
-		}
-
-		.image-wrapper {
-			margin-top: 1rem;
-			margin-bottom: 1rem;
-			background: var(--background-2nd);
-			overflow: hidden;
-			border-radius: var(--border-radius);
-			resize: vertical;
-		}
-
-		.image {
-			max-width: 100%;
-			max-height: 300px;
-			overflow: hidden;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-
-			& img {
-				width: 100%;
-				height: 100%;
-				pointer-events: none;
 			}
 		}
 

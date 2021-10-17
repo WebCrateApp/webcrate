@@ -46,11 +46,7 @@
     </div>
     <hr>
     <div class="link-content">
-      <div v-if="link.meta && link.meta.image" class="image-wrapper">
-        <div class="image">
-          <img :src="imageUrl">
-        </div>
-      </div>
+      <ImageDisplay v-if="link.meta && link.meta.image" :src="imageUrl" max-height="400px" />
       <LinkEditor v-model="linkDescription" :editable="editable" placeholder="Add some notes …" />
     </div>
   </div>

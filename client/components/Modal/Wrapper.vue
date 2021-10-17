@@ -10,6 +10,7 @@
     <ModalShareLink v-if="showModal && showModal.shareLink" />
     <ModalBookmarklet v-if="showModal && showModal.bookmarklet" />
     <ModalChangelog v-if="showModal && showModal.changelog" />
+    <ModalViewImage v-if="showModal && showModal.viewImage" />
 
     <ConfirmModal />
   </div>

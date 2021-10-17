@@ -1,6 +1,6 @@
 <template>
-  <div class="modal-wrapper" :style="{ '--width': width, '--overflow': overflow, '--min-height': minHeight }">
-    <div v-click-outside="close" v-shortkey="['esc']" class="modal-content" @shortkey="close">
+  <div class="modal-wrapper" :style="{ '--width': width, '--height': height, '--max-width': maxWidth, '--overflow': overflow, '--min-height': minHeight, '--padding': padding }">
+    <div v-click-outside="close" v-shortkey="['esc']" class="modal-content" :class="centered && 'centered'" @shortkey="close">
       <div v-if="canExpand" class="action-bar">
         <p class="hover-button" @click.stop="expand">
           <Icon name="expand" size="18px" />Open as page
@@ -23,9 +23,21 @@ export default {
 		ClickOutside
 	},
 	props: {
-		width: {
+		maxWidth: {
 			type: String,
 			default: '900px'
+		},
+		width: {
+			type: String,
+			default: '95%'
+		},
+		height: {
+			type: String,
+			default: undefined
+		},
+		padding: {
+			type: String,
+			default: '1.5rem'
 		},
 		overflow: {
 			type: String,
@@ -34,6 +46,10 @@ export default {
 		minHeight: {
 			type: String,
 			default: undefined
+		},
+		centered: {
+			type: Boolean,
+			default: false
 		},
 		canClose: {
 			type: Boolean,
@@ -97,18 +113,24 @@ export default {
 	.modal-content {
 		background: var(--background);
 		border-radius: var(--border-radius);
-		max-width: var(--width);
-		width: 95%;
+		max-width: var(--max-width);
+		max-height: 85%;
+		min-height: var(--min-height);
+		width: var(--width);
+		height: var(--height);
 		position: absolute;
 		left: 50%;
 		top: 10%; // 5rem
 		transform: translateX(-50%);
-		padding: 1.5rem;
+		padding: var(--padding);
 		overflow-y: var(--overflow);
 		scrollbar-width: thin;
 		scrollbar-color: var(--grey) var(--background-2nd);
-		max-height: 85%;
-		min-height: var(--min-height);
+
+		&.centered {
+			top: 50%;
+			transform: translate(-50%, -50%);
+		}
 	}
 
 	.close-icon {
@@ -116,6 +138,9 @@ export default {
 		top: 0.5rem;
 		right: 0.5rem;
 		color: var(--text-light);
+		z-index: 10;
+		cursor: pointer;
+		mix-blend-mode: difference;
 	}
 
 	.expand-icon {
@@ -123,6 +148,8 @@ export default {
 		top: 0.5rem;
 		left: 0.5rem;
 		color: var(--text-light);
+		z-index: 10;
+		cursor: pointer;
 	}
 
 	.action-bar {
