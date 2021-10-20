@@ -1,18 +1,22 @@
 <template>
-  <div class="modal-wrapper" :style="{ '--width': width, '--height': height, '--max-width': maxWidth, '--overflow': overflow, '--min-height': minHeight, '--padding': padding }">
-    <div v-click-outside="close" v-shortkey="['esc']" class="modal-content" :class="centered && 'centered'" @shortkey="close">
-      <div v-if="canExpand" class="action-bar">
-        <p class="hover-button" @click.stop="expand">
-          <Icon name="expand" size="18px" />Open as page
-        </p>
-        <div class="hover-icon">
-          <Icon name="close" @click.native="close" />
+  <transition name="fade" appear="">
+    <div class="modal-wrapper" :style="{ '--width': width, '--height': height, '--max-width': maxWidth, '--overflow': overflow, '--min-height': minHeight, '--padding': padding }">
+      <transition name="moveIn" appear="">
+        <div v-click-outside="close" v-shortkey="['esc']" class="modal-content" :class="centered && 'centered'" @shortkey="close">
+          <div v-if="canExpand" class="action-bar">
+            <p class="hover-button" @click.stop="expand">
+              <Icon name="expand" size="18px" />Open as page
+            </p>
+            <div class="hover-icon">
+              <Icon name="close" @click.native="close" />
+            </div>
+          </div>
+          <Icon v-else name="close" class="close-icon" @click.native="close" />
+          <slot></slot>
         </div>
-      </div>
-      <Icon v-else name="close" class="close-icon" @click.native="close" />
-      <slot></slot>
+      </transition>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -173,6 +177,25 @@ export default {
 		& div {
 			color: var(--text-light);
 			cursor: pointer;
+		}
+	}
+
+	.moveIn-enter-active,
+	.moveIn-leave-active {
+		transition: all .2s;
+	}
+
+	.moveIn-enter {
+		transform: translateX(-50%) scale(0.9);
+	}
+
+	/* A11y: Disable transitions when reduced motion is turned on */
+	@media (prefers-reduced-motion: reduce) {
+		.moveIn-enter-active,
+		.moveIn-leave-active,
+		.fade-enter-active,
+		.fade-leave-active {
+			transition: none;
 		}
 	}
 </style>
