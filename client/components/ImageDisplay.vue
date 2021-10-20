@@ -1,5 +1,5 @@
 <template>
-  <div class="image-wrapper" :style="{ '--max-height': maxHeight }">
+  <div class="image-wrapper" :style="{ '--max-height': maxHeight, '--resize': resize }">
     <div class="image" @click.stop="fullscreen">
       <img :src="src" :class="!loaded && 'loading'" @error="onError" @load="onLoad">
     </div>
@@ -16,6 +16,10 @@ export default {
 		maxHeight: {
 			type: String,
 			default: '300px'
+		},
+		resize: {
+			type: String,
+			default: 'vertical'
 		}
 	},
 	data() {
@@ -43,13 +47,15 @@ export default {
 
 <style lang="scss" scoped>
 	.image-wrapper {
+			margin: auto;
 			margin-top: 1rem;
 			margin-bottom: 1rem;
 			background: var(--background-2nd);
 			overflow: hidden;
 			border-radius: var(--border-radius);
-			resize: vertical;
+			resize: var(--resize);
 			height: var(--max-height);
+			max-width: 100%;
 		}
 
 		.image {

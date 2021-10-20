@@ -46,7 +46,7 @@
     </div>
     <hr>
     <div class="link-content">
-      <ImageDisplay v-if="link.meta && link.meta.image" :src="imageUrl" max-height="400px" />
+      <ImageDisplay v-if="link.meta && link.meta.image" :src="imageUrl" max-height="400px" resize="both" />
       <LinkEditor v-model="linkDescription" :editable="editable" placeholder="Add some notes …" />
     </div>
   </div>
@@ -479,28 +479,5 @@ export default {
 
 	.link-content {
 		padding-top: 1rem;
-
-		.image-wrapper {
-			margin-bottom: 1rem;
-			background: var(--background-2nd);
-			overflow: hidden;
-			border-radius: var(--border-radius);
-			resize: vertical;
-		}
-
-		.image {
-			max-width: 100%;
-			max-height: 300px;
-			overflow: hidden;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-
-			& img {
-				width: 100%;
-				height: 100%;
-				pointer-events: none;
-			}
-		}
 	}
 </style>
