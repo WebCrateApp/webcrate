@@ -1,3 +1,24 @@
+## [v1.4.0] - 2021-10-21
+
+[Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.4.0) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.3.0...v1.4.0) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.4.0) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.4.0.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.4.0.tar.gz))
+
+### New features
+
+- [`ef428d9`](https://github.com/betahuhn/webcrate/commit/ef428d9)  Full screen link page
+- [`57711f6`](https://github.com/betahuhn/webcrate/commit/57711f6)  Replace redirects with link page sharing
+- [`c80c4bd`](https://github.com/betahuhn/webcrate/commit/c80c4bd)  Use middle click to open links and crates in new tab
+- [`ada1579`](https://github.com/betahuhn/webcrate/commit/ada1579)  Fullscreen image modal
+- [`8502e63`](https://github.com/betahuhn/webcrate/commit/8502e63)  Support links in notes editor (tiptap)
+
+### Interface changes
+
+- [`64aad4a`](https://github.com/betahuhn/webcrate/commit/64aad4a)  Show image toggle on public and external crates
+- [`6057621`](https://github.com/betahuhn/webcrate/commit/6057621)  Allow horizontal resizing of image in link page
+
+### Bug fixes
+
+- [`aaf26fd`](https://github.com/betahuhn/webcrate/commit/aaf26fd)  Show correct version in help menu for public crates
+
 ## [v1.3.0] - 2021-09-21
 
 [Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.3.0) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.2.0...v1.3.0) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.3.0) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.3.0.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.3.0.tar.gz))
