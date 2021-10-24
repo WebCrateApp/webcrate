@@ -8,7 +8,7 @@
     "build:server": "tsc -p ./server/tsconfig.json",
     "lint:nuxt": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint:server": "eslint ./server/ --ext .ts",
-    "copy-templates": "cp ./server/views ./build/views -r && cp ./server/service/image/NotoColorEmoji.ttf ./build/service/image",
+    "copy-templates": "cp -R ./server/views ./build/views && cp ./server/service/image/NotoColorEmoji.ttf ./build/service/image",
     "clean": "rimraf dist build .nuxt",
     "postbuild:server": "npm run copy-templates",
     "prebuild": "npm run clean",
