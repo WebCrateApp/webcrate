@@ -53,7 +53,14 @@
       <h1>Your own WebCrate</h1>
       <p>This is your own instance of WebCrate. Give it a name to make it yours!</p>
       <hr>
-      <input v-model="name" v-focus class="input" placeholder="Maxi's WebCrate" @keyup.enter="saveName" />
+      <input
+        v-model="name"
+        v-focus
+        v-shortkey="['enter']"
+        class="input"
+        placeholder="Maxi's WebCrate"
+        @shortkey="saveName"
+      />
       <div class="info">
         <Icon name="info" />
         <p>You can always change this later</p>
