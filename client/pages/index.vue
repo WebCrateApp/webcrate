@@ -73,7 +73,7 @@ export default {
 		}
 
 		// Web Share Target API
-		const { searchParams } = new URL(window.location.href)
+		const { searchParams } = new URL(window.location)
 		let sharedUrl = ''
 
 		const validateUrl = (string) => {
