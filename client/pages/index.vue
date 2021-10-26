@@ -71,6 +71,34 @@ export default {
 		} else if (link) {
 			$modal.replace('linkDetails', { link })
 		}
+
+		// Web Share Target API
+		const { searchParams } = new URL(window.location)
+		let sharedUrl = ''
+
+		const validateUrl = (string) => {
+			let url
+
+			try {
+				url = new URL(string)
+			} catch (_) {
+				return false
+			}
+
+			return url.protocol === 'http:' || url.protocol === 'https:'
+		}
+
+		if (searchParams.get('url') && validateUrl(searchParams.get('url'))) {
+			sharedUrl = searchParams.get('url')
+		} else if (searchParams.get('text') && validateUrl(searchParams.get('text'))) {
+			sharedUrl = searchParams.get('text')
+		} else if (searchParams.get('title') && validateUrl(searchParams.get('title'))) {
+			sharedUrl = searchParams.get('title')
+		}
+
+		if (sharedUrl) {
+			$modal.replace('addLink', { inputValue: sharedUrl })
+		}
 	},
 	data() {
 		return {

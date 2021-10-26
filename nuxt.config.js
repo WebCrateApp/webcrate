@@ -41,7 +41,16 @@ export default {
 			name: 'WebCrate App',
 			short_name: 'WebCrate',
 			description: `WebCrate helps you organize and share links, articles and more from around the web. It's more than just a bookmarking tool.`,
-			theme_color: '#F7F6F4'
+			theme_color: '#F7F6F4',
+			share_target: {
+				action: '/',
+				method: 'GET',
+				params: {
+					title: 'title',
+					text: 'text',
+					url: 'url'
+				}
+			}
 		}
 	},
 
