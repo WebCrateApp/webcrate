@@ -40,7 +40,7 @@
       <hr>
       <p>v{{ version }}</p>
     </div>
-    <div class="bottom">
+    <div v-longpress="reload" class="bottom">
       <Icon v-if="!shouldShow" name="help" class="help-icon" @click.native.stop="show" />
       <Icon v-else name="close" class="help-icon" @click.native.stop="close" />
       <div v-if="updateAvailable && !shouldShow" class="indicator"></div>
@@ -102,6 +102,9 @@ export default {
 					this.canChange = true
 				}, 500)
 			}
+		},
+		reload() {
+			window.location.reload()
 		},
 		showBookmarkletModal() {
 			this.$modal.show('bookmarklet')
