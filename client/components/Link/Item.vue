@@ -93,14 +93,14 @@ export default {
 	methods: {
 		openLinkDetails() {
 			if (window.innerWidth < 500) {
-				this.openLinkPage()
+				this.openLinkPage(false)
 				return
 			}
 
 			this.$modal.show('linkDetails', { link: this.link.id, editable: this.editable, endpoint: this.endpoint })
 		},
-		openLinkPage() {
-			this.$switchToPageOrCrate(this.link.id, { fullPage: true, isPublic: !this.endpoint && !this.editable, newTab: true })
+		openLinkPage(newTab = true) {
+			this.$switchToPageOrCrate(this.link.id, { fullPage: true, isPublic: !this.endpoint && !this.editable, newTab: newTab })
 		},
 		startDrag(e) {
 			this.drag = true
