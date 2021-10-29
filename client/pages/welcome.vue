@@ -196,7 +196,10 @@ export default {
 		openLink(link) {
 			this.$modal.replace('linkDetails', { link, editable: false })
 		},
-		done() {
+		async done() {
+			// Set the stored version to the current one to prevent the changelog modal from showing.
+			await this.$api.sawConfig()
+
 			this.$router.push(`/`)
 		},
 		async saveName() {
