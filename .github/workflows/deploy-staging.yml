@@ -1,0 +1,32 @@
+name: Deploy to Deta (staging)
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy-staging:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      - name: Cache node modules
+        uses: c-hive/gha-npm-cache@v1
+      - name: Install dependencies
+        run: npm ci
+      - name: Run build command
+        run: npm run build
+      - name: Deploy to Deta
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
+        with:
+          # Deta access token https://docs.deta.sh/docs/cli/auth
+          deta-access-token: ${{ secrets.DETA_ACCESS_TOKEN }}
+          deta-name: ${{ secrets.DETA_STAGING_MICRO_NAME }}
+          deta-project: ${{ secrets.DETA_PROJECT_NAME }}

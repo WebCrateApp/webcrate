@@ -1,9 +1,13 @@
-name: Deploy to Deta
+name: Deploy to Deta (dev)
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  deploy-dev:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
@@ -20,9 +24,9 @@ jobs:
       - name: Run build command
         run: npm run build
       - name: Deploy to Deta
-        uses: BogDAAAMN/deta-deploy-action@v1.0.0
+        uses: BogDAAAMN/deta-deploy-action@v1.0.1
         with:
           # Deta access token https://docs.deta.sh/docs/cli/auth
           deta-access-token: ${{ secrets.DETA_ACCESS_TOKEN }}
-          deta-name: ${{ secrets.DETA_MICRO_NAME }}
+          deta-name: ${{ secrets.DETA_DEV_MICRO_NAME }}
           deta-project: ${{ secrets.DETA_PROJECT_NAME }}
