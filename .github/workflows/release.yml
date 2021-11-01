@@ -57,7 +57,7 @@ jobs:
         with:
           github-token: ${{ secrets.GH_PAT }}
           script: |
-            octokit.rest.repos.createDispatchEvent({
+            github.rest.repos.createDispatchEvent({
               owner: 'WebCrateApp',
               repo: 'www',
               event_type: 'release'
