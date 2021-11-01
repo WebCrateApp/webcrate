@@ -1,3 +1,13 @@
+## [v1.4.1] - 2021-11-01
+
+[Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.4.1) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.4.0...v1.4.1) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.4.1) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.4.1.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.4.1.tar.gz))
+
+### Bug fixes
+
+- [`9a0b624`](https://github.com/betahuhn/webcrate/commit/9a0b624)  Don&#x27;t open link in new tab on normal click
+- [`9261f4d`](https://github.com/betahuhn/webcrate/commit/9261f4d)  Prevent changelog from showing up after onboarding
+- [`72aaf66`](https://github.com/betahuhn/webcrate/commit/72aaf66)  Prevent overflow on copy output modal
+
 ## [v1.4.0] - 2021-10-21
 
 [Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.4.0) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.3.0...v1.4.0) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.4.0) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.4.0.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.4.0.tar.gz))
