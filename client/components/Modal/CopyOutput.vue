@@ -83,10 +83,13 @@ export default {
 
             & p {
                 user-select: all;
+				overflow-y: hidden;
+				word-wrap: break-word
             }
 
             & div {
                 margin-left: auto;
+				flex-shrink: 0;
             }
         }
 	}
