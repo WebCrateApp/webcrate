@@ -46,7 +46,7 @@
         </div>
       </div>
       <hr>
-      <ImageDisplay v-if="link.meta && link.meta.image" :src="imageUrl" />
+      <ImageDisplay v-if="link.meta && link.meta.image" :src="imageUrl" resize="vertical" />
       <LinkEditor v-model="linkDescription" :editable="editable" placeholder="Add some notes …" />
     </div>
     <p v-else>
