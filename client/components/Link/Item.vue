@@ -1,11 +1,11 @@
 <template>
   <div
     :draggable="draggable"
-    title="Click to open link details"
+    title="Open link details"
     @[dragStartEvent].stop="startDrag($event)"
     @[dragStopEvent].stop="stopDrag($event)"
     @click.stop="openLinkDetails"
-    @click.middle="openLinkPage"
+    @click.middle.stop="openLinkPage"
   >
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
       <Img v-if="showImage && link.meta && link.meta.image" :src="imageUrl" class="image" @loaded="imageLoaded" />
@@ -15,8 +15,17 @@
         <p>{{ domain }}</p>
       </div>
       <span>{{ new Date(link.addedAt).toLocaleString() }}</span>
-      <a :href="link.url" target="_blank" rel="noopener" @click.stop>
-        <Icon v-if="hover" name="externalLink" class="delete-icon" />
+      <a
+        v-if="hover"
+        class="external"
+        :href="link.url"
+        target="_blank"
+        rel="noopener"
+        title="Open URL in new tab"
+        @click.stop
+        @click.middle.stop
+      >
+        <Icon name="externalLink" size="21px" />
       </a>
     </div>
   </div>
@@ -162,10 +171,11 @@ export default {
 		}
 	}
 
-	.delete-icon {
+	.external {
 		position: absolute;
-		right: 1rem;
-		bottom: 1rem;
+		right: 0.2rem;
+		bottom: 0.2rem;
 		color: var(--text-light);
+		padding: 0.8rem;
 	}
 </style>
