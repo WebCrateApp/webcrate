@@ -5,7 +5,8 @@
       <h1>{{ welcomeMessage }}</h1>
       <input v-model="newUrl" v-shortkey="shortKey" class="input" placeholder="Quick add a URL" @shortkey="addLink">
       <button class="button add-btn" @click.stop="addLink">
-        <Icon name="add" />Add Link
+        <Icon name="add" />
+        <span>Add Link</span>
       </button>
     </div>
     <hr>
@@ -232,6 +233,10 @@ export default {
 			display: flex;
 			align-items: center;
 			flex-shrink: 0;
+
+			& span {
+				margin-left: 0.5rem;
+			}
 		}
 	}
 
