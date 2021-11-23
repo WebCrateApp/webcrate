@@ -167,6 +167,11 @@ export const actions = {
 
 		commit('STORE_CRATES', crates)
 	},
+	async CHANGE_CRATE(context, { crateId, changes }) {
+		const crate = await this.$api.changeCrate(crateId, changes)
+
+		context.commit('CHANGE_CRATE', crate)
+	},
 	CHANGE_CRATE_DESCRIPTION: debounce(async function(context, { crateId, description }) {
 		const crate = await this.$api.changeCrate(crateId, { description })
 

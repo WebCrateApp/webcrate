@@ -11,6 +11,7 @@ export class Crate {
 	icon: string
     public: boolean
 	numLinks?: number
+	showImages: boolean
 	addedAt: Date
 
 	constructor(data: any) {
@@ -19,6 +20,7 @@ export class Crate {
 		this.description = data.description
 		this.icon = data.icon
 		this.public = data.public
+		this.showImages = data.showImages || false
 		this.addedAt = data.addedAt
 	}
 
@@ -36,7 +38,8 @@ export class Crate {
 			name: name,
 			icon: icon || randomEmoji,
 			description: description || undefined,
-			public: isPublic || false
+			public: isPublic || false,
+			showImages: false
 		}
 
 		const newCrate = await Crates.create(toBeCreated)

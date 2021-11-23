@@ -106,12 +106,13 @@ router.put('/:id', async (req: express.Request, res: express.Response, next: exp
 
 		log.debug(crate)
 
-		const { name, description, icon, public: isPublic } = req.body
+		const { name, description, icon, public: isPublic, showImages } = req.body
 		await crate.update({
 			...(name && { name }),
 			...(description && { description }),
 			...(icon && { icon }),
-			...(isPublic !== undefined && { public: isPublic })
+			...(isPublic !== undefined && { public: isPublic }),
+			...(showImages !== undefined && { showImages })
 		})
 
 		const updated = await Crate.findById(id)

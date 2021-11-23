@@ -92,7 +92,7 @@ import emojis from '@/../server/utils/emojis'
 
 export default {
 	layout: 'sidebar',
-	async asyncData({ params, redirect, store, app: { $api, $modal }, query }) {
+	async asyncData({ params, redirect, store, app: { $api, $modal, $storage }, query }) {
 		const isExternal = params.pathMatch.includes('external')
 		const isPublic = params.pathMatch.includes('public')
 		const editable = !isExternal && !isPublic
@@ -114,6 +114,12 @@ export default {
 		store.commit('SET_CURRENT_PAGE', undefined)
 		store.commit('SET_CURRENT_CRATE', crate.id)
 
+		// If showImages is not set, use the user's global setting as a fallback
+		if (crate.showImages === undefined) {
+			const stored = $storage.get($storage.types.SHOW_IMAGES_IN_LIST, true)
+			crate.showImages = stored || false
+		}
+
 		const link = query.link
 		if (link) {
 			$modal.replace('linkDetails', { link, endpoint: crate.endpoint, editable })
@@ -134,8 +140,7 @@ export default {
 			showEmojiPicker: false,
 			lastLink: undefined,
 			windowSize: undefined,
-			editDescription: false,
-			showImages: false
+			editDescription: false
 		}
 	},
 	async fetch() {
@@ -206,6 +211,26 @@ export default {
 			},
 			get() {
 				return this.crate.icon
+			}
+		},
+		showImages: {
+			// Prefers crate's setting and falls back to user's global setting (stored in browser)
+			get() {
+				if (this.crate.showImages !== undefined) {
+					return this.crate.showImages
+				}
+
+				return this.$storage.get(this.$storage.types.SHOW_IMAGES_IN_LIST, true) || false
+			},
+			// If crate is editable it will call the API else it will change the users's global setting
+			set(value) {
+				if (this.editable) {
+					this.$store.dispatch('CHANGE_CRATE', { crateId: this.crate.id, changes: { showImages: value } })
+				} else {
+					this.$storage.set(this.$storage.types.SHOW_IMAGES_IN_LIST, value)
+				}
+
+				this.crate.showImages = value
 			}
 		},
 		crateActions() {
@@ -361,11 +386,6 @@ export default {
 				this.$toast.success('Description changed!')
 			}
 		},
-		showImages(newValue) {
-			if (typeof newValue !== 'boolean') return
-
-			this.$storage.set(this.$storage.types.SHOW_IMAGES_IN_LIST, newValue)
-		},
 		// Try to catch edge case where links are added/removed but the grid doesn't detect it
 		numLinks(newValue, oldValue) {
 			if (newValue && newValue !== oldValue && this.$refs.linkGrid) {
@@ -376,9 +396,6 @@ export default {
 	mounted() {
 		this.onResize()
 		window.addEventListener('resize', this.onResize)
-
-		const showImages = this.$storage.get(this.$storage.types.SHOW_IMAGES_IN_LIST, true)
-		this.showImages = showImages
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.onResize)
