@@ -201,6 +201,14 @@ export default {
 					dropdown: true
 				},
 				{
+					id: 'changeCrate',
+					text: 'Move Link',
+					icon: 'folderOpen',
+					click: this.changeCrate,
+					show: this.editable,
+					dropdown: true
+				},
+				{
 					id: 'info',
 					text: 'What\'s WebCrate?',
 					icon: 'info',
@@ -278,6 +286,11 @@ export default {
 		},
 		openCrate() {
 			this.$switchToPageOrCrate(this.crateId, { external: this.isExternal, isPublic: this.isPublic })
+		},
+		changeCrate() {
+			this.$modal.show('changeCrate', {
+				linkId: this.link.id
+			})
 		},
 		async deleteLink() {
 			const confirm = await this.$confirm({

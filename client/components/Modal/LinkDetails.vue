@@ -144,6 +144,14 @@ export default {
 					dropdown: true
 				},
 				{
+					id: 'changeCrate',
+					text: 'Move Link',
+					icon: 'folderOpen',
+					click: this.changeCrate,
+					show: this.editable,
+					dropdown: true
+				},
+				{
 					id: 'shareLink',
 					text: 'Share link',
 					icon: 'share',
@@ -252,6 +260,11 @@ export default {
 		}
 	},
 	methods: {
+		changeCrate() {
+			this.$modal.show('changeCrate', {
+				linkId: this.link.id
+			})
+		},
 		onResize() {
 			this.windowSize = window.innerWidth
 		},

@@ -11,6 +11,7 @@
     <ModalBookmarklet v-if="showModal && showModal.bookmarklet" />
     <ModalChangelog v-if="showModal && showModal.changelog" />
     <ModalViewImage v-if="showModal && showModal.viewImage" />
+    <ModalChangeCrate v-if="showModal && showModal.changeCrate" />
 
     <ConfirmModal />
     <PromptModal />
