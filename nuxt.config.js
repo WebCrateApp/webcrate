@@ -70,7 +70,8 @@ export default {
 		'~/plugins/api.js',
 		'~/plugins/vue-librarys.js',
 		'~/plugins/helpers.js',
-		'~/plugins/directives.js'
+		'~/plugins/directives.js',
+		'~/plugins/axios.js'
 	],
 
 	modules: [

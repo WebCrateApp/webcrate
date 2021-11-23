@@ -6,7 +6,6 @@ class API {
 			baseURL: publicMode ? '/api/public' : '/api'
 		})
 
-		// Not in use right now since Space doesn't return auth errors yet
 		const loginUrl = process.client ? `https://deta.space/auth?redirect_uri=${ window.location.toString() }` : `https://deta.space/library?open=webcrate`
 		this.http.onError((error) => {
 			if (error && error.response && error.response.status === 403) {
@@ -16,7 +15,9 @@ class API {
 
 		// Workaround to catch Space auth errors by checking if the request got redirected and then follow the redirect
 		this.http.onResponse((res) => {
-			if (res.request.responseURL.startsWith('https://deta.space/login')) {
+			if (res.status === 403) {
+				return redirect(loginUrl)
+			} else if (res.request.responseURL.startsWith('https://deta.space/login')) {
 				return redirect(res.request.responseURL)
 			}
 		})
