@@ -25,7 +25,7 @@ Vue.directive('longpress', {
 		const timeout = 1500
 
 		// Define funtion handlers
-		// Create timeout ( run function after 1s )
+		// Create timeout
 		const start = (e) => {
 			if (e.type === 'click' && e.button !== 0) {
 				return
@@ -60,7 +60,9 @@ Vue.directive('longpress', {
 		// Cancel timeouts if this events happen
 		el.addEventListener('click', cancel)
 		el.addEventListener('mouseout', cancel)
+		el.addEventListener('mouseup', cancel)
 		el.addEventListener('touchend', cancel)
+		el.addEventListener('touchleave', cancel)
 		el.addEventListener('touchcancel', cancel)
 	}
 })
