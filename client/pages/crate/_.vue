@@ -30,9 +30,7 @@
           {{ crate.description }}
         </p>
       </div>
-      <Actions v-if="editable" :actions="crateActions" />
-      <Actions v-else-if="isPublic" :actions="publicActions" />
-      <Actions v-else-if="isExternal" :actions="externalActions" />
+      <Actions :actions="actions" />
     </div>
     <hr>
     <div v-if="deleted" class="empty-state">
@@ -233,24 +231,41 @@ export default {
 				this.crate.showImages = value
 			}
 		},
-		crateActions() {
+		actions() {
 			return [
 				{
 					id: 'addLink',
 					text: 'Add Link',
 					icon: 'add',
 					click: this.showAddLinkModal,
-					show: true,
+					show: this.editable,
 					showText: this.windowSize >= 600,
 					dropdown: this.windowSize <= 450
 				},
 				{
 					id: 'shareCrate',
-					text: 'Share this Crate',
+					text: 'Share Crate',
 					icon: 'share',
 					click: this.showShareModal,
-					show: this.crate.public,
-					dropdown: this.windowSize <= 900
+					show: this.editable ? this.crate.public : this.isExternal,
+					dropdown: this.editable ? this.windowSize <= 900 : this.windowSize <= 600
+				},
+				{
+					id: 'saveCrate',
+					text: 'Save this Crate',
+					icon: 'heart',
+					click: this.showAddModal,
+					show: this.isPublic,
+					showText: this.windowSize >= 750,
+					dropdown: this.windowSize <= 550
+				},
+				{
+					id: 'info',
+					text: 'What\'s WebCrate?',
+					icon: 'info',
+					click: this.openHomepageLink,
+					show: this.isPublic,
+					dropdown: true
 				},
 				{
 					id: 'changeView',
@@ -273,7 +288,7 @@ export default {
 					text: 'Make Private',
 					icon: 'eyeOff',
 					click: this.makePrivate,
-					show: this.crate.public,
+					show: this.editable && this.crate.public,
 					dropdown: true
 				},
 				{
@@ -281,88 +296,15 @@ export default {
 					text: 'Make Public',
 					icon: 'eye',
 					click: this.makePublic,
-					show: !this.crate.public,
+					show: this.editable && !this.crate.public,
 					dropdown: true
 				},
 				{
 					id: 'deleteCrate',
 					text: 'Delete Crate',
 					icon: 'delete',
-					click: this.deleteCrate,
-					show: true,
-					dropdown: true
-				}
-			]
-		},
-		externalActions() {
-			return [
-				{
-					id: 'shareCrate',
-					text: 'Share Crate',
-					icon: 'share',
-					click: this.showShareModal,
-					show: true,
-					dropdown: this.windowSize <= 600
-				},
-				{
-					id: 'deleteCrate',
-					text: 'Delete Crate',
-					icon: 'delete',
-					click: this.deleteExternal,
-					show: true,
-					dropdown: true
-				},
-				{
-					id: 'changeView',
-					text: 'Show images',
-					icon: 'image',
-					click: this.changeGridView,
-					show: !this.showImages,
-					dropdown: true
-				},
-				{
-					id: 'changeView',
-					text: 'Hide images',
-					icon: 'image',
-					click: this.changeGridView,
-					show: this.showImages,
-					dropdown: true
-				}
-			]
-		},
-		publicActions() {
-			return [
-				{
-					id: 'saveCrate',
-					text: 'Save this Crate',
-					icon: 'heart',
-					click: this.showAddModal,
-					show: true,
-					showText: this.windowSize >= 750,
-					dropdown: this.windowSize <= 550
-				},
-				{
-					id: 'info',
-					text: 'What\'s WebCrate?',
-					icon: 'info',
-					click: this.openHomepageLink,
-					show: true,
-					dropdown: this.windowSize <= 550
-				},
-				{
-					id: 'changeView',
-					text: 'Show images',
-					icon: 'image',
-					click: this.changeGridView,
-					show: !this.showImages,
-					dropdown: true
-				},
-				{
-					id: 'changeView',
-					text: 'Hide images',
-					icon: 'image',
-					click: this.changeGridView,
-					show: this.showImages,
+					click: this.isExternal ? this.deleteExternal : this.deleteCrate,
+					show: this.editable || this.isExternal,
 					dropdown: true
 				}
 			]
