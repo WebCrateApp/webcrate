@@ -1,3 +1,22 @@
+## [v1.4.2] - 2021-12-01
+
+[Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.4.2) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.4.1...v1.4.2) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.4.2) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.4.2.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.4.2.tar.gz))
+
+### Updates
+
+- [`bbfcae5`](https://github.com/betahuhn/webcrate/commit/bbfcae5)  Store image mode on a per crate basis
+- [`d86882d`](https://github.com/betahuhn/webcrate/commit/d86882d)  Simplify dropdown actions
+
+### Interface changes
+
+- [`a772b0c`](https://github.com/betahuhn/webcrate/commit/a772b0c)  Improved image display with loader and better resizing
+- [`6f99958`](https://github.com/betahuhn/webcrate/commit/6f99958)  Use same style for button
+
+### Bug fixes
+
+- [`7f53d71`](https://github.com/betahuhn/webcrate/commit/7f53d71)  Handle auth errors with axios interceptor
+- [`a8578f3`](https://github.com/betahuhn/webcrate/commit/a8578f3)  Prevent image from being stretched on mobile
+
 ## [v1.4.1] - 2021-11-01
 
 [Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.4.1) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.4.0...v1.4.1) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.4.1) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.4.1.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.4.1.tar.gz))
