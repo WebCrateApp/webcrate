@@ -125,6 +125,9 @@ export default {
 				return undefined
 			}
 		},
+		changeCrateModal() {
+			return this.$store.state.modal.show && this.$store.state.modal.show.changeCrate
+		},
 		linkActions() {
 			return [
 				{
@@ -231,6 +234,11 @@ export default {
 					'meta.description': value
 				}
 			})
+		},
+		changeCrateModal(value) {
+			if (value === false) {
+				this.canClose = true
+			}
 		}
 	},
 	created() {
@@ -261,6 +269,7 @@ export default {
 	},
 	methods: {
 		changeCrate() {
+			this.canClose = false
 			this.$modal.show('changeCrate', {
 				linkId: this.link.id
 			})

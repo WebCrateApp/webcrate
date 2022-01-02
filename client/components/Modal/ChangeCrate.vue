@@ -84,7 +84,7 @@ export default {
 		},
 		close() {
 			if (!this.isOpen) {
-				this.$modal.hide()
+				this.$modal.hide('changeCrate')
 			}
 		}
 	}
