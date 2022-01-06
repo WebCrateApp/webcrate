@@ -94,6 +94,9 @@ export default {
 
 			store.commit('SET_CURRENT_LINK_DATA', link)
 
+			const imageUrl = `https://${ crate.endpoint }/img/${ link.id }`
+			const iconUrl = `https://${ crate.endpoint }/img/${ link.id }?type=icon`
+
 			return {
 				crateId: link.crate,
 				crate,
@@ -102,6 +105,8 @@ export default {
 				endpoint: crate.endpoint,
 				isPublic,
 				editable,
+				iconUrl,
+				imageUrl,
 				linkTitle: link.meta && link.meta.title,
 				linkDescription: link.meta && link.meta.description
 			}
@@ -122,6 +127,22 @@ export default {
 		// Check if we have the crate stored, if not get it later during fetch
 		const crate = store.getters.findCrateById(link.crate)
 
+		// Turn external image into base64 and ignore any errors
+		const toDataURL = (url) => fetch(url)
+			.then((response) => response.blob())
+			.then((blob) => new Promise((resolve, reject) => {
+				const reader = new FileReader()
+				reader.onloadend = () => resolve(reader.result)
+				reader.onerror = reject
+				reader.readAsDataURL(blob)
+			}))
+			.catch((e) => console.log(e))
+
+		const imageUrl = link.id === 'demo' ? link.meta.image : `/img/${ link.id }`
+		const iconUrl = link.id === 'demo' ? link.meta.icon : `/img/${ link.id }?type=icon`
+
+		const faviconImage = await toDataURL(iconUrl)
+
 		return {
 			crateId: link.crate,
 			crate,
@@ -129,6 +150,9 @@ export default {
 			isExternal,
 			isPublic,
 			editable,
+			faviconImage,
+			imageUrl,
+			iconUrl,
 			linkTitle: link.meta && link.meta.title,
 			linkDescription: link.meta && link.meta.description
 		}
@@ -146,34 +170,37 @@ export default {
 		}
 	},
 	head() {
+		const title = `${ this.link.meta && this.link.meta.title ? this.link.meta.title : 'Link' } | WebCrate`
+
+		if (this.faviconImage) {
+			// SVG hack to place the WebCrate icon in the bottom right corner above the actual favicon
+			const svg = `
+				<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+					<g>
+						<image x="0.45" y="0.45" width="95" height="95" href="${ this.faviconImage }"/>
+						<image x="45" y="45" width="60" height="60" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGgAAABoCAYAAAAdHLWhAAAABHNCSVQICAgIfAhkiAAABVxJREFUeF7tnWlSW0cUhfvKBUjoaTSDGYPjzKNYAZbZgLOC4H+JcJW3wBLsKqPyP+MVJBtAwiuIlHmOPGGDbRDwQCQuqdNPBAUPmIAOzu3q+6r4Qem906fvd0+/rgeSSP2Ho1b4fKKuQ+cVqQwpPaYUmR85Dl8BXdKKqkqrkgrpG142XzpIg152gl+c/pS0nhEgB5XxqK/riiaa8bKzN/ZTeCEgv5jLkFbXDZjMUYeW6w5TAV0KUeOTSPZa5dmrngNUK148W9f6C/NC8jBDyLntVUArVT1BZCBdXdir9BSgAE5D62J7Q8nV7VQgRJTdC6kFKFjWlKaiJKed8rZ/7U6S6uO7y10L0GYh95Xcc9ovMEZBl6Ln8uOBVhOQP5+bIiKzKZCDSwW01he8yfxcE5BJzx+yleaCZteHrpgUnSbZGHAD868fTXqczPJ22Sxvl/jadNeZWeaukF/ILZCiCXfLwHfmWumbJPcfvoCU0iUDaNpsveXgWgEBxJXMP74EkABiXgHm9iRBAoh5BZjbkwS5BujJts98ysdrryPsQQeAJ+jJ9gbUoG1iHeEY1DIeUM1xQBH2gNahHWSbWEckDrUMT9BfNbcBdbIHtLUG7SDbxDq7E1DL+ARtVaEGbRPr7Mb+t5oAAncAe0B/bq6Cp2yXXFc0BTUMT5AAYg9oBdpBtol1RdNQy/gE+Y4D8tgDegztINvEuryTUMvwBG37j6AGbRMLez1Qy3hAG44DirEH9BDaQbaJhWO9UMvHkCABhCSEB7S+jPRnnVY43gf1DAdUcxxQhD2gtSVoB9kmFkn0Qy3jEySAuAN6ADVom1gkcQpqGZ+g6n2oQdvEIskBqGU4oC3HAXXzB7QI7SDbxLqTg1DL+AStOg4oxR7QPWgH2SbWnRqCWoYnaHPVbUBR9oBW7kI7yDaxaHoYahmfoJU7UIO2iUXTI1DLAghaTqX4A3p8Gzxlu+SiJ0ehhuEJ8h0H5LEH9OgWtINsE/N6XoNaxidIAHEHVIEatE3M6xmDWsYn6KH56DmHD6/3NHT2cEAbjgOK8Qf0O7SDbBOL9b4OtYxP0LLjgPrYA/oN2kG2icX6zkAtwxO0vuw2oDh7QEu/QjvINrF4/xtQy/gELf0CNWibWLz/TahlAQQtp1L8AT34GTxlu+Tip96CGoYnaM1xQAn2gO7/BO0g28QSA29DLeMTJIC4A/oRatA2scTAO1DL+AQtOg5okDmg6uIP0A6yTSw5+C7UMjxB1cXvoQZtE0sOvge1jAd0z3FAQ+wBfQftINvEkkPvQy0fQ4IEEJIQHNDq3W+R/qzTSg1/APUsgKDlVMoCQN+Ap2yXXGr4Q6hhfILufA01aJtYauQjqGU4oBXHAaX5AypDO8g2sfTIx1DL+ATddhzQKHtAJWgH2SaWHs1ALcMTBHUnYkoAMW8CASSAmFeAuT1JkABiXgHm9iRB7AHNT1cUKexbk5lP2iJ7ZfILuQVSNGGRaWesaqVvkj+fu0xEl5yZtUUT1VpfoVrx4tmG1kWLfDtjVZMep2C2m3If4gddq1vRydmxJiCzzE2ZZe46P5fuOjLL2wVvMj/XBNRMUWE6eAyNfVbubn3bnXk5em62+Vi8BahW/Gys3giVTJKw39TarlXHrjfJWTsRamQi2WuVpwAFv8iG4f/vhmBj4GXzrT+qtRK0ay2AVG80vpQkvVpYO8kJnY9kry7sHfk5QM1NQzGXIU1zck96ZZDKIaobODvL2oGAdk9o7u4UzcijoGMCZbbS5mnBTLBb22+EFybo2ZODRKmGmjKgMgZY8G3ists7GrOyAVJVWpVUSM3tvdfsJ/c34C+I34X1SB4AAAAASUVORK5CYII=" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGgAAABoCAYAAAAdHLWhAAAABHNCSVQICAgIfAhkiAAABVxJREFUeF7tnWlSW0cUhfvKBUjoaTSDGYPjzKNYAZbZgLOC4H+JcJW3wBLsKqPyP+MVJBtAwiuIlHmOPGGDbRDwQCQuqdNPBAUPmIAOzu3q+6r4Qem906fvd0+/rgeSSP2Ho1b4fKKuQ+cVqQwpPaYUmR85Dl8BXdKKqkqrkgrpG142XzpIg152gl+c/pS0nhEgB5XxqK/riiaa8bKzN/ZTeCEgv5jLkFbXDZjMUYeW6w5TAV0KUeOTSPZa5dmrngNUK148W9f6C/NC8jBDyLntVUArVT1BZCBdXdir9BSgAE5D62J7Q8nV7VQgRJTdC6kFKFjWlKaiJKed8rZ/7U6S6uO7y10L0GYh95Xcc9ovMEZBl6Ln8uOBVhOQP5+bIiKzKZCDSwW01he8yfxcE5BJzx+yleaCZteHrpgUnSbZGHAD868fTXqczPJ22Sxvl/jadNeZWeaukF/ILZCiCXfLwHfmWumbJPcfvoCU0iUDaNpsveXgWgEBxJXMP74EkABiXgHm9iRBAoh5BZjbkwS5BujJts98ysdrryPsQQeAJ+jJ9gbUoG1iHeEY1DIeUM1xQBH2gNahHWSbWEckDrUMT9BfNbcBdbIHtLUG7SDbxDq7E1DL+ARtVaEGbRPr7Mb+t5oAAncAe0B/bq6Cp2yXXFc0BTUMT5AAYg9oBdpBtol1RdNQy/gE+Y4D8tgDegztINvEuryTUMvwBG37j6AGbRMLez1Qy3hAG44DirEH9BDaQbaJhWO9UMvHkCABhCSEB7S+jPRnnVY43gf1DAdUcxxQhD2gtSVoB9kmFkn0Qy3jEySAuAN6ADVom1gkcQpqGZ+g6n2oQdvEIskBqGU4oC3HAXXzB7QI7SDbxLqTg1DL+AStOg4oxR7QPWgH2SbWnRqCWoYnaHPVbUBR9oBW7kI7yDaxaHoYahmfoJU7UIO2iUXTI1DLAghaTqX4A3p8Gzxlu+SiJ0ehhuEJ8h0H5LEH9OgWtINsE/N6XoNaxidIAHEHVIEatE3M6xmDWsYn6KH56DmHD6/3NHT2cEAbjgOK8Qf0O7SDbBOL9b4OtYxP0LLjgPrYA/oN2kG2icX6zkAtwxO0vuw2oDh7QEu/QjvINrF4/xtQy/gELf0CNWibWLz/TahlAQQtp1L8AT34GTxlu+Tip96CGoYnaM1xQAn2gO7/BO0g28QSA29DLeMTJIC4A/oRatA2scTAO1DL+AQtOg5okDmg6uIP0A6yTSw5+C7UMjxB1cXvoQZtE0sOvge1jAd0z3FAQ+wBfQftINvEkkPvQy0fQ4IEEJIQHNDq3W+R/qzTSg1/APUsgKDlVMoCQN+Ap2yXXGr4Q6hhfILufA01aJtYauQjqGU4oBXHAaX5AypDO8g2sfTIx1DL+ATddhzQKHtAJWgH2SaWHs1ALcMTBHUnYkoAMW8CASSAmFeAuT1JkABiXgHm9iRB7AHNT1cUKexbk5lP2iJ7ZfILuQVSNGGRaWesaqVvkj+fu0xEl5yZtUUT1VpfoVrx4tmG1kWLfDtjVZMep2C2m3If4gddq1vRydmxJiCzzE2ZZe46P5fuOjLL2wVvMj/XBNRMUWE6eAyNfVbubn3bnXk5em62+Vi8BahW/Gys3giVTJKw39TarlXHrjfJWTsRamQi2WuVpwAFv8iG4f/vhmBj4GXzrT+qtRK0ay2AVG80vpQkvVpYO8kJnY9kry7sHfk5QM1NQzGXIU1zck96ZZDKIaobODvL2oGAdk9o7u4UzcijoGMCZbbS5mnBTLBb22+EFybo2ZODRKmGmjKgMgZY8G3ists7GrOyAVJVWpVUSM3tvdfsJ/c34C+I34X1SB4AAAAASUVORK5CYII="/>
+					</g>
+				</svg>
+			`
+
+			return {
+				title,
+				link: [
+					{ rel: 'icon', type: 'image/svg', href: `data:image/svg+xml,${ svg }` }
+				]
+			}
+		}
+
 		return {
-			title: `${ this.link.meta && this.link.meta.title ? this.link.meta.title : 'Link' } | WebCrate`,
+			title,
 			link: [
-				{ rel: 'icon', type: 'image/svg', href: this.link.meta && this.link.meta.icon }
+				{ rel: 'icon', type: 'image/icon', href: `/favicon.png` }
 			]
 		}
 	},
 	computed: {
 		emojiIcon() {
 			return emojis[this.crate.icon]
-		},
-		imageUrl() {
-			if (this.link.id === 'demo') {
-				return this.link.meta.image
-			} else if (this.endpoint) {
-				return `https://${ this.endpoint }/img/${ this.link.id }`
-			} else {
-				return `/img/${ this.link.id }`
-			}
-		},
-		iconUrl() {
-			if (this.link.id === 'demo') {
-				return this.link.meta.icon
-			} else if (this.endpoint) {
-				return `https://${ this.endpoint }/img/${ this.link.id }?type=icon`
-			} else {
-				return `/img/${ this.link.id }?type=icon`
-			}
 		},
 		domain() {
 			try {
