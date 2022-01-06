@@ -71,6 +71,9 @@ export default {
 			this.$emit('fail')
 		},
 		onLoad() {
+			// Prevent edge case where img and wrapper don't exist yet
+			if (!this.$refs.img || !this.$refs.wrapper) return
+
 			// Set/limit the elements height to the default height after load
 			const imageHeight = this.$refs.img.offsetHeight
 			if (imageHeight < this.defaultHeight) {
