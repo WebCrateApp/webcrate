@@ -54,6 +54,7 @@
 
 <script>
 import emojis from '@/../server/utils/emojis'
+import { toDataURL } from '@/utils/toDataURL'
 
 export default {
 	layout: 'sidebar',
@@ -97,6 +98,8 @@ export default {
 			const imageUrl = `https://${ crate.endpoint }/img/${ link.id }`
 			const iconUrl = `https://${ crate.endpoint }/img/${ link.id }?type=icon`
 
+			const faviconImage = await toDataURL(iconUrl)
+
 			return {
 				crateId: link.crate,
 				crate,
@@ -105,6 +108,7 @@ export default {
 				endpoint: crate.endpoint,
 				isPublic,
 				editable,
+				faviconImage,
 				iconUrl,
 				imageUrl,
 				linkTitle: link.meta && link.meta.title,
@@ -126,17 +130,6 @@ export default {
 
 		// Check if we have the crate stored, if not get it later during fetch
 		const crate = store.getters.findCrateById(link.crate)
-
-		// Turn external image into base64 and ignore any errors
-		const toDataURL = (url) => fetch(url)
-			.then((response) => response.blob())
-			.then((blob) => new Promise((resolve, reject) => {
-				const reader = new FileReader()
-				reader.onloadend = () => resolve(reader.result)
-				reader.onerror = reject
-				reader.readAsDataURL(blob)
-			}))
-			.catch((e) => console.log(e))
 
 		const imageUrl = link.id === 'demo' ? link.meta.image : `/img/${ link.id }`
 		const iconUrl = link.id === 'demo' ? link.meta.icon : `/img/${ link.id }?type=icon`
