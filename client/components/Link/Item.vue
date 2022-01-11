@@ -8,7 +8,7 @@
     @click.middle.stop="openLinkPage"
   >
     <div class="link-item" @mouseover="hover = true" @mouseleave="hover = false">
-      <Img v-if="showImage && link.meta && link.meta.image" :src="imageUrl" class="image" @loaded="imageLoaded" />
+      <Img v-if="showImage && link.meta && link.meta.image" class="image" :src="imageUrl" :fallback="false" @loaded="imageLoaded" />
       <h4>{{ link.meta && link.meta.title }}</h4>
       <div class="domain-wrapper">
         <Img v-if="link.meta && link.meta.icon" :src="iconUrl" />

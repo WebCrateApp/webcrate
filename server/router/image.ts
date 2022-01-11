@@ -72,10 +72,13 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
 			res.end()
 		})
 
+		// Catch can't catch errors thrown during stream so we need this
 		stream.on('error', (err) => {
 			log.debug(err)
 
-			return res.redirect('/missingFavicon.png')
+			// Image errors are now handled on the frontend
+			// Old: return res.redirect('/missingFavicon.png')
+			return res.status(400).end()
 		})
 
 		// Instruct browser to cache image
@@ -90,7 +93,10 @@ router.get('/:id', async (req: express.Request, res: express.Response) => {
 		stream.pipe(res)
 	} catch (err) {
 		log.debug(err)
-		res.redirect('/missingFavicon.png')
+
+		// Image errors are now handled on the frontend
+		// Old: return res.redirect('/missingFavicon.png')
+		res.status(400).end()
 	}
 })
 
