@@ -1,3 +1,22 @@
+## [v1.4.3] - 2022-01-11
+
+[Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.4.3) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.4.2...v1.4.3) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.4.3) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.4.3.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.4.3.tar.gz))
+
+### Interface changes
+
+- [`3d0215f`](https://github.com/betahuhn/webcrate/commit/3d0215f)  Add small WebCrate icon to the favicon on link pages
+
+### Bug fixes
+
+- [`c5a318d`](https://github.com/betahuhn/webcrate/commit/c5a318d)  Prevent modal from closing when trying to move a link #54
+(Issues: [`#54`](https://github.com/betahuhn/webcrate/issues/54))- [`68ab7ce`](https://github.com/betahuhn/webcrate/commit/68ab7ce)  Handle image loading race condition
+- [`59c1d87`](https://github.com/betahuhn/webcrate/commit/59c1d87)  Make sure notification is above modal
+- [`56956eb`](https://github.com/betahuhn/webcrate/commit/56956eb)  Handle all image erros on the frontend and prevnt fallback from being shown
+
+### Dependency updates
+
+- [`3e84782`](https://github.com/betahuhn/webcrate/commit/3e84782)  Upgrade dependencies
+
 ## [v1.4.2] - 2021-12-01
 
 [Release notes](https://github.com/betahuhn/webcrate/releases/tag/v1.4.2) · [Compare](https://github.com/betahuhn/webcrate/compare/v1.4.1...v1.4.2) · [Tag](https://github.com/betahuhn/webcrate/tree/v1.4.2) · Archive ([zip](https://github.com/betahuhn/webcrate/archive/v1.4.2.zip) · [tar.gz](https://github.com/betahuhn/webcrate/archive/v1.4.2.tar.gz))

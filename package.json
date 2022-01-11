@@ -1,6 +1,6 @@
 {
   "name": "webcrate",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "private": true,
   "scripts": {
     "dev:server": "tsc-watch -p ./server/tsconfig.json --onSuccess \"node ./build/index.js\"",
