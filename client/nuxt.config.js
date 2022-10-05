@@ -1,7 +1,6 @@
 import pkg from './package.json'
 
 export default {
-	srcDir: 'client/',
 	components: true,
 
 	target: 'static',

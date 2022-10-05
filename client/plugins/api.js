@@ -3,7 +3,7 @@ class API {
 	constructor(axios, publicMode, redirect) {
 		this.axios = axios
 		this.http = axios.create({
-			baseURL: publicMode ? '/api/public' : '/api'
+			baseURL: publicMode ? '/server/api/public' : '/server/api'
 		})
 
 		const loginUrl = process.client ? `https://deta.space/auth?redirect_uri=${ window.location.toString() }` : `https://deta.space/library?open=webcrate`

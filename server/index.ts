@@ -40,16 +40,6 @@ if (process.env.NODE_ENV !== 'development') {
 // Use router
 app.use(routes)
 
-// Redirect to Nuxt SPA
-app.get('*', (_req, res, next) => {
-	if (process.env.NODE_ENV === 'development') {
-		next()
-		return
-	}
-
-	res.sendFile(path.join(__dirname, '../dist', 'index.html'))
-})
-
 app.use((err: any, _req: express.Request, res: express.Response, next: express.NextFunction) => {
 	if (!err) {
 		return next()

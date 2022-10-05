@@ -1,0 +1,17 @@
+# Spacefile Docs: https://alpha.deta.space/docs/en/reference/spacefile 
+v: 0
+micros:
+  - name: client
+    src: ./client
+    engine: static
+    primary: true
+    commands: ['npm run build']
+    serve: dist
+
+  - name: server
+    src: ./server
+    path: server
+    engine: nodejs16
+    commands: ['npm run build']
+    include: ['build', 'package.json']
+    run: PORT=8080 node build/index.js

@@ -1,5 +1,5 @@
 import db from '../service/db'
-import pkg from '../../package.json'
+import pkg from '../package.json'
 
 const Base = db.Base('config')
 
