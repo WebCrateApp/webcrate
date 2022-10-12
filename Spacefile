@@ -1,5 +1,5 @@
 # Spacefile Docs: https://alpha.deta.space/docs/en/reference/spacefile 
-v: 0
+v: 1
 micros:
   - name: client
     src: ./client
@@ -7,11 +7,21 @@ micros:
     primary: true
     commands: ['npm run build']
     serve: dist
+    public_routes:
+      - /_nuxt/*
+      - /link/public/*
+      - /crate/public/*
 
   - name: server
     src: ./server
     path: server
     engine: nodejs16
     commands: ['npm run build']
-    include: ['build', 'package.json']
-    run: PORT=8080 node build/index.js
+    include:
+      - build
+      - package.json
+      - node_modules
+    run: node build/index.js
+    public_routes:
+      - /api/public/*
+      - /img/*

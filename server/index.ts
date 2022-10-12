@@ -11,7 +11,8 @@ dotenv.config()
 import routes from './router'
 import { routeLog, sendResponse, disableCaching, checkIfSetup, renderMetaTags } from './middleware'
 import log from './utils/log'
-import { isDev } from './utils/variables'
+
+const isDev = process.env.NODE_ENV === 'development'
 
 const app = express()
 
@@ -33,7 +34,7 @@ app.use(disableCaching)
 app.use(renderMetaTags)
 
 // Serve Nuxt static files during production
-if (process.env.NODE_ENV !== 'development') {
+if (!isDev) {
 	app.use(express.static(path.join(__dirname, '../dist')))
 }
 
@@ -62,9 +63,13 @@ app.use((err: any, _req: express.Request, res: express.Response, next: express.N
 // Start the server if file is directly run
 if (require.main === module) {
 	try {
-		const PORT = process.env.PORT || 3000
+		const PORT = !isDev ? 8080 : process.env.PORT || 3000
 
-		app.listen(PORT, () => runningAt.print(PORT))
+		app.listen(PORT, () => {
+			if (isDev) {
+				runningAt.print(PORT)
+			}
+		})
 	} catch (err) {
 	// eslint-disable-next-line no-console
 		console.log(err)
