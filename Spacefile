@@ -1,5 +1,7 @@
 # Spacefile Docs: https://alpha.deta.space/docs/en/reference/spacefile 
-v: 1
+v: 0
+name: WebCrate
+icon: client/static/icon.png
 micros:
   - name: client
     src: ./client
