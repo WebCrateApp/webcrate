@@ -3,6 +3,7 @@ import got from 'got'
 
 import { Config } from '../../models/config'
 import log from '../../utils/log'
+import { version, latestReleaseUrl } from '../../utils/variables'
 
 export const router = express.Router()
 
@@ -31,9 +32,9 @@ router.get('/', async (_req: express.Request, res: express.Response, next: expre
 		// Get latest version up on Space and fail gracefully
 		let latestVersion = config.version
 		try {
-			const spaceApp: any = await got.get('https://v1.deta.sh/discovery/apps/webcrate').json()
-			if (spaceApp.version) {
-				latestVersion = spaceApp.version.slice(1)
+			const spaceApp: any = await got.get(latestReleaseUrl).json()
+			if (spaceApp.release.version) {
+				latestVersion = spaceApp.release.version
 			}
 		} catch (err) {
 			log.fatal(err)
@@ -54,12 +55,10 @@ router.get('/', async (_req: express.Request, res: express.Response, next: expre
 
 router.get('/saw-update', async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
 	try {
-		const config = await Config.get()
-
 		// Update stored version with current one
-		await Config.set({ version: config.version })
+		await Config.set({ version: version })
 
-		log.debug(config.version)
+		log.debug(version)
 		res.ok()
 	} catch (err) {
 		return next(err)

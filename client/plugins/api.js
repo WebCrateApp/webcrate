@@ -92,7 +92,7 @@ class API {
 	}
 
 	async getLinksOfExternalCrate(crate, limit = 20, last) {
-		const { data: res } = await this.axios.get(`https://${ crate.endpoint }/api/public/link?crate=${ crate.id }&limit=${ limit }&last=${ last || '' }`)
+		const { data: res } = await this.axios.get(`https://${ crate.endpoint }/server/api/public/link?crate=${ crate.id }&limit=${ limit }&last=${ last || '' }`)
 
 		return res
 	}
@@ -138,7 +138,7 @@ class API {
 	}
 
 	async getExternalLink(id, endpoint) {
-		const { data: res } = await this.axios.get(`${ endpoint ? `https://${ endpoint }` : '' }/api/public/link/${ id }`)
+		const { data: res } = await this.axios.get(`${ endpoint ? `https://${ endpoint }` : '' }/server/api/public/link/${ id }`)
 
 		return res.data
 	}

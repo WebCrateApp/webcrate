@@ -98,7 +98,7 @@ export async function checkIfSetup(req: express.Request, res: express.Response, 
 		}
 
 		// Redirect to welcome page
-		if (req.path === '/' || req.path === '/inbox' || req.path.startsWith('/crate')) {
+		if (req.path === '/' || req.path === '/inbox' || req.path.startsWith('/crate') || req.path.startsWith('/link')) {
 			log.debug('redirecting to welcome page')
 			return res.redirect('/welcome')
 		}

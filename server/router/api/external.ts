@@ -29,7 +29,7 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 		if (existing) return res.fail(400, 'crate already exists')
 
 		// Check if the endpoint and crateId is valid
-		const data: any = await got.get(`https://${ endpoint }/api/public/crate/${ id }`).json()
+		const data: any = await got.get(`https://${ endpoint }/server/api/public/crate/${ id }`).json()
 		if (data.status !== 200) return res.fail(400, 'external crate returned error')
 
 		// Add the crate to the database
