@@ -104,18 +104,18 @@ export default {
 			if (this.link.id === 'demo') {
 				return this.link.meta.image
 			} else if (this.endpoint) {
-				return `https://${ this.endpoint }/img/${ this.link.id }`
+				return `https://${ this.endpoint }/server/img/${ this.link.id }`
 			} else {
-				return `/img/${ this.link.id }`
+				return `/server/img/${ this.link.id }`
 			}
 		},
 		iconUrl() {
 			if (this.link.id === 'demo') {
 				return this.link.meta.icon
 			} else if (this.endpoint) {
-				return `https://${ this.endpoint }/img/${ this.link.id }?type=icon`
+				return `https://${ this.endpoint }/server/img/${ this.link.id }?type=icon`
 			} else {
-				return `/img/${ this.link.id }?type=icon`
+				return `/server/img/${ this.link.id }?type=icon`
 			}
 		},
 		domain() {

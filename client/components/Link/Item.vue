@@ -72,16 +72,16 @@ export default {
 		},
 		iconUrl() {
 			if (this.endpoint) {
-				return `https://${ this.endpoint }/img/${ this.link.id }?type=icon`
+				return `https://${ this.endpoint }/server/img/${ this.link.id }?type=icon`
 			} else {
-				return `/img/${ this.link.id }?type=icon`
+				return `/server/img/${ this.link.id }?type=icon`
 			}
 		},
 		imageUrl() {
 			if (this.endpoint) {
-				return `https://${ this.endpoint }/img/${ this.link.id }?type=image`
+				return `https://${ this.endpoint }/server/img/${ this.link.id }?type=image`
 			} else {
-				return `/img/${ this.link.id }?type=image`
+				return `/server/img/${ this.link.id }?type=image`
 			}
 		},
 		dragStartEvent() {

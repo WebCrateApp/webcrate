@@ -2,6 +2,7 @@
 class API {
 	constructor(axios, publicMode, redirect) {
 		this.axios = axios
+		this.redirect = redirect
 		this.http = axios.create({
 			baseURL: publicMode ? '/server/api/public' : '/server/api'
 		})
@@ -29,6 +30,10 @@ class API {
 		if (this.publicMode) return undefined
 
 		const { data: res } = await this.http.get(`/config`)
+
+		if (res.data && !res.data.isSetup) {
+			return this.redirect('/welcome')
+		}
 
 		return res.data
 	}

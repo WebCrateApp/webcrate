@@ -30,20 +30,35 @@ router.get('/', async (_req: express.Request, res: express.Response, next: expre
 		const config = await Config.get()
 
 		// Get latest version up on Space and fail gracefully
-		let latestVersion = config.version
-		try {
-			const spaceApp: any = await got.get(latestReleaseUrl).json()
-			if (spaceApp.release.version) {
-				latestVersion = spaceApp.release.version
+		// let latestVersion = config.version
+		// try {
+		// 	const spaceApp: any = await got.get(latestReleaseUrl).json()
+		// 	if (spaceApp.release.version) {
+		// 		latestVersion = spaceApp.release.version
+		// 	}
+		// } catch (err) {
+		// 	log.fatal(err)
+		// }
+
+		const isSetup = () => {
+			const env = process.env.OVERWRITE_IS_SETUP
+
+			if (env !== undefined) {
+				return env === 'true'
 			}
-		} catch (err) {
-			log.fatal(err)
+
+			if (!config || !config.name) {
+				return false
+			}
+
+			return true
 		}
 
 		const result = {
 			...config,
-			hasUpdate: latestVersion !== config.version,
-			latestVersion
+			hasUpdate: false,
+			isSetup: isSetup()
+			// latestVersion
 		}
 
 		log.debug(result)

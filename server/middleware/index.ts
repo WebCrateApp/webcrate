@@ -70,7 +70,7 @@ export async function renderMetaTags(req: express.Request, res: express.Response
 		$(`meta[property='og:description']`).attr('content', description)
 
 		// Replace image
-		$(`meta[property='og:image']`).attr('content', `https://${ domain }/img/preview/${ crate.id }`)
+		$(`meta[property='og:image']`).attr('content', `https://${ domain }/server/img/preview/${ crate.id }`)
 
 		// Render HTML
 		return res.send($.html())
@@ -93,8 +93,9 @@ export async function checkIfSetup(req: express.Request, res: express.Response, 
 			await Crate.create('Read Later', 'Articles and blog posts I want to read later', 'book', false)
 			await Crate.create('Archive', 'Archive of old links', 'open_file_folder', false)
 
-			/* await Stat.addRecentlyUsedCrate(crate1.id)
-			await Stat.addRecentlyUsedCrate(crate2.id) */
+			// not needed as we show a helper screen when there are now recently used items
+			// await Stat.addRecentlyUsedCrate(crate1.id)
+			// await Stat.addRecentlyUsedCrate(crate2.id)
 		}
 
 		// Redirect to welcome page

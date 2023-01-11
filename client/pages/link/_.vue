@@ -95,8 +95,8 @@ export default {
 
 			store.commit('SET_CURRENT_LINK_DATA', link)
 
-			const imageUrl = `https://${ crate.endpoint }/img/${ link.id }`
-			const iconUrl = `https://${ crate.endpoint }/img/${ link.id }?type=icon`
+			const imageUrl = `https://${ crate.endpoint }/server/img/${ link.id }`
+			const iconUrl = `https://${ crate.endpoint }/server/img/${ link.id }?type=icon`
 
 			const faviconImage = await toDataURL(iconUrl)
 
@@ -131,8 +131,8 @@ export default {
 		// Check if we have the crate stored, if not get it later during fetch
 		const crate = store.getters.findCrateById(link.crate)
 
-		const imageUrl = link.id === 'demo' ? link.meta.image : `/img/${ link.id }`
-		const iconUrl = link.id === 'demo' ? link.meta.icon : `/img/${ link.id }?type=icon`
+		const imageUrl = link.id === 'demo' ? link.meta.image : `/server/img/${ link.id }`
+		const iconUrl = link.id === 'demo' ? link.meta.icon : `/server/img/${ link.id }?type=icon`
 
 		const faviconImage = await toDataURL(iconUrl)
 

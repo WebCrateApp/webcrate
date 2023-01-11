@@ -27,3 +27,5 @@ micros:
     public_routes:
       - /api/public/*
       - /img/*
+    presets:
+      api_keys: true
