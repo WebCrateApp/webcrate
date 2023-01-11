@@ -1,6 +1,6 @@
 <template>
   <div class="crate-wrapper">
-    <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
+    <div v-if="editable" v-shortkey="{win: ['ctrl', 'a'], mac: ['meta', 'a']}" @shortkey="showAddLinkModal"></div>
     <a ref="homepageLink" href="https://webcrate.app" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
     <div class="top-section">
       <div v-if="editable" class="title">
@@ -338,9 +338,11 @@ export default {
 	mounted() {
 		this.onResize()
 		window.addEventListener('resize', this.onResize)
+		if (this.editable) window.addEventListener('paste', this.handlePaste)
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.onResize)
+		if (this.editable) window.removeEventListener('paste', this.handlePaste)
 	},
 	methods: {
 		reflowGrid() {
@@ -451,6 +453,14 @@ export default {
 		},
 		openHomepageLink() {
 			this.$refs.homepageLink.click()
+		},
+		async handlePaste() {
+			try {
+				const data = await navigator.clipboard.readText()
+				const url = new URL(data)
+
+				this.$modal.show('addLink', { inputValue: url.toString() })
+			} catch (err) {}
 		}
 	}
 }

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import express from 'express'
-import cheerio from 'cheerio'
+import { load } from 'cheerio'
 
 import log from '../utils/log'
 import { messages } from '../utils/status'
@@ -54,7 +54,7 @@ export async function renderMetaTags(req: express.Request, res: express.Response
 		const html = file.toString()
 
 		// Load the html file into cheerio
-		const $ = cheerio.load(html)
+		const $ = load(html)
 
 		// New title and description values
 		const title = `${ emojis[crate.icon] } ${ crate.name } | WebCrate`
@@ -98,7 +98,7 @@ export async function checkIfSetup(req: express.Request, res: express.Response, 
 		}
 
 		// Redirect to welcome page
-		if (req.path === '/' || req.path === '/inbox' || req.path.startsWith('/crate')) {
+		if (req.path === '/' || req.path === '/inbox' || req.path.startsWith('/crate') || req.path.startsWith('/link')) {
 			log.debug('redirecting to welcome page')
 			return res.redirect('/welcome')
 		}

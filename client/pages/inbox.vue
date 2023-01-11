@@ -1,9 +1,9 @@
 <template>
   <div class="page-wrapper">
-    <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
+    <div v-shortkey="{win: ['ctrl', 'a'], mac: ['meta', 'a']}" @shortkey="showAddLinkModal"></div>
     <div class="title">
       <h1>Inbox</h1>
-      <input v-model="newUrl" v-shortkey="['enter']" class="input" placeholder="Quick add a URL" @shortkey="addLink">
+      <!-- <input v-model="newUrl" v-shortkey="['enter']" class="input" placeholder="Quick add a URL" @shortkey="addLink"> -->
       <Actions :actions="actions" />
     </div>
     <hr>
@@ -154,12 +154,14 @@ export default {
 	mounted() {
 		this.onResize()
 		window.addEventListener('resize', this.onResize)
+		window.addEventListener('paste', this.handlePaste)
 
 		const showImages = this.$storage.get(this.$storage.types.SHOW_IMAGES_IN_LIST, true)
 		this.showImages = showImages
 	},
 	beforeDestroy() {
 		window.removeEventListener('resize', this.onResize)
+		window.removeEventListener('paste', this.handlePaste)
 	},
 	methods: {
 		addLink() {
@@ -211,6 +213,14 @@ export default {
 		},
 		changeGridView() {
 			this.showImages = !this.showImages
+		},
+		async handlePaste() {
+			try {
+				const data = await navigator.clipboard.readText()
+				const url = new URL(data)
+
+				this.$modal.show('addLink', { inputValue: url.toString() })
+			} catch (err) {}
 		}
 	}
 }

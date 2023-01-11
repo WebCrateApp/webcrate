@@ -1,9 +1,9 @@
 <template>
   <div class="page-wrapper">
-    <div v-shortkey="['ctrl', 'a']" @shortkey="showAddLinkModal"></div>
+    <div v-shortkey="{win: ['ctrl', 'a'], mac: ['meta', 'a']}" @shortkey="showAddLinkModal"></div>
     <div class="title">
       <h1>{{ welcomeMessage }}</h1>
-      <input v-model="newUrl" v-shortkey="shortKey" class="input" placeholder="Quick add a URL" @shortkey="addLink">
+      <!-- <input v-model="newUrl" v-shortkey="shortKey" class="input" placeholder="Quick add a URL" @shortkey="addLink"> -->
       <button class="button add-btn" @click.stop="addLink">
         <Icon name="add" />
         <span>Add Link</span>
@@ -164,6 +164,12 @@ export default {
 			return undefined
 		}
 	},
+	mounted() {
+		window.addEventListener('paste', this.handlePaste)
+	},
+	beforeDestroy() {
+		window.removeEventListener('paste', this.handlePaste)
+	},
 	methods: {
 		addLink() {
 			if (!this.newUrl) {
@@ -191,6 +197,14 @@ export default {
 		},
 		addExampleLink() {
 			this.$modal.show('addLink', { inputValue: 'https://www.deta.sh' })
+		},
+		async handlePaste() {
+			try {
+				const data = await navigator.clipboard.readText()
+				const url = new URL(data)
+
+				this.$modal.show('addLink', { inputValue: url.toString() })
+			} catch (err) {}
 		}
 	}
 }

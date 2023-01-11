@@ -14,8 +14,8 @@
       <LoadingItem height="100px" />
     </p>
     <div v-else-if="link">
-      <div v-if="editable" v-shortkey="['ctrl', 'del']" @shortkey="deleteLink"></div>
-      <div v-shortkey="['ctrl', 'alt', 'c']" @shortkey="copyLink"></div>
+      <div v-if="editable" v-shortkey="{win: ['ctrl', 'del'], mac: ['meta', 'del']}" @shortkey="deleteLink"></div>
+      <div v-shortkey="{win: ['ctrl', 'alt', 'c'], mac: ['meta', 'alt', 'c']}" @shortkey="copyLink"></div>
       <a ref="externalLink" :href="link.url" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
       <div class="top">
         <div class="title">

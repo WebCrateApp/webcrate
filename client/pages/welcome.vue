@@ -27,7 +27,6 @@
           transform="translate(48 28)"
           fill="#474440"
           font-size="26"
-          font-family="SegoeUI-Semibold, Segoe UI"
           font-weight="600"
         ><tspan x="0" y="0">WebCrate</tspan></text>
       </svg>

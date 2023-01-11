@@ -1,5 +1,5 @@
 <template>
-  <div v-shortkey="['ctrl', 'h']" class="help-wrapper" @shortkey="show = !show">
+  <div v-shortkey="{win: ['ctrl', 'h'], mac: ['meta', 'h']}" class="help-wrapper" @shortkey="show = !show">
     <div v-if="shouldShow" v-click-outside="close" class="help-widget">
       <div v-if="!isPublic">
         <a href="https://webcrate.app/docs" target="_blank" rel="noopener" class="no-button">

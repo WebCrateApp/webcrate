@@ -1,7 +1,7 @@
 <template>
   <div class="link-wrapper">
-    <div v-if="editable" v-shortkey="['ctrl', 'del']" @shortkey="deleteLink"></div>
-    <div v-shortkey="['ctrl', 'alt', 'c']" @shortkey="copyLink"></div>
+    <div v-if="editable" v-shortkey="{win: ['ctrl', 'del'], mac: ['meta', 'del']}" @shortkey="deleteLink"></div>
+    <div v-shortkey="{win: ['ctrl', 'alt', 'c'], mac: ['meta', 'alt', 'c']}" @shortkey="copyLink"></div>
     <a ref="externalLink" :href="link.url" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
     <a ref="homepageLink" href="https://webcrate.app" target="_blank" rel="noopener" :style="{ 'visibility': 'hidden' }"></a>
     <div v-if="crateId" class="crate-backlink-wrapper">

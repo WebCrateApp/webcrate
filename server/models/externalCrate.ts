@@ -32,7 +32,7 @@ export class ExternalCrate {
 	}
 
 	async refresh() {
-		const { data } = await got.get(`https://${ this.endpoint }/api/public/crate/${ this.id }`).json()
+		const { data } = await got.get(`https://${ this.endpoint }/api/public/crate/${ this.id }`).json() as any
 
 		this.update({ name: data.name, description: data.description, icon: data.icon })
 		this.name = data.name

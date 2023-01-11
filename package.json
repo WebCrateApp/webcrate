@@ -46,7 +46,6 @@
     "metadata-scraper": "^0.2.43",
     "nanoid": "^3.1.30",
     "puppeteer-core": "^10.4.0",
-    "running-at": "^0.3.21",
     "signale": "^1.4.0"
   },
   "devDependencies": {
@@ -68,7 +67,6 @@
     "@types/cors": "^2.8.12",
     "@types/ejs": "^3.1.0",
     "@types/express": "^4.17.13",
-    "@types/node": "^15.14.9",
     "@types/signale": "^1.4.2",
     "babel-eslint": "^10.1.0",
     "core-js": "^3.18.3",

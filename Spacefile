@@ -1,0 +1,24 @@
+# Spacefile Docs: https://alpha.deta.space/docs/en/reference/spacefile 
+v: 0
+app_name: WebCrate
+icon: client/static/icon.png
+micros:
+  - name: app
+    src: .
+    engine: nodejs16
+    primary: true
+    commands: ['npm run build']
+    include:
+      - build
+      - dist
+      - package.json
+      - node_modules
+    run: node build/index.js
+    public_routes:
+      - /_nuxt/*
+      - /link/public/*
+      - /crate/public/*
+      - /api/public/*
+      - /img/*
+    presets:
+      api_keys: true

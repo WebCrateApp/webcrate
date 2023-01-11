@@ -11,9 +11,9 @@
         <ActionDropdown icon="dotsV" icon-size="18px" :no-padding="true" :actions="moreActions" />
       </div>
       <hr>
-      <div v-shortkey="['ctrl', 's']" @shortkey="showModal('search')"></div>
-      <div v-shortkey="['ctrl', 'h']" @shortkey="changePage('home')"></div>
-      <div v-shortkey="['ctrl', 'alt', 'n']" @shortkey="showModal('addCrate')"></div>
+      <div v-shortkey="{win: ['ctrl', 's'], mac: ['meta', 's']}" @shortkey="showModal('search')"></div>
+      <div v-shortkey="{win: ['ctrl', 'h'], mac: ['meta', 'h']}" @shortkey="changePage('home')"></div>
+      <div v-shortkey="{win: ['ctrl', 'alt', 'n'], mac: ['meta', 'alt', 'n']}" @shortkey="showModal('addCrate')"></div>
       <div class="menus">
         <SideBarMenuItem name="Home" icon="home" :selected="currentPage === 'home'" @click.native="changePage('home')" @click.middle.native.stop="changePage('home', true)" />
         <SideBarMenuItem
@@ -37,7 +37,7 @@
         <SideBarMenuItem
           v-for="(crate, idx) in crates"
           :key="crate.id"
-          v-shortkey="['ctrl', idx + 1]"
+          v-shortkey="{win: ['ctrl', idx + 1], mac: ['meta', idx + 1]}"
           :name="crate.name"
           :emoji="crate.icon"
           :crate-id="crate.id"

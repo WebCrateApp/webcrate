@@ -4,14 +4,14 @@ import express from 'express'
 import * as bodyParser from 'body-parser'
 import compression from 'compression'
 import cors from 'cors'
-import * as runningAt from 'running-at'
 import dotenv from 'dotenv'
 dotenv.config()
 
 import routes from './router'
 import { routeLog, sendResponse, disableCaching, checkIfSetup, renderMetaTags } from './middleware'
 import log from './utils/log'
-import { isDev } from './utils/variables'
+
+const isDev = process.env.NODE_ENV === 'development'
 
 const app = express()
 
@@ -33,7 +33,7 @@ app.use(disableCaching)
 app.use(renderMetaTags)
 
 // Serve Nuxt static files during production
-if (process.env.NODE_ENV !== 'development') {
+if (!isDev) {
 	app.use(express.static(path.join(__dirname, '../dist')))
 }
 
@@ -72,9 +72,9 @@ app.use((err: any, _req: express.Request, res: express.Response, next: express.N
 // Start the server if file is directly run
 if (require.main === module) {
 	try {
-		const PORT = process.env.PORT || 3000
+		const PORT = process.env.PORT || 8080
 
-		app.listen(PORT, () => runningAt.print(PORT))
+		app.listen(PORT, () => console.log(`Listening on port ${ PORT }`))
 	} catch (err) {
 	// eslint-disable-next-line no-console
 		console.log(err)
