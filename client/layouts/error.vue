@@ -18,7 +18,7 @@
           {{ message }}
         </div>
         <p class="description">
-          If this error persists, please report it by <a :href="`https://github.com/WebCrateApp/webcrate/issues/new?assignees=BetaHuhn&labels=bug%2Ctriage&template=bug_report.yml${ version ? `&version=v${ version }` : '' }&title=${ message }&context=${ errorString }`">opening an issue on GitHub</a>.
+          If this error persists, please report it by <a :href="`https://github.com/WebCrateApp/webcrate/issues/new?assignees=BetaHuhn&labels=bug%2Ctriage&template=bug_report.yml${ version ? `&version=${ version }` : '' }&title=${ message }&context=${ errorString }`">opening an issue on GitHub</a>.
         </p>
       </div>
 
@@ -96,8 +96,12 @@ export default {
 			return this.error.message || '<%= messages.client_error %>'
 		},
 		version() {
-			return this.$version()
+			// this is the version of the nuxt app not the version of Space
+			return (this.$store.state && this.$store.state.config && this.$store.state.config.version) ? this.$store.state.config.version : this.$version()
 		}
+	},
+	created() {
+		this.$store.dispatch('GET_CONFIG')
 	}
 }
 </script>

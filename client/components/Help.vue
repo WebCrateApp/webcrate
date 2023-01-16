@@ -38,7 +38,7 @@
         <span>Change theme</span>
       </a>
       <hr>
-      <p>v{{ version }}</p>
+      <p>{{ version }}</p>
     </div>
     <div v-longpress="reload" class="bottom">
       <Icon v-if="!shouldShow" name="help" class="help-icon" @click.native.stop="show" />
@@ -73,7 +73,7 @@ export default {
 			return this.$store.state.config
 		},
 		version() {
-			return this.$version()
+			return this.$store.state.config.version
 		},
 		updateAvailable() {
 			return this.config.hasUpdate
