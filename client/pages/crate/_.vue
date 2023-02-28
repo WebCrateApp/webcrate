@@ -454,8 +454,13 @@ export default {
 		openHomepageLink() {
 			this.$refs.homepageLink.click()
 		},
-		async handlePaste() {
+		async handlePaste(e) {
 			try {
+				const target = e.target
+
+				if ([ 'INPUT', 'TEXTAREA' ].includes(target.tagName)) return
+				if (target.isContentEditable) return
+
 				const data = await navigator.clipboard.readText()
 				const url = new URL(data)
 
