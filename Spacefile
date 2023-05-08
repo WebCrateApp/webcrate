@@ -7,6 +7,7 @@ micros:
     src: .
     engine: nodejs16
     primary: true
+    dev: npm run dev
     commands: ['npm run build']
     include:
       - build
