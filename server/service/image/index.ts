@@ -3,7 +3,7 @@ import path from 'path'
 import chromium from 'chrome-aws-lambda'
 import ejs from 'ejs'
 
-import { isDev, domain } from '../../utils/variables'
+import { isDev, domain } from '../../utils/variables.js'
 
 // Use different options depending on the environment
 const getOptions = async () => {

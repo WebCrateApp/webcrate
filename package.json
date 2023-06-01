@@ -1,6 +1,7 @@
 {
   "name": "webcrate",
   "version": "1.4.3",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev:server": "tsc-watch -p ./server/tsconfig.json --onSuccess \"node ./build/index.js\"",
@@ -40,9 +41,10 @@
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "deta": "^1.0.1",
+    "deta-space-actions": "^0.1.4",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "metadata-scraper": "^0.2.43",
     "nanoid": "^3.1.30",
     "puppeteer-core": "^10.4.0",

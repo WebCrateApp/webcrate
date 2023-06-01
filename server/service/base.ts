@@ -1,5 +1,5 @@
-import { generateId, generateKey } from '../utils/random'
-import db from './db'
+import { generateId, generateKey } from '../utils/random.js'
+import db from './db.js'
 
 export default class Base {
 

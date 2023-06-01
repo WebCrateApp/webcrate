@@ -1,13 +1,13 @@
 import express from 'express'
 import got from 'got'
 
-import { Link } from '../models/link'
-import { Crate } from '../models/crate'
+import { Link } from '../models/link.js'
+import { Crate } from '../models/crate.js'
 
-import { generateSocialImage } from '../service/image'
+import { generateSocialImage } from '../service/image/index.js'
 
-import log from '../utils/log'
-import emojis from '../utils/emojis'
+import log from '../utils/log.js'
+import emojis from '../utils/emojis.js'
 
 export const router = express.Router()
 

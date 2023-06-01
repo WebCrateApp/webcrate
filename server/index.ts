@@ -1,29 +1,31 @@
 /* eslint-disable import/first */
 import path from 'path'
+import { fileURLToPath } from 'url'
 import express from 'express'
-import * as bodyParser from 'body-parser'
 import compression from 'compression'
 import cors from 'cors'
 import dotenv from 'dotenv'
 dotenv.config()
 
-import routes from './router'
-import { routeLog, sendResponse, disableCaching, checkIfSetup, renderMetaTags } from './middleware'
-import log from './utils/log'
+import routes from './router/index.js'
+import actions from './router/actions.js'
+import { routeLog, sendResponse, disableCaching, checkIfSetup, renderMetaTags } from './middleware/index.js'
+import log from './utils/log.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isDev = process.env.NODE_ENV === 'development'
 
 const app = express()
 
-// Use ejs as view engine
 app.set('view engine', 'ejs')
 app.set('views', isDev ? 'server/views' : 'build/views')
 
+app.use(express.json())
 app.use(routeLog)
+app.use(actions.middleware)
 app.use(sendResponse)
 app.use(checkIfSetup)
 
-app.use(bodyParser.json())
 app.use(compression())
 app.use(cors())
 
@@ -70,7 +72,7 @@ app.use((err: any, _req: express.Request, res: express.Response, next: express.N
 })
 
 // Start the server if file is directly run
-if (require.main === module) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
 	try {
 		const PORT = process.env.PORT || 8080
 

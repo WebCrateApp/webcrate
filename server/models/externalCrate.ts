@@ -1,6 +1,6 @@
 import got from 'got'
 
-import Base from '../service/base'
+import Base from '../service/base.js'
 
 const Crates = Base.use('externalCrates')
 

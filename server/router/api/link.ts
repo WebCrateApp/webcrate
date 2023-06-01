@@ -1,16 +1,15 @@
 import express from 'express'
-import getMetaData from 'metadata-scraper'
-import { MetaData } from 'metadata-scraper/lib/types'
 
-import { Link } from '../../models/link'
-import { Crate } from '../../models/crate'
-import { Stat } from '../../models/stats'
+import { Link } from '../../models/link.js'
+import { Crate } from '../../models/crate.js'
+import { Stat } from '../../models/stats.js'
 
-import log from '../../utils/log'
-import { parseUrl } from '../../utils/url'
-import emojis from '../../utils/emojis'
+import log from '../../utils/log.js'
+import { parseUrl } from '../../utils/url.js'
+import emojis from '../../utils/emojis.js'
 
-import { parsePaginate } from '../../middleware'
+import { parsePaginate } from '../../middleware/index.js'
+import { createLink } from '../../service/link.js'
 
 export const router = express.Router()
 
@@ -23,30 +22,7 @@ router.post('/', async (req: express.Request, res: express.Response, next: expre
 
 		log.debug(url)
 
-		const parsedUrl = parseUrl(url)
-
-		let meta: MetaData | undefined
-		try {
-			// Workaround to Twitter to include the right meta tags
-			const useGoogleUa = parsedUrl.includes('twitter.com')
-
-			meta = await getMetaData(parsedUrl, {
-				...(useGoogleUa && { ua: 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)' })
-			})
-
-			// Add title to meta object
-			if (title) meta.title = title
-		} catch (err) {
-			log.debug(err)
-		}
-
-		const link = await Link.create(parsedUrl, meta, crate)
-
-		await Stat.addRecentlyAddedLink(link.id)
-
-		if (crate) {
-			await Stat.addRecentlyUsedCrate(crate)
-		}
+		const link = await createLink(url, crate, title)
 
 		log.debug(link)
 		log.info('Link added')

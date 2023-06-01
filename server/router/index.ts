@@ -1,8 +1,8 @@
 import express from 'express'
 
-import apiRouter from './api'
-import imageRouter from './image'
-import wildcardRouter from './wildcard'
+import apiRouter from './api/index.js'
+import imageRouter from './image.js'
+import wildcardRouter from './wildcard.js'
 
 export const router = express.Router()
 

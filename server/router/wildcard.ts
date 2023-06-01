@@ -1,7 +1,7 @@
 import express from 'express'
 
-import log from '../utils/log'
-import { isValidUrl } from '../utils/url'
+import log from '../utils/log.js'
+import { isValidUrl } from '../utils/url.js'
 
 export const router = express.Router()
 

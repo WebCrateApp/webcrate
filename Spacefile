@@ -7,7 +7,7 @@ micros:
     src: .
     engine: nodejs16
     primary: true
-    dev: npm run dev
+    dev: npm run start
     commands: ['npm run build']
     include:
       - build
@@ -23,3 +23,6 @@ micros:
       - /img/*
     presets:
       api_keys: true
+      env:
+        - name: DATA_KEY
+    provide_actions: true

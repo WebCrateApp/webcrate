@@ -1,9 +1,9 @@
 import express from 'express'
 // import got from 'got'
 
-import { Config } from '../../models/config'
-import log from '../../utils/log'
-import { version, latestReleaseUrl } from '../../utils/variables'
+import { Config } from '../../models/config.js'
+import log from '../../utils/log.js'
+import { version, latestReleaseUrl } from '../../utils/variables.js'
 
 export const router = express.Router()
 

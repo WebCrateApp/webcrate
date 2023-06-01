@@ -3,13 +3,13 @@ import path from 'path'
 import express from 'express'
 import { load } from 'cheerio'
 
-import log from '../utils/log'
-import { messages } from '../utils/status'
-import { isSetup } from '../utils/isSetup'
-import emojis from '../utils/emojis'
-import { domain } from '../utils/variables'
+import log from '../utils/log.js'
+import { messages } from '../utils/status.js'
+import { isSetup } from '../utils/isSetup.js'
+import emojis from '../utils/emojis.js'
+import { domain } from '../utils/variables.js'
 
-import { Crate } from '../models/crate'
+import { Crate } from '../models/crate.js'
 // import { Stat } from '../models/stats'
 
 const ignoreRequestStrings: Array<string> = [ 'js/', 'css/', 'img/', 'static/', '_nuxt', 'manifest.json' ] // Don't log request if one of the strings are in URL

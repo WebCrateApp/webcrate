@@ -1,4 +1,4 @@
-import { Config } from '../models/config'
+import { Config } from '../models/config.js'
 
 export const isSetup = async () => {
 	const env = process.env.OVERWRITE_IS_SETUP

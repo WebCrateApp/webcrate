@@ -1,12 +1,12 @@
 import express from 'express'
 
-import { Crate } from '../../models/crate'
-import { Link } from '../../models/link'
-import { Stat } from '../../models/stats'
+import { Crate } from '../../models/crate.js'
+import { Link } from '../../models/link.js'
+import { Stat } from '../../models/stats.js'
 
-import log from '../../utils/log'
-import { parsePaginate } from '../../middleware'
-import externalRouter from './external'
+import log from '../../utils/log.js'
+import { parsePaginate } from '../../middleware/index.js'
+import externalRouter from './external.js'
 
 export const router = express.Router()
 

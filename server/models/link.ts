@@ -1,5 +1,5 @@
 import { MetaData } from 'metadata-scraper/lib/types'
-import Base from '../service/base'
+import Base from '../service/base.js'
 
 const Links = Base.use('links', true)
 

@@ -1,6 +1,6 @@
-import { Signale } from 'signale'
+import x from 'signale'
 
-export default new Signale({
+export default new x.Signale({
 	scope: 'WebCrate',
 	logLevel: process.env.LOG_LEVEL || 'info',
 	types: {

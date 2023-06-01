@@ -1,4 +1,4 @@
-import Base from '../service/base'
+import Base from '../service/base.js'
 
 const Stats = Base.use('stats')
 

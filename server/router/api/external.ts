@@ -2,10 +2,10 @@ import express from 'express'
 import got from 'got'
 
 // import { Stat } from '../../models/stats'
-import { ExternalCrate } from '../../models/externalCrate'
-import { parsePaginate } from '../../middleware'
+import { ExternalCrate } from '../../models/externalCrate.js'
+import { parsePaginate } from '../../middleware/index.js'
 
-import log from '../../utils/log'
+import log from '../../utils/log.js'
 
 export const router = express.Router()
 

@@ -1,10 +1,10 @@
 import express from 'express'
 
-import linkRouter from './link'
-import crateRouter from './crate'
-import searchRouter from './search'
-import configRouter from './config'
-import publicRouter from './public'
+import linkRouter from './link.js'
+import crateRouter from './crate.js'
+import searchRouter from './search.js'
+import configRouter from './config.js'
+import publicRouter from './public.js'
 
 export const router = express.Router()
 

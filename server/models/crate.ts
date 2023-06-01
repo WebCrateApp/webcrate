@@ -1,5 +1,5 @@
-import Base from '../service/base'
-import emojis from '../utils/emojis'
+import Base from '../service/base.js'
+import emojis from '../utils/emojis.js'
 
 const Crates = Base.use('crates')
 

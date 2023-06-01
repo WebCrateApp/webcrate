@@ -1,6 +1,6 @@
-import db from '../service/db'
+import db from '../service/db.js'
 
-import { version } from '../utils/variables'
+import { version } from '../utils/variables.js'
 
 const Base = db.Base('config')
 
