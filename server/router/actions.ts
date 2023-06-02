@@ -27,9 +27,23 @@ actions.add<{ crate?: string }>({
 		Inputs('crate').String().Optional()
 	],
 	handler: async (event) => {
-		const { crate } = event
-		const links = await Link.find({ crate }, 20, undefined)
-		return links
+		const { crate: crateName } = event
+		if (!crateName) {
+			const links = await Link.find({}, 20, undefined)
+			return links.items.map(link => ({
+				title: link?.meta?.title,
+				url: link.url
+			}))
+		}
+		const crate = await Crate.findOne({ name: crateName })
+		if (!crate) return 'Crate not found'
+
+		const links = await Link.find({ crate: crate.id }, 20, undefined)
+		return links.items.map(link => ({
+			title: link?.meta?.title,
+			url: link.url,
+			crate: crate.name
+		}))
 	}
 })
 
@@ -39,7 +53,12 @@ actions.add({
 	input: [],
 	handler: async () => {
 		const crates = await Crate.find({}, 20, undefined)
-		return crates
+		return crates.items.map(crate => ({
+			name: crate.name,
+			description: crate.description,
+			icon: crate.icon,
+			public: crate.public
+		}))
 	}
 })
 
