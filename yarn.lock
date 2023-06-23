@@ -4998,10 +4998,10 @@
   "resolved" "https://registry.npmjs.org/destroy/-/destroy-1.2.0.tgz"
   "version" "1.2.0"
 
-"deta-space-actions@^0.1.4":
-  "integrity" "sha512-pHxozRTLO/WfjN+XpIfppVDrc8dYpnxRI0fZQDmEx8ZE752/4Vo6BVVNpEhf5sWQMFS49Sn51nYtKpjr+4Mbjw=="
-  "resolved" "https://registry.npmjs.org/deta-space-actions/-/deta-space-actions-0.1.4.tgz"
-  "version" "0.1.4"
+"deta-space-actions@^0.1.8":
+  "integrity" "sha512-GZVFQ7Z+bAeUtkhDBNA1mmGWpJm4uIf4+M+EH+xaPs/Ic7xBCMMJbAYcnhmrtEZve4mDEHnmqFKnP4De5wayBg=="
+  "resolved" "https://registry.npmjs.org/deta-space-actions/-/deta-space-actions-0.1.8.tgz"
+  "version" "0.1.8"
   dependencies:
     "node-fetch" "^3.3.1"
 
