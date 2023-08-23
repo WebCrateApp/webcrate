@@ -3,26 +3,32 @@ v: 0
 app_name: WebCrate
 icon: client/static/icon.png
 micros:
-  - name: app
-    src: .
+  - name: server
+    src: ./server
+    path: /api
     engine: nodejs16
-    primary: true
-    dev: npm run start
+    dev: npm run dev
     commands: ['npm run build']
     include:
       - build
-      - dist
       - package.json
       - node_modules
     run: node build/index.js
     public_routes:
-      - /_nuxt/*
-      - /link/public/*
-      - /crate/public/*
-      - /api/public/*
+      - /public/*
       - /img/*
     presets:
       api_keys: true
-      env:
-        - name: DATA_KEY
     provide_actions: true
+
+  - name: client
+    src: ./client
+    engine: static
+    primary: true
+    dev: npm run dev
+    commands: ['npm run build']
+    serve: dist
+    public_routes:
+      - /_nuxt/*
+      - /link/public/*
+      - /crate/public/*

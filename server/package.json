@@ -1,0 +1,63 @@
+{
+  "name": "server",
+  "version": "1.4.3",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "tsc-watch -p ./src/tsconfig.json --onSuccess \"node ./build/index.js\"",
+    "build": "tsc -p ./src/tsconfig.json",
+    "lint": "eslint ./src/ --ext .ts",
+    "start": "NODE_ENV=production node build/index.js",
+    "copy-templates": "cp -R ./src/views ./build/views && cp ./src/service/image/NotoColorEmoji.ttf ./build/service/image",
+    "clean": "rimraf dist build .nuxt",
+    "postbuild": "npm run copy-templates",
+    "prebuild": "npm run clean",
+    "predev": "npm run clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betahuhn/webcrate.git"
+  },
+  "keywords": [],
+  "author": "Maximilian Schiller <schiller@mxis.ch>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/betahuhn/webcrate/issues"
+  },
+  "homepage": "https://github.com/betahuhn/webcrate#README",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.10",
+    "chrome-aws-lambda": "^10.1.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "deta": "^1.0.1",
+    "deta-base-orm": "^0.5.4",
+    "deta-space-actions": "^0.1.8",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.18.2",
+    "metadata-scraper": "^0.2.43",
+    "nanoid": "^3.1.30",
+    "puppeteer-core": "^10.4.0",
+    "signale": "^1.4.0"
+  },
+  "devDependencies": {
+    "@betahuhn/config": "^1.2.0",
+    "@types/body-parser": "^1.19.1",
+    "@types/compression": "^1.7.2",
+    "@types/cors": "^2.8.12",
+    "@types/ejs": "^3.1.0",
+    "@types/express": "^4.17.13",
+    "@types/signale": "^1.4.2",
+    "babel-eslint": "^10.1.0",
+    "ejs-serve": "^1.2.30",
+    "eslint": "^7.32.0",
+    "got": "^11.8.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.3.0",
+    "tsc-watch": "^4.5.0",
+    "typescript": "^4.4.4",
+    "underscore": "^1.13.1"
+  }
+}
