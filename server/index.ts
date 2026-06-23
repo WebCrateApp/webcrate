@@ -56,7 +56,7 @@ app.use((err: any, _req: express.Request, res: express.Response, next: express.N
 	}
 
 	let returnStatus
-	let message = err.message || 'An unkown error ocurred, please try again.'
+	let message = err.message || 'An unknown error occurred, please try again.'
 	if (err.name === 'HTTPError') {
 		log.warn('Metdata parsing failed: ' + err.message)
 		returnStatus = 500
