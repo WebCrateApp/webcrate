@@ -131,13 +131,13 @@ export function sendResponse(_req: express.Request, res: express.Response, next:
 		let error
 
 		if (!err) {
-			error = { message: statusMessage || 'Unkown error ocurred' }
+			error = { message: statusMessage || 'Unknown error occurred' }
 		} else if (typeof err === 'string') {
 			error = { message: err }
 		} else if (!err.message || statusMessage !== undefined) {
 			error = {
 				...err,
-				message: statusMessage || 'Unkown error ocurred'
+				message: statusMessage || 'Unknown error occurred'
 			}
 		} else {
 			error = err
